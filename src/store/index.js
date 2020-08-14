@@ -3,10 +3,10 @@ import Vuex from 'vuex'
 //para decodificar el token jwt
 import decode from 'jwt-decode';
 //modulos
-import router from '../router/index'
 import teams from './modules/teams'
 import TextoSnack from './modules/TextoSnack'
 import loading from './modules/loading'
+import rule from './modules/rule'
 
 Vue.use(Vuex)
 
@@ -61,11 +61,12 @@ export default new Vuex.Store({
     }
   },
   getters:{
-    estaActivo:state => !!state.token
+    estaActivo:state => !!state.token,
   },
   modules:{
     teams,
-    TextoSnack,
-    loading
+    TextoSnack, 
+    loading,
+    rule
   }
 })

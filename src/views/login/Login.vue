@@ -5,7 +5,7 @@
 </template>
 <script>
 
-import modalLogin from '../components/forms/windowForm/modalLogin';
+import modalLogin from '@/components/forms/windowForm/modalLogin';
 
 export default {
     name: 'Login',

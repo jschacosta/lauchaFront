@@ -4,8 +4,19 @@
         <v-card class="elevation-12">
             <v-system-bar color="grey darken-4"></v-system-bar>
             <v-card-title>
-                Usuarios Registrados: 
-                <v-spacer></v-spacer>
+                Tabla de Usuarios y Roles
+                <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+          Registrados: {{usuarios.length}}
+                <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+                
                 <v-text-field
                     v-model="search"
                     append-icon="mdi-magnify"
@@ -27,8 +38,8 @@
                         </div>
                     </v-col>
                 </v-row>
-            <v-data-table :headers="headers" :items="usuarios" :search="search" class="elevation-7">
-                <template v-slot:item.accion="{ item }">
+            <v-data-table dense :headers="headers" :items="usuarios" :search="search" class="elevation-7">
+                <template v-slot:item.accion="{ item }" >
                     <v-btn class="mr-2"  tile large color="primary" icon  @click="itemUsar=item;dialogEditar=true">
                         <v-icon dark>mdi-pencil</v-icon>
                     </v-btn>      
@@ -126,7 +137,7 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import {mapMutations, mapState,mapGetters} from 'vuex'
 export default {
     name: 'Users',
     data:()=>({
@@ -153,11 +164,17 @@ export default {
         password2:"",
         nuevoRole:""
     }),
+    computed:{
+        ...mapState(['token']),
+        config(){
+            return {headers: {token:this.token}}
+        }
+    },
     methods:{
-            ...mapMutations( 'loading',['loadingFunction']),
+        ...mapMutations( 'loading',['loadingFunction']),
         obtenerUsuarios(){
             this.loadingFunction()
-            this.axios.get(`/admin/all-users`)
+            this.axios.get(`/admin/users`,this.config)
                 .then(res=>{
                     let users=res.data
                     users.sort(function(a,b){
@@ -187,7 +204,7 @@ export default {
                     password2:this.password2,
                     role:this.nuevoRole,
                 };
-                this.axios.post('/admin/admin',nuevoUsuario)
+                this.axios.post('/admin/user',nuevoUsuario,this.config)
                 .then(res=>{
                     let users=res.data;
                     let fecha=new Date(users.date)
@@ -207,7 +224,7 @@ export default {
         borrarUsuario(){
             this.loadingFunction()
             let id=this.itemUsar._id;
-            this.axios.delete(`/admin/${id}`)
+            this.axios.delete(`/admin/user/${id}`,this.config)
                 .then(res=>{
                     const index=this.usuarios.findIndex(item=>item._id === res.data._id);
                     this.usuarios.splice(index,1);
@@ -224,7 +241,7 @@ export default {
             let id=this.itemUsar._id;
             const nuevoItem= this.itemUsar
             nuevoItem.role=this.nuevoRole
-            this.axios.put(`/admin/user/${id}`,nuevoItem)
+            this.axios.put(`/admin/user/${id}`,nuevoItem,this.config)
             .then(res=>{
                 let index = this.usuarios.findIndex( item => item._id === res.data._id);
                 this.usuarios[index].role = res.data.role;
@@ -237,6 +254,9 @@ export default {
             })
             this.agregar = false;  
         } 
-    }  
+    },
+    created(){
+        this.obtenerUsuarios()
+    }
 }
 </script>

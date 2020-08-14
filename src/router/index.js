@@ -32,12 +32,22 @@ const router  = new VueRouter({
     {
       path: '/profile',
       name: 'Profile',
-      component: () => import(/* webpackChunkName: "Login" */ '../views/users/Profile')  
+      component: () => import(/* webpackChunkName: "Login" */ '../views/users/Profile')   
     },
     {
       path: '/login',
       name: 'Login',
-      component: () => import(/* webpackChunkName: "Login" */ '../views/Login')  
+      component: () => import(/* webpackChunkName: "Login" */ '../views/login/Login.vue')  
+    },
+    {
+      path: '/forgot-password',
+      name: 'Forget',
+      component: () => import(/* webpackChunkName: "Forget" */ '../views/login/Forget.vue'), 
+    },
+    {
+      path: '/reset-password/:id',
+      name: 'Reset',
+      component: () => import(/* webpackChunkName: "Reset" */ '../views/login/Reset.vue'), 
     },
     { 
       path: '/admin', 
@@ -93,7 +103,7 @@ const router  = new VueRouter({
         },
       ]
     },
-    {
+    { 
       path: '/401',
       name: 'UnAuthorized',
       component: () => import(/* webpackChunkName: "No Autorizado" */ '../views/error/UnAuthorized'), 

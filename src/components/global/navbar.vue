@@ -2,10 +2,14 @@
   <div style="-webkit-app-region:drag">
     <!-- Navbar para Usuario y Admin -->
     <v-app-bar app color="#2C3A47" dark>
-      <v-app-bar-nav-icon @click.stop="drawer=!drawer" class="clickable" v-if="(imagen==='sm' || imagen==='md')&& rutaActual!='Admin'"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="drawer=!drawer" class="clickable" v-if="(imagen==='sm' || imagen==='md') && rutaActual!='Admin'"></v-app-bar-nav-icon>
       <v-app-bar-nav-icon @click.stop="mini=!mini" class="clickable" v-if="rutaActual==='Admin'"></v-app-bar-nav-icon>
-      <v-toolbar-title @click="$router.push('/')">
-        <span class="text-uppercase" v-if="rutaActual!='Admin'">Polla Gol</span>
+      <v-toolbar-title>
+        <span class="text-uppercase" v-if="rutaActual!='Admin'">
+          <router-link  :to="{ name: 'Home'}"  style="text-decoration: none; color: inherit"> 
+            PollaGol
+          </router-link>
+        </span>
       </v-toolbar-title >
       <v-toolbar-title>
         <span class="text-uppercase " :class="(imagen==='xs' )?'body-3':'h2'"  v-if="rutaActual==='Admin'">Panel de Control</span>
@@ -18,7 +22,7 @@
         </v-item>
       </v-item-group>
       <v-spacer/>
-      <v-btn small outlined color="orange" :to="{ name: 'Login'}" v-if="!estaActivo">
+      <v-btn small outlined color="orange" :to="{ name: 'Login'}" v-if="!estaActivo && $route.name!='Login'">
         <v-icon >person</v-icon>
         <caption>Acceder</caption>   
       </v-btn>
