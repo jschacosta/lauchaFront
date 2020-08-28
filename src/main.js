@@ -8,7 +8,7 @@ import VueAxios from 'vue-axios'
 
 Vue.config.productionTip = false
 
-//vue axios
+//vue axios 
 Vue.use(VueAxios, axios)
 // Agregamos la URL base de nuestra API
 axios.defaults.baseURL = 'http://localhost:3000/api'; // para el caso local

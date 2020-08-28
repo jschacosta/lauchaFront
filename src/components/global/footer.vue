@@ -2,8 +2,7 @@
 <div>
   <!-- Footer para PC y Tablets -->
     <v-footer
-    v-if="(imagen==='sm' ||imagen==='md' || imagen==='lg' || imagen==='xl') && rutaActual!='Admin' 
-    || $route.name==='Login' || $route.name==='Forget'?true:false"
+      v-if="rutaLogin || (imagen!='xs' && !rutaAdmin) || ( !rutaAdmin && !rutaLogin && !estaActivo)"
       class="font-weight-medium "
       color="#2C3A47"
       dark 
@@ -13,7 +12,7 @@
         </v-col>
     </v-footer>
     <!-- Footer para Telefonos con botones -->
-    <v-bottom-navigation v-if="imagen==='xs' && rutaActual!='Admin' && $route.name!='Login' && $route.name!='Forget'"  app  background-color="#2C3A47" dark >
+    <v-bottom-navigation v-if="estaActivo && imagen==='xs' && !rutaAdmin && !rutaLogin"  app  background-color="#2C3A47" dark >
           <v-item-group multiple >
           <v-item  v-for="item in items" :key="item.text" >
               <v-btn   height="100%"  route :to="item.route" active-class="orange--text" 
@@ -28,6 +27,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: 'Footer',
   data:()=>({
@@ -39,6 +39,7 @@ export default {
       ]
   }),
   computed:{
+  ...mapGetters(['estaActivo']),
     imagen(){
       switch (this.$vuetify.breakpoint.name) {
             case 'xs': return 'xs'
@@ -48,13 +49,11 @@ export default {
             case 'xl': return 'xl'
       }
     },
-    rutaActual() {
-        let incluye=this.$route.path.includes('admin')
-      if(incluye===true){
-      return 'Admin';
-      }else{
-        return ""
-      }
+    rutaAdmin() {
+      return this.$route.path.includes('admin')
+    },
+    rutaLogin() {
+      return this.$route.path.includes('login')||this.$route.path.includes('reset')||this.$route.path.includes('forgot')
     },
     anchoPantalla(){
       if (screen.width<370){return true}

@@ -2,6 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import store from '../store/index'
+//Import Routes
+import AdminRoutes from './admin'
+import UserRoutes from './users'
+import LoginRoutes from './login'
 
 Vue.use(VueRouter)
 
@@ -14,95 +18,9 @@ const router  = new VueRouter({
       name: 'Home',
       component: Home
     },
-    {
-      path: '/torneos',
-      name: 'Torneos',
-      component: () => import(/* webpackChunkName: "Login" */ '../views/users/Torneos')  
-    },
-    {
-      path: '/stats',
-      name: 'Stats',
-      component: () => import(/* webpackChunkName: "Login" */ '../views/users/Stats')  
-    },
-    {
-      path: '/rules',
-      name: 'Rules',
-      component: () => import(/* webpackChunkName: "Login" */ '../views/users/Rules')  
-    },
-    {
-      path: '/profile',
-      name: 'Profile',
-      component: () => import(/* webpackChunkName: "Login" */ '../views/users/Profile')   
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: () => import(/* webpackChunkName: "Login" */ '../views/login/Login.vue')  
-    },
-    {
-      path: '/forgot-password',
-      name: 'Forget',
-      component: () => import(/* webpackChunkName: "Forget" */ '../views/login/Forget.vue'), 
-    },
-    {
-      path: '/reset-password/:id',
-      name: 'Reset',
-      component: () => import(/* webpackChunkName: "Reset" */ '../views/login/Reset.vue'), 
-    },
-    { 
-      path: '/admin', 
-      redirect: '/admin/dashboard',
-      
-    },
-    {
-      path: '/admin',
-      name: 'Admin',
-      component: () => import(/* webpackChunkName: "Admin" */ '../views/admin/Index'),          
-      children:[
-        {
-          path:'dashboard',
-          name:'Dashboard',
-          component: () => import(/* webpackChunkName: "Dashboard" */ '../views/admin/sections/Dashboard'),
-          meta:{requireAuth:['ADMIN','EDITOR','RELATOR']},
-        },
-        {
-          path:'edit',
-          name:'Edit',
-          component: () => import(/* webpackChunkName: "Admin-Editar" */ '../views/admin/sections/edit/Index'),
-          meta:{requireAuth:['ADMIN','EDITOR']},     
-        },
-        {
-          path: 'create',
-          name: 'Create',
-          component: () => import(/* webpackChunkName: "Admin-Partidos" */ '../views/admin/sections/Create'),
-          meta:{requireAuth:['ADMIN','EDITOR']}
-        },
-        {
-          path: 'play',
-          name: 'Play',
-          component: () => import(/* webpackChunkName: "Admin-Partidos" */ '../views/admin/sections/Play'),
-          meta:{requireAuth:['ADMIN','EDITOR','RELATOR']}
-        },
-        {
-          path: 'analitycs',
-          name: 'Analitycs',
-          component: () => import(/* webpackChunkName: "Admin-Partidos" */ '../views/admin/sections/Analitycs'),
-          meta:{requireAuth:['ADMIN']}
-        },
-        {
-          path:'users',
-          name:'Users',
-          component: () => import(/* webpackChunkName: "Admin-Usuarios" */ '../views/admin/sections/Users'),
-          meta:{requireAuth:['ADMIN']},
-        },
-        {
-          path: 'profile',
-          name: 'AdminProfile',
-          component: () => import(/* webpackChunkName: "Admin-Partidos" */ '../views/admin/sections/AdminProfile'),
-          meta:{requireAuth:['ADMIN','EDITOR','RELATOR']}
-        },
-      ]
-    },
+    ...UserRoutes,
+    ...AdminRoutes,
+    ...LoginRoutes,
     { 
       path: '/401',
       name: 'UnAuthorized',

@@ -38,6 +38,7 @@ export default {
         tablaEquipos
     },
     data(){
+    
         return{  
             busqueda:true,
         }

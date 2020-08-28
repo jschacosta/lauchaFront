@@ -25,7 +25,7 @@
                     </v-form>
                     <h2 class="text-center mt-3 final" >
                         <router-link  :to="{ name: 'Login'}"  style="text-decoration: none; color: inherit"> 
-                            Volver a Ingreso
+                            Volver a Inicio de Sesión
                         </router-link>
                         </h2>
                 <div class="text-center mt-5">
@@ -35,7 +35,7 @@
                     dark
                     @click="forgot()"
                     >
-                    Sign in
+                    Enviar
                     </v-btn>
                 </div>
                 </v-card-text>
@@ -58,7 +58,7 @@
 
 import { mapMutations} from "vuex";
 export default {
-    name: 'Forget',
+    name: 'Forgot',
     data:()=>({
         Email:"",
         estado:false,

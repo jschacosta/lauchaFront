@@ -7,6 +7,8 @@ import teams from './modules/teams'
 import TextoSnack from './modules/TextoSnack'
 import loading from './modules/loading'
 import rule from './modules/rule'
+import elections from './data/elections'
+import match from './modules/match'
 
 Vue.use(Vuex)
 
@@ -65,8 +67,10 @@ export default new Vuex.Store({
   },
   modules:{
     teams,
+    match,
     TextoSnack, 
     loading,
-    rule
+    rule,
+    elections
   }
 })

@@ -1,11 +1,18 @@
 <template>
     <div>
-        <h4>Acá se ingresan las plantillas completas para cada equipo</h4>
+       <tablaPlayers></tablaPlayers>       
     </div>
 </template>
 
 <script>
+import tablaPlayers from '@/components/tables/tablaPlayers'
+
 export default {
-    name:'Players'
+    name:'Players',
+    components: {tablaPlayers},
+    
+    created:{
+        
+    }
 }
 </script>

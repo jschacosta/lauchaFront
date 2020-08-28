@@ -45,13 +45,11 @@ export default {
       ],
     }),
     computed:{
-      ...mapState(['role','nombre','apellido']),
-      
+      ...mapState(['role','nombre','apellido']),    
       nombreCompleto(){
         let nombre= this.nombre.charAt(0);
         return`${nombre}. ${this.apellido}`
-      }
-      
+      }    
     },
     methods:{
       filtrarMenu(){
@@ -68,7 +66,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>

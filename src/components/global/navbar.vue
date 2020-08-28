@@ -2,19 +2,19 @@
   <div style="-webkit-app-region:drag">
     <!-- Navbar para Usuario y Admin -->
     <v-app-bar app color="#2C3A47" dark>
-      <v-app-bar-nav-icon @click.stop="drawer=!drawer" class="clickable" v-if="(imagen==='sm' || imagen==='md') && rutaActual!='Admin'"></v-app-bar-nav-icon>
-      <v-app-bar-nav-icon @click.stop="mini=!mini" class="clickable" v-if="rutaActual==='Admin'"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="drawer=!drawer" class="clickable" v-if="(imagen==='sm' || imagen==='md') && !rutaAdmin"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="mini=!mini" class="clickable" v-if=" rutaAdmin"></v-app-bar-nav-icon>
       <v-toolbar-title>
-        <span class="text-uppercase" v-if="rutaActual!='Admin'">
+        <span class="text-uppercase" v-if="!rutaAdmin">
           <router-link  :to="{ name: 'Home'}"  style="text-decoration: none; color: inherit"> 
             PollaGol
           </router-link>
         </span>
       </v-toolbar-title >
       <v-toolbar-title>
-        <span class="text-uppercase " :class="(imagen==='xs' )?'body-3':'h2'"  v-if="rutaActual==='Admin'">Panel de Control</span>
+        <span class="text-uppercase " :class="(imagen==='xs' )?'body-3':'h2'"  v-if="rutaAdmin">Panel de Control</span>
       </v-toolbar-title >
-      <v-item-group multiple v-if="(imagen==='lg' || imagen==='xl')&& rutaActual!='Admin'">
+      <v-item-group multiple v-if="(imagen==='lg' || imagen==='xl')&& !rutaAdmin">
         <v-item v-for="item in itemsRevisado" :key="item.text">
           <v-btn route :to="item.route" class="mx-2" text small outlined color="white" >
             <caption>{{item.text}}</caption>
@@ -22,14 +22,14 @@
         </v-item>
       </v-item-group>
       <v-spacer/>
-      <v-btn small outlined color="orange" :to="{ name: 'Login'}" v-if="!estaActivo && $route.name!='Login'">
+      <v-btn small outlined color="orange" :to="{ name: 'Login'}" v-if="!estaActivo && !rutaLogin">
         <v-icon >person</v-icon>
         <caption>Acceder</caption>   
       </v-btn>
       <!-- Boton Salir User -->
-      <UserButton v-if="estaActivo && rutaActual!='Admin'"></UserButton>
+      <UserButton v-if="estaActivo && !rutaAdmin"></UserButton>
       <!-- Boton Salir Admin -->
-      <v-btn  fab small class="mr-2" color='#2C3A47'  :to="{ name: 'Home'}"  v-if="estaActivo && rutaActual==='Admin'" >
+      <v-btn  fab small class="mr-2" color='#2C3A47'  :to="{ name: 'Home'}"  v-if="estaActivo &&  rutaAdmin" >
         <v-icon>mdi-logout</v-icon>
       </v-btn>
       <!-- loading Bar -->
@@ -40,18 +40,18 @@
   <!-- Config Menu Lateral -->
     <v-navigation-drawer
     v-model="drawer"
-    :temporary="rutaActual!='Admin'?true:false"
+    :temporary="!rutaAdmin?true:false"
     color="#2C3A47"
     dark
-    :permanent="rutaActual==='Admin'?true:false"
-    :mini-variant="rutaActual!='Admin'?false:mini"
-    :absolute="rutaActual!='Admin'?true:false"
-    :app="rutaActual==='Admin'?true:false"
+    :permanent="rutaAdmin?true:false"
+    :mini-variant=" !rutaAdmin?false:mini"
+    :absolute=" !rutaAdmin?true:false"
+    :app="rutaAdmin?true:false"
     >   
     <!--Menu Lateral Usuario  -->
-      <NavUser v-if="rutaActual!='Admin'"></NavUser>
+      <NavUser v-if=" !rutaAdmin"></NavUser>
     <!-- Menu Lateral Admin -->
-      <NavAdmin v-if="rutaActual==='Admin'"></NavAdmin>
+      <NavAdmin v-if="rutaAdmin"></NavAdmin>
     </v-navigation-drawer>
 
 
@@ -101,8 +101,7 @@ export default {
         { icon: "emoji_events", text: "Mis Torneos", route: "/torneos" },
         { icon: "fas fa-chart-pie", text: "Mis Stats", route: "/stats" },
         { icon: "fas fa-book", text: "Reglas", route: "/rules" }, 
-      ],
-    
+      ]   
   }),
   computed:{
   ...mapGetters(['estaActivo']),
@@ -112,7 +111,6 @@ export default {
       return this.itemsNav
     }
   },
-
   imagen(){
     switch (this.$vuetify.breakpoint.name){
           case 'xs': return 'xs'
@@ -122,13 +120,11 @@ export default {
           case 'xl': return 'xl'
     }
   },
-    rutaActual(){
-      let incluye=this.$route.path.includes('admin')
-      if(incluye===true){
-      return 'Admin';
-      }else{
-        return ""
-      }
+    rutaAdmin() {
+      return this.$route.path.includes('admin')
+    },
+    rutaLogin() {
+      return this.$route.path.includes('login')||this.$route.path.includes('reset')||this.$route.path.includes('forgot')
     },
   },
   methods: {
@@ -143,7 +139,6 @@ export default {
   },
 }
 </script>
-
 <style>
 .clickable{
   -webkit-app-region: no-drag;

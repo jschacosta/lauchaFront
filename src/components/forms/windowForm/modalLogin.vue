@@ -41,7 +41,7 @@
                       </v-text-field>
                     </v-form>
                     <h2 class="text-center mt-3 olvido">
-                      <router-link  :to="{ name: 'Forget'}"  style="text-decoration: none; color: inherit"> 
+                      <router-link  :to="{ name: 'Forgot'}"  style="text-decoration: none; color: inherit"> 
                         ¿Olvidaste tu contraseña?
                       </router-link>
                     </h2>
@@ -246,7 +246,7 @@ export default {
         .catch((e) => {
           this.loadingFunction();
           let error = e.response.data.mensaje;
-          this.agregarSnack({ texto: error, estado: true });
+          this.agregarSnack(error);
         });
       this.$refs.form.reset(); // elimina info de los campos
       this.$refs.form.resetValidation(); //elimina campos en rojo
@@ -266,8 +266,8 @@ export default {
           this.loadingFunction();
           this.axios
             .post("/sign-up", {
-              nombre: this.Name,
-              apellido: this.lastName,
+              name: this.Name,
+              lastname: this.lastName,
               email: this.Email,
               password1: this.Password1,
               password2: this.Password2,
@@ -280,8 +280,12 @@ export default {
             })
             .catch((e) => {
               this.loadingFunction();
-              let error = e.response.data.mensaje;
-              this.agregarSnack(error);
+              if(!!e.response.data.error.errors.email.properties.message){
+                this.agregarSnack(e.response.data.error.errors.email.properties.message);
+              }
+              else{
+                this.agregarSnack(e.response.data.mensaje);
+              }
             });
           this.$refs.form.reset(); // elimina info de los campos
           this.$refs.form.resetValidation(); //elimina campos en rojo   

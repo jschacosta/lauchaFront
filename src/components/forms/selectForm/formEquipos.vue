@@ -1,21 +1,67 @@
 <template>  
-        <v-form>
-            <!-- Eleccion 1 -->
+    <v-form>
+        <!-- Eleccion 1 -->
+        <v-row>
+            <v-col sm="10">
+                <v-select :items="caso1" v-model="eleccion1" label="Tipo de Partido"></v-select>
+            </v-col>
+        </v-row>
+        <!-- Caso 1 -->
+        <div v-if="opciones===1">
             <v-row>
-                <v-col sm="10">
-                    <v-select :items="caso1" v-model="eleccion1" label="Tipo de Partido"></v-select>
+                <v-col sm="6">
+                    <v-select :items="caso2" v-model="eleccion2" label="Confederación"></v-select>
                 </v-col>
             </v-row>
-            <!-- Caso 1 -->
-            <div v-if="opciones===1">
+            <v-row >
+                <v-col sm="6">
+                    <v-select :items="caso3" v-model="eleccion3" label="Torneo"></v-select>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col sm="6">
+                    <v-btn color="primary" dark @click="buscarEquipos()">Buscar Equipos</v-btn>
+                </v-col>
+            </v-row>
+        </div>
+        <!-- Caso 2 -->
+        <div v-if="opciones===2">
+            <v-row >
+                <v-col sm="6">
+                    <v-select :items="caso2" v-model="eleccion2" label="Formato" @change="onChange($event)"></v-select>
+                </v-col>
+            </v-row>
+            <div v-if="opciones2===1">
                 <v-row>
                     <v-col sm="6">
-                        <v-select :items="caso2" v-model="eleccion2" label="Confederación"></v-select>
+                        <v-select :items="caso3" v-model="eleccion3" label="Confederación"></v-select>
                     </v-col>
                 </v-row>
-                <v-row >
+                <v-row>
                     <v-col sm="6">
-                        <v-select :items="caso3" v-model="eleccion3" label="Torneo"></v-select>
+                        <v-select :items="caso4" v-model="eleccion4" label="Torneo"></v-select>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col sm="6">
+                        <v-btn color="primary" dark @click="buscarEquipos()">Buscar Equipos</v-btn>
+                    </v-col>
+            </v-row>
+            </div>
+            <div v-if="opciones2===2">
+                <v-row>
+                    <v-col sm="6">
+                        <v-select :items="caso3" v-model="eleccion3" label="Zona"></v-select>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col sm="6">
+                        <v-select :items="caso4" v-model="eleccion4" label="País"></v-select>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col sm="6">
+                        <v-select :items="caso5" v-model="eleccion5" label="Torneo"></v-select>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -24,177 +70,24 @@
                     </v-col>
                 </v-row>
             </div>
-            <!-- Caso 2 -->
-            <div v-if="opciones===2">
-                <v-row >
-                    <v-col sm="6">
-                        <v-select :items="caso2" v-model="eleccion2" label="Formato" @change="onChange($event)"></v-select>
-                    </v-col>
-                </v-row>
-                <div v-if="opciones2===1">
-                    <v-row>
-                        <v-col sm="6">
-                            <v-select :items="caso3" v-model="eleccion3" label="Confederación"></v-select>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col sm="6">
-                            <v-select :items="caso4" v-model="eleccion4" label="Torneo"></v-select>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col sm="6">
-                            <v-btn color="primary" dark @click="buscarEquipos()">Buscar Equipos</v-btn>
-                        </v-col>
-                </v-row>
-                </div>
-                <div v-if="opciones2===2">
-                    <v-row>
-                        <v-col sm="6">
-                            <v-select :items="caso3" v-model="eleccion3" label="Zona"></v-select>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col sm="6">
-                            <v-select :items="caso4" v-model="eleccion4" label="País"></v-select>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col sm="6">
-                            <v-select :items="caso5" v-model="eleccion5" label="Torneo"></v-select>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col sm="6">
-                            <v-btn color="primary" dark @click="buscarEquipos()">Buscar Equipos</v-btn>
-                        </v-col>
-                    </v-row>
-                </div>
-               
-            </div> 
-        </v-form>
+            
+        </div> 
+    </v-form>
 </template>
 <script>
-import {mapMutations} from 'vuex'
+import {mapMutations, mapState} from 'vuex'
+import elections from '@/store/data/elections.js'
 export default {
     name: 'formEquipos',
-    data: function(){
-        return{
-            eleccion1:"",
-            eleccion2:"",
-            eleccion3:"",
-            eleccion4:"",
-            eleccion5:"",
-            categories : { 
-                seleccion:{
-                    fifa:{
-                        mundialAdult:[{ subitems: []}],
-                        olimpJuv:[{ subitems: []}],
-                        mundialSub20:[{ subitems: []}],
-                        mundialSub17:[{ subitems: []}]
-                    },
-                    uefa:{
-                        eurocopa:[],
-                        ligaNacUefa:[],
-                        europeSub21:[],
-                        europeSub19:[],
-                        europeSub17:[],
-                    },
-                    conmebol:{
-                        copaAmerica:[],
-                        clasificatoria:[],
-                        preolimpSub23:[],
-                        sudamSub20:[],
-                        sudamSub17:[],
-                        sudamSub15:[], 
-                    },
-                    concacaf:{
-                        copaOro:[],
-                        clasificatoria:[],
-                        ligaNacConcacaf:[],
-                        copaConcacaf:[],
-                        preolimp:[],
-                        campSub20:[],
-                        campSub17:[],
-                        campSub15:[],
-                    }
-                },
-                club:{
-                    internacional:{
-                        fifa:{
-                            mundialClubes:[]
-                        },
-                        uefa:{
-                            champions:[],
-                            europaleague:[],
-                            supercopaUefa:[],
-                            conferencia:[]
-                        },
-                        conmebol:{
-                                libert:[],
-                                sudam:[],
-                                recopaConmebol:[],
-                                libertSub20:[]
-                        },
-                        concacaf:{
-                            ligaCamp:[],
-                            LigaConcacaf:[] 
-                        }
-                    },
-                    nacional:{
-                        sudamerica:{
-                            chile:{
-                                liga1Chile:1,
-                                liga2Chile:2,
-                                copaChile:3,
-                                superCopaChile:5
-                            },
-                            argentina:{
-                                liga1Arg:[{ subitems: []}],
-                                liga2Arg:[{ subitems: []}],
-                                copaArg:[{ subitems: []}],
-                                superCopaArg:[{ subitems: []}]
-                            }
-                        },
-                        europa:{
-                            espana:{
-                                liga1Esp:[{ subitems: []}],
-                                liga2Esp:[{ subitems: []}],
-                                copaEsp:[{ subitems: []}],
-                                superCopaEsp:[{ subitems: []}]
-                            },
-                            italia:{
-                                liga1Ita:[{ subitems: []}],
-                                liga2Ita:[{ subitems: []}],
-                                copaIta:[{ subitems: []}],
-                                superCopaIta:[{ subitems: []}]
-                            },
-                            francia:{
-                                liga1IFran:[{ subitems: []}],
-                                liga2Fran:[{ subitems: []}],
-                                superCopaFran:[{ subitems: []}]
-
-                            },
-                            alemania:{
-                                liga1Ale:[{ subitems: []}],
-                                liga2Ale:[{ subitems: []}],
-                                copaAle:[{ subitems: []}],
-                                superCopaAle:[{ subitems: []}]
-                            },
-                            inglaterra:{
-                                liga1Ing:[{ subitems: []}],
-                                liga2Ing:[{ subitems: []}],
-                                copaIng:[{ subitems: []}],
-                                facup:[{ subitems: []}],
-                                superCopaIng:[{ subitems: []}]
-                            }
-                        }
-                    }
-                }
-            }       
-        }
-    },
+    data: ()=>({
+        eleccion1:"",
+        eleccion2:"",
+        eleccion3:"",
+        eleccion4:"",
+        eleccion5:""
+    }),
     computed: {
+        ... mapState('elections',['categories']),
         opciones(){
             if(this.eleccion1==="seleccion"){
                 return 1
@@ -220,27 +113,22 @@ export default {
             }
         },
         caso3(){
-            if(this.eleccion2=== "" || this.categories[this.eleccion1][this.eleccion2]=== undefined ){
-                
-                return ["Seleccione una opcion"]
-                
+            if(this.eleccion2=== "" || this.categories[this.eleccion1][this.eleccion2]=== undefined ){              
+                return ["Seleccione una opcion"]       
             }else{        
                 return Object.keys(this.categories[this.eleccion1][this.eleccion2])
             }
         },
         caso4(){
             if(this.eleccion3=== "" || this.categories[this.eleccion1][this.eleccion2][this.eleccion3]=== undefined ){
-                return ["Seleccione una opcion"]
-                
-            }else{
-                
+                return ["Seleccione una opcion"] 
+            }else{            
                 return Object.keys(this.categories[this.eleccion1][this.eleccion2][this.eleccion3])
             }
         },
         caso5(){
             if(this.eleccion4=== "" || this.categories[this.eleccion1][this.eleccion2][this.eleccion3][this.eleccion4]=== undefined){
-                return ["Seleccione una opcion"]
-                
+                return ["Seleccione una opcion"] 
             }else{
                 let auxiliar = this.categories[this.eleccion1][this.eleccion2][this.eleccion3]
                 return Object.keys(auxiliar[this.eleccion4])
@@ -259,19 +147,15 @@ export default {
             if(this.opciones===1){                
                 this.axios.get(`/teams?1=${this.eleccion1}&2=${this.eleccion2}&3=${this.eleccion3}`)
                     .then(res=>{
-                        console.log('biuen')
                         this.equipo =res.data;
                         this.agregarFiltro({equipos:this.equipo,torneo:this.eleccion3,elecciones:[this.eleccion1,this.eleccion2,this.eleccion3]});
                         this.confirmar(true)
                         this.loadingFunction()
-
                     })
                     .catch(e=>{ 
                         this.loadingFunction()
-
                         console.log(e.response.data.mensaje);
                         this.confirmar(false)
-
                     })
             }
             if(this.opciones===2 && this.opciones2===1){
@@ -281,14 +165,11 @@ export default {
                         this.agregarFiltro({equipos:this.equipo,torneo:this.eleccion4,elecciones:[this.eleccion1,this.eleccion2,this.eleccion3,this.eleccion4]})
                         this.confirmar(true)
                         this.loadingFunction()
-
                     })
                     .catch(e=>{ 
                         this.loadingFunction()
-
                         console.log(e.response.data.mensaje);
                         this.confirmar(false)
-
                     })
             }
             if(this.opciones===2 && this.opciones2===2){
@@ -298,18 +179,14 @@ export default {
                         this.agregarFiltro({equipos:this.equipo,torneo:this.eleccion5,elecciones:[this.eleccion1,this.eleccion2,this.eleccion3,this.eleccion4,this.eleccion5]})
                         this.confirmar(true)
                         this.loadingFunction()
-
                     })
                     .catch(e=>{ 
                         this.loadingFunction()
-
                         console.log(e.response.data.mensaje);
                         this.confirmar(false)
-
                     })
             }
         }   
     }
-
 }
 </script>

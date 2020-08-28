@@ -104,22 +104,19 @@ export default {
                 let equipos= this.torneos.equipos;
                 if(equipos.indexOf(this.nuevo)!=-1 && this.nuevo!=""){
                     let aviso="El equipo ya está registrado"
-                    this.agregarSnack({texto: aviso,estado:true})
+                    this.agregarSnack(aviso)
                 }
                 if(this.nuevo===""){
                     let aviso="No haz escrito equipo"
-                    this.agregarSnack({texto: aviso,estado:true})
+                    this.agregarSnack(aviso)
                 }
                 if(equipos.indexOf(this.nuevo)===-1 && this.nuevo!=""){
                     equipos.push(this.nuevo)
-                    this.axios.put(`teams/`, {variables,equipos})
+                    this.axios.put(`/teams`, {variables,equipos})
                         .then(res=>{
                             this.updateEquipos(this.nuevo)
                             this.nuevo=""
                         this.loadingFunction()
-
-                            
-
                         })
                         .catch(e=>{
                         this.loadingFunction()
@@ -127,9 +124,8 @@ export default {
                             console.log(e.response);
                         })
                     let aviso=`${this.nuevo} ha sido agregado a ${this.torneos.torneo}`
-                    this.agregarSnack({texto: aviso,estado:true})
+                    this.agregarSnack(aviso)
                     this.dialog=false
-                    
                 }
             }
         },
@@ -139,11 +135,10 @@ export default {
             let equipos= this.torneos.equipos;
             let index = this.torneos.equipos.indexOf(item.name)
             equipos.splice(index, 1);
-            this.axios.put(`teams/`, {variables,equipos})
+            this.axios.put(`/teams`, {variables,equipos})
                 .then(res=>{
                     this.deleteEquipos(item.name)
             this.loadingFunction()
-
                 })
                 .catch(e=>{ 
             this.loadingFunction()
@@ -151,7 +146,7 @@ export default {
                     console.log(e.response);
                 })
             let aviso=`Equipo ${item.name} Eliminado de ${this.torneos.torneo}`
-            this.agregarSnack({texto: aviso,estado:true})
+            this.agregarSnack(aviso)
         },
     }
 }
