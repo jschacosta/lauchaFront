@@ -109,18 +109,18 @@ export default{
                     }
                 }
             axios.get('/rules', config)    
-                .then(res=>{
-                    let rules=res.data
-                    rules.sort(function(a,b){
-                        return new Date(b.date) - new Date(a.date)
-                    })
-                    commit('showRules',rules)
-                    commit('loading/loadingFunction', null, { root: true })
+            .then(res=>{
+                let rules=res.data
+                rules.sort(function(a,b){
+                    return new Date(b.date) - new Date(a.date)
                 })
-                .catch(e=>{                    
-                    console.log(e.response.data.error);
-                    commit('loading/loadingFunction', null, { root: true })
-                })
+                commit('showRules',rules)
+                commit('loading/loadingFunction', null, { root: true })
+            })
+            .catch(e=>{                    
+                console.log(e.response.data.error);
+                commit('loading/loadingFunction', null, { root: true })
+            })
         },
     }
 }

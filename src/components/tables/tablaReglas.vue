@@ -36,9 +36,19 @@
             </template>
             <template v-slot:expanded-item="{headers,item}">
                 <v-list-item-group v-if="headers">
-                <v-list-item v-for="(opcion,i) of item.options " :key="i" >
-                        <v-list-item-title > {{i+1}}) {{opcion}} </v-list-item-title>
-                </v-list-item>
+                    <v-row>
+                        <v-col>
+                            <v-list-item v-for="(alternativa,i) of item.options.text " :key="i" >
+                                    <v-list-item-title > {{i+1}}) {{alternativa}}   </v-list-item-title>
+                            </v-list-item>
+                        </v-col>
+                        <v-col>
+                            <v-list-item v-for="(apuesta,j) of item.options.values " :key="j+15" >
+                                <!-- el j+15 es para que no cause conflicto :key i con :key j -->
+                                    <v-list-item-title >({{apuesta}} pts)     </v-list-item-title>
+                            </v-list-item>
+                        </v-col>
+                    </v-row>
                 </v-list-item-group>
             </template>
     </v-data-table>

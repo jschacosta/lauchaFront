@@ -13,11 +13,7 @@
                             <v-text-field label="Nombre*" v-model="newItem.nuevoNombre" require></v-text-field>
                             </v-col>
                             <v-col>
-                                <v-select
-                                v-model="newItem.seleccion"
-                                :items="opciones"
-                                label="Tipo de regla*"
-                                ></v-select>
+                                <v-select v-model="newItem.seleccion" @change="limpiarArray()" :items="opciones" label="Tipo de regla*"></v-select>
                             </v-col>      
                         </v-row>
                         <v-row v-if="newItem.seleccion!=''">
@@ -25,50 +21,54 @@
                             <v-text-field label="Descripción* (lo que verá el usuario)" v-model="newItem.text" require></v-text-field>
                             </v-col>
                         </v-row>
+                        <!-- Formato para Regla tipo Evento -->
                         <v-row v-if="newItem.seleccion==='EVENTO'">
                             <v-col>
-                                    <v-combobox
-                                        v-model="newItem.chips"
-                                        chips
-                                        deletable-chips
-                                        label="Escribe las alternativas"
-                                        multiple
-                                        prepend-icon="filter_list"   
-                                    >
-                                    </v-combobox>
-                                    <v-list-item-group >
-                                        Vista Previa Usuario: <br>
-                                        <b><h3>{{newItem.text}}</h3></b>
-                                        <v-list-item v-for="(item,i) of newItem.chips " :key="i" >
-                                                <v-list-item-title > {{i+1}}) {{item}} </v-list-item-title>
-                                        </v-list-item>
-                                    </v-list-item-group>
+                                <v-combobox
+                                    v-model="newItem.chips"
+                                    chips
+                                    deletable-chips
+                                    label="Escribe las alternativas"
+                                    multiple
+                                    prepend-icon="filter_list"   
+                                >   
+                                </v-combobox>
+                                <v-list-item-group>
+                                    Vista Previa Usuario: <br>
+                                    <b><h3>{{newItem.text}}</h3></b>
+                                    <v-list-item v-for="(item,i) of newItem.chips " :key="i">
+                                            <v-list-item-title> {{i+1}}) {{item}} </v-list-item-title>
+                                            <v-text-field v-model.number="valores[i]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
+                                    </v-list-item>
+                                </v-list-item-group>
                             </v-col>
                         </v-row>
-                        <v-row v-if="newItem.seleccion==='BOLEANO'">
+                        <!-- Formato Regla tipo Evento -->
+                        <v-row v-if="newItem.seleccion === 'BOLEANO'">
                             <v-col>
                                 <v-list-item-group >
                                         Vista Previa Usuario: <br>
                                         <b><h3>{{newItem.text}}</h3></b>
                                         <v-list-item>
-                                                <v-list-item-title >a) Sí </v-list-item-title>
+                                                <v-list-item-title>a) Sí </v-list-item-title>
+                                            <v-text-field v-model.number="valores[0]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
+
                                         </v-list-item>
                                         <v-list-item>
-                                                <v-list-item-title >b) No </v-list-item-title>
+                                                <v-list-item-title>b) No </v-list-item-title>
+                                            <v-text-field v-model.number="valores[1]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
+
                                         </v-list-item>
                                 </v-list-item-group>
                             </v-col>
                         </v-row>
+                        <!-- Regla tipo Numerico -->
                         <v-row v-if="newItem.seleccion==='NUMERICO'">
                             <v-col>
-                                <v-select
-                                v-model="newItem.selectNum"
-                                :items="numericos"
-                                label="Tipo de valores*"
-                                ></v-select>
+                                <v-select v-model="newItem.selectNum" :items="numericos" label="Tipo de valores*"></v-select>
                             </v-col>
                         </v-row>
-                        <div  v-if="newItem.seleccion==='NUMERICO' && newItemectNum==='VALORES FIJOS'">
+                        <div  v-if="newItem.seleccion==='NUMERICO' && newItem.selectNum==='VALORES FIJOS'">
                             <v-row>
                                 <v-combobox
                                 type="number"
@@ -82,13 +82,12 @@
                                 </v-combobox>
                             </v-row>
                             <v-row>
-                                <v-list-item-group >
                                     Vista Previa Usuario: <br>
                                     <b><h3>{{newItem.text}}</h3></b>
                                     <v-list-item v-for="(item,i) of newItem.chipsnumb " :key="i" >
                                             <v-list-item-title > {{i+1}}) {{item}} </v-list-item-title>
+                                            <v-text-field v-model.number="valores[i]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
                                     </v-list-item>
-                                </v-list-item-group>
                             </v-row>
                         </div>
                         <div v-if="newItem.seleccion==='NUMERICO' && newItem.selectNum==='RANGOS'">
@@ -118,17 +117,21 @@
                                     <b><h3>{{newItem.text}}</h3></b>
                                     <v-list-item>
                                             <v-list-item-title > 1){{newItem.min}} o menos </v-list-item-title>
+                                            <v-text-field v-model.number="valores[0]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
                                     </v-list-item>
                                     <v-list-item v-for="(item,i) of newItem.chipsnumb " :key="i" >
                                             <v-list-item-title > {{i+2}}) {{item}} </v-list-item-title>
+                                            <v-text-field v-model.number="valores[i+1]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
                                     </v-list-item>
                                     <v-list-item>
                                             <v-list-item-title > {{newItem.chipsnumb.length+2}}) {{newItem.max}} o más </v-list-item-title>
+                                            <v-text-field v-model.number="ultimoValor" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
                                     </v-list-item>
                                 </v-list-item-group>
                             </v-row>
                         </div>
                         <small>*campo requerido</small>
+                        {{valores}}
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
@@ -149,6 +152,8 @@ export default {
     data:()=>({
         opciones: ['BOLEANO', 'EVENTO', 'NUMERICO'],
         numericos: ['VALORES FIJOS', 'RANGOS'],
+        valores:[100,200],
+        ultimoValor:null, //este valor para completar valores en el caso de valores en rango
     }),
     computed:{
         ...mapState(['token']),
@@ -158,6 +163,10 @@ export default {
         ...mapMutations('rule',['ruleDialog','createRule','updateRule']),
         ...mapMutations('TextoSnack',['agregarSnack']),
         ...mapMutations('loading',['loadingFunction']),
+        limpiarArray(){
+            this.valores=[],
+            this.utimoValor=null
+        },
         crearRegla(){
             this.loadingFunction();
             let config = {
@@ -169,29 +178,34 @@ export default {
                 name:this.newItem.nuevoNombre,
                 text:this.newItem.text,
                 type:this.newItem.seleccion,
-                options:[],
+                options:{text:[],values:[]},
                 numeric:""
             };
             if(nuevo.type==='EVENTO'){
-                nuevo.options=this.newItem.chips
+                nuevo.options.text=this.newItem.chips
+                nuevo.options.values=this.valores
             };
             if(nuevo.type==='BOLEANO'){
-                nuevo.options=['Sí','No']
+                nuevo.options.text=['Sí','No']
+                nuevo.options.values=this.valores
             };
             if(nuevo.type==='NUMERICO'){
                 if(this.newItem.selectNum==="RANGOS"){
                     nuevo.numeric="RANGOS";
                     nuevo.options.push(`${this.newItem.min} o menos`);
                     for (let i in this.newItem.chipsnumb ){
-                        nuevo.options.push(i);
+                        nuevo.options.text.push(i);
                     }
-                    nuevo.options.push(`${this.newItem.max} o más`);
+                    nuevo.options.text.push(`${this.newItem.max} o más`);
+                    nuevo.options.values=this.valores
+                    nuevo.options.values.push(this.ultimoValor)
                 }
                 else{
                     nuevo.numeric="VALORES FIJOS";
                     for (let i in this.newItem.chipsnumb ){
-                        nuevo.options.push(i);
-                    } 
+                        nuevo.options.text.push(i);
+                    }
+                    nuevo.values=this.valores
                 }
             }
             this.axios.post('/rules',nuevo,config)
@@ -200,7 +214,6 @@ export default {
                     this.createRule(regla)
                     this.agregarSnack(`Regla ${regla.name} creada`)
                     this.loadingFunction();
-
                 })
                 .catch(e=>{ 
                     console.log(e.response);
@@ -235,7 +248,6 @@ export default {
                 if(this.newItem.selectNum==="RANGOS"){
                     nuevo.options.push(`${this.newItem.min} o menos`);
                     for (let i of this.newItem.chipsnumb ){
-
                         nuevo.options.push(i);
                     }
                     nuevo.options.push(`${this.newItem.max} o más`);
@@ -253,7 +265,6 @@ export default {
                     this.updateRule(regla);
                     this.agregarSnack(`Regla ${regla.name} actualizada`);
                     this.loadingFunction();
-
                 })
                 .catch(e=>{ 
                     console.log(e.response);
