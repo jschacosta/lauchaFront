@@ -12,18 +12,35 @@
             class="elevation-4"
         >
             <template v-slot:top>
-                <v-toolbar flat >
-                    <v-toolbar-title>Reglas del Juego</v-toolbar-title>
-                    <v-btn class="mx-3" dark ml-auto color="green accent-5" @click="nuevaRegla()">Crear Regla</v-btn>
-                    <v-text-field
-                        v-model="search"
-                        append-icon="mdi-magnify"
-                        label=" Buscar Regla    "
-                        single-line
-                        hide-details
-                        class="elevation-1 mx-3">
-                    </v-text-field>
-                    <v-switch v-model="singleExpand" label="Single expand" class="mt-5"></v-switch>
+                <v-toolbar flat>
+                    <v-row>
+                        <v-col>
+                            <v-toolbar-title class="mr-2 hidden-sm-and-down">Reglas </v-toolbar-title>
+
+                        </v-col>
+                        <v-col>
+                            <v-btn class="mr-3" small dark ml-auto color="green accent-5" @click="nuevaRegla()">Crear Regla</v-btn>
+
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-text-field 
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label=" Buscar Regla"
+                                single-line
+                                hide-details
+                                class="elevation-1 hidden-sm-and-down">
+                            </v-text-field>
+
+                        </v-col>
+                        <v-col>
+                            <v-switch v-model="singleExpand" label="Unico"></v-switch>
+                            
+                        </v-col>
+                    </v-row>
+                            
                 </v-toolbar>
             </template>
             <template v-slot:item.accion="{ item }" >
@@ -90,7 +107,9 @@ import {mapState, mapMutations, mapActions} from 'vuex'
         }
     },
     created(){
-        this.getRules()
+        if(this.rules.length === 0 || this.rules === undefined){
+            this.getRules()
+        }
     }
   }
 </script>

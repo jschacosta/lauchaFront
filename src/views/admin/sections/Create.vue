@@ -9,8 +9,8 @@
         <pickerDate></pickerDate>                   
         <v-select :items="torneos.equipos" v-model="equipo1" label="Equipo Local"></v-select>
         <v-select :items="torneos.equipos" v-model="equipo2" label="Equipo Visita"></v-select>
-        <v-row class="d-flex justify-center">
-          <v-btn color="orange accent-4" @click="nuevoPartido()">Crear Partido</v-btn>
+        <v-row class="d-flex justify-center mt-4">
+          <v-btn dark color="orange accent-4" @click="nuevoPartido()">Crear Partido</v-btn>
         </v-row>
       </v-col>
     </v-row>

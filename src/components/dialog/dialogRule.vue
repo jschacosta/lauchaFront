@@ -38,12 +38,12 @@
                                     <b><h3>{{newItem.text}}</h3></b>
                                     <v-list-item v-for="(item,i) of newItem.chips " :key="i">
                                             <v-list-item-title> {{i+1}}) {{item}} </v-list-item-title>
-                                            <v-text-field v-model.number="valores[i]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
+                                            <v-text-field v-model.number="newItem.valores[i]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
                                     </v-list-item>
                                 </v-list-item-group>
                             </v-col>
                         </v-row>
-                        <!-- Formato Regla tipo Evento -->
+                        <!-- Formato Regla tipo Boleana -->
                         <v-row v-if="newItem.seleccion === 'BOLEANO'">
                             <v-col>
                                 <v-list-item-group >
@@ -51,12 +51,12 @@
                                         <b><h3>{{newItem.text}}</h3></b>
                                         <v-list-item>
                                                 <v-list-item-title>a) Sí </v-list-item-title>
-                                            <v-text-field v-model.number="valores[0]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
+                                            <v-text-field v-model.number="newItem.valores[0]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
 
                                         </v-list-item>
                                         <v-list-item>
                                                 <v-list-item-title>b) No </v-list-item-title>
-                                            <v-text-field v-model.number="valores[1]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
+                                            <v-text-field v-model.number="newItem.valores[1]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
 
                                         </v-list-item>
                                 </v-list-item-group>
@@ -86,7 +86,7 @@
                                     <b><h3>{{newItem.text}}</h3></b>
                                     <v-list-item v-for="(item,i) of newItem.chipsnumb " :key="i" >
                                             <v-list-item-title > {{i+1}}) {{item}} </v-list-item-title>
-                                            <v-text-field v-model.number="valores[i]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
+                                            <v-text-field v-model.number="newItem.valores[i]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
                                     </v-list-item>
                             </v-row>
                         </div>
@@ -116,22 +116,21 @@
                                     Vista Previa Usuario: <br>
                                     <b><h3>{{newItem.text}}</h3></b>
                                     <v-list-item>
-                                            <v-list-item-title > 1){{newItem.min}} o menos </v-list-item-title>
-                                            <v-text-field v-model.number="valores[0]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
+                                            <v-list-item-title > 1) {{newItem.min}} o menos </v-list-item-title>
+                                            <v-text-field v-model.number="newItem.valores[0]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
                                     </v-list-item>
                                     <v-list-item v-for="(item,i) of newItem.chipsnumb " :key="i" >
                                             <v-list-item-title > {{i+2}}) {{item}} </v-list-item-title>
-                                            <v-text-field v-model.number="valores[i+1]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
+                                            <v-text-field v-model.number="newItem.valores[i+1]" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
                                     </v-list-item>
                                     <v-list-item>
                                             <v-list-item-title > {{newItem.chipsnumb.length+2}}) {{newItem.max}} o más </v-list-item-title>
-                                            <v-text-field v-model.number="ultimoValor" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
+                                            <v-text-field v-model.number="newItem.ultimoValor" min=100 type="number" label="Valor Apuesta" outlined dense></v-text-field>
                                     </v-list-item>
                                 </v-list-item-group>
                             </v-row>
                         </div>
                         <small>*campo requerido</small>
-                        {{valores}}
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
@@ -152,8 +151,6 @@ export default {
     data:()=>({
         opciones: ['BOLEANO', 'EVENTO', 'NUMERICO'],
         numericos: ['VALORES FIJOS', 'RANGOS'],
-        valores:[100,200],
-        ultimoValor:null, //este valor para completar valores en el caso de valores en rango
     }),
     computed:{
         ...mapState(['token']),
@@ -164,8 +161,8 @@ export default {
         ...mapMutations('TextoSnack',['agregarSnack']),
         ...mapMutations('loading',['loadingFunction']),
         limpiarArray(){
-            this.valores=[],
-            this.utimoValor=null
+            this.newItem.valores=[],
+            this.newItem.utimoValor=null
         },
         crearRegla(){
             this.loadingFunction();
@@ -183,29 +180,29 @@ export default {
             };
             if(nuevo.type==='EVENTO'){
                 nuevo.options.text=this.newItem.chips
-                nuevo.options.values=this.valores
+                nuevo.options.values=this.newItem.valores
             };
             if(nuevo.type==='BOLEANO'){
                 nuevo.options.text=['Sí','No']
-                nuevo.options.values=this.valores
+                nuevo.options.values=this.newItem.valores
             };
             if(nuevo.type==='NUMERICO'){
                 if(this.newItem.selectNum==="RANGOS"){
                     nuevo.numeric="RANGOS";
-                    nuevo.options.push(`${this.newItem.min} o menos`);
-                    for (let i in this.newItem.chipsnumb ){
+                    nuevo.options.text.push(`${this.newItem.min} o menos`);
+                    for (let i of this.newItem.chipsnumb ){
                         nuevo.options.text.push(i);
                     }
                     nuevo.options.text.push(`${this.newItem.max} o más`);
-                    nuevo.options.values=this.valores
-                    nuevo.options.values.push(this.ultimoValor)
+                    nuevo.options.values=this.newItem.valores
+                    nuevo.options.values.push(this.newItem.ultimoValor)
                 }
                 else{
                     nuevo.numeric="VALORES FIJOS";
-                    for (let i in this.newItem.chipsnumb ){
+                    for (let i of this.newItem.chipsnumb ){
                         nuevo.options.text.push(i);
                     }
-                    nuevo.values=this.valores
+                    nuevo.options.values=this.newItem.valores
                 }
             }
             this.axios.post('/rules',nuevo,config)

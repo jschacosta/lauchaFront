@@ -1,6 +1,8 @@
 <template>
     <div >
-        <h4>Acá se editan todos los equipos que componen un torneo (un equipo puede estar en más de un torneo, obviamente)</h4>
+        <h4 class="mb-3">En esta pestaña, se ingresan los equipos para cada torneo ( Un equipo puede estar en varias competiciones, ya sea selección o club). Además se pueden borrar los equipos que de cada torneo.</h4>
+        <h4>Estos equipos son usados para la sección "Crear Partidos".</h4>
+        <br>
         <v-row>
             <!-- Columna 1 con buscador -->
             <v-col cols="12" md="6">

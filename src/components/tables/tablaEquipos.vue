@@ -25,10 +25,12 @@
                 :headers="headers"
                 :items="equipos"
                 :search="search"
+                height="300px"
+                dense
                 class="elevation-2"
                 >
                 <template v-slot:item.accion="{ item }">          
-                    <v-btn class="mr-2" fab dark small color="error" @click="borrarEquipo(item)">
+                    <v-btn class="mr-2" large tile icon color="error" @click="borrarEquipo(item)">
                         <v-icon dark>mdi-delete</v-icon>
                     </v-btn>
                 </template>
@@ -73,7 +75,7 @@ data(){
         dialog:false,
         nuevo:"",
         headers: [
-            {text: 'EQUIPO', align: 'start', sortable: true, value: 'name'},
+            {text: 'EQUIPO', align: 'center', sortable: true, value: 'name'},
             { text: 'ACCIONES',  value: 'accion', sortable: false },
         ],
     }

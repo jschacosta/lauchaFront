@@ -256,7 +256,10 @@ export default {
         } 
     },
     created(){
-        this.obtenerUsuarios()
+        if(this.usuarios.length === 0 || this.usuarios === undefined)
+        {
+            this.obtenerUsuarios()
+        }
     }
 }
 </script>

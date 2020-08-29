@@ -15,6 +15,9 @@ export default{
             min:null,
             id:"",
             estado:false,
+            // valores de apuestas
+            valores:[],
+            ultimoValor:null
         },
         deleteItem:{nombre:"",id:"",estado:false}
     },
@@ -30,7 +33,8 @@ export default{
                 state.newItem.chipsnumb=[],
                 state.newItem.max=null,
                 state.newItem.min=null,
-                state.newItem.id=""
+                state.newItem.id="",
+                state.newItem.valores = []
             }
             else{
                 state.newItem.date=payload.date;
@@ -38,13 +42,15 @@ export default{
                     state.newItem.nuevoNombre=payload.name;
                     state.newItem.seleccion=payload.type;
                     state.newItem.text=payload.text;
-                    state.newItem.chips=payload.options;
+                    state.newItem.chips=payload.options.text;
+                    state.newItem.valores=payload.options.values;
                     state.newItem.id=payload._id;
                 }
                 if(payload.type==="BOLEANO"){
                     state.newItem.nuevoNombre=payload.name;
                     state.newItem.seleccion=payload.type;
                     state.newItem.text=payload.text;
+                    state.newItem.valores=payload.options.values;
                     state.newItem.id=payload._id;
                 }
                 if(payload.type==="NUMERICO"){
@@ -53,18 +59,21 @@ export default{
                         state.newItem.selectNum="VALORES FIJOS",
                         state.newItem.seleccion=payload.type;
                         state.newItem.text=payload.text;
-                        state.newItem.chipsnumb=payload.options,
+                        state.newItem.valores=payload.options.values;
+                        state.newItem.chipsnumb=payload.options.text,
                         state.newItem.id=payload._id;
                     }
                     if(payload.numeric==="RANGOS"){
                         state.newItem.nuevoNombre=payload.name;
                         state.newItem.selectNum="RANGOS",
-                        state.newItem.seleccion=payload.type;
+                        state.newItem.seleccion=payload.type;   
                         state.newItem.text=payload.text;
-                        state.newItem.min=parseInt(payload.options[0].charAt(0)),
-                        state.newItem.max=parseInt(payload.options[payload.options.length-1].charAt(0));
-                        for (let i=1; i<payload.options.length-1; i++){
-                            state.newItem.chipsnumb.push(payload.options[i])
+                        state.newItem.valores=payload.options.values
+                        state.newItem.ultimoValor=payload.options.values[payload.options.values.length-1]
+                        state.newItem.min=parseInt(payload.options.text[0].charAt(0)),
+                        state.newItem.max=parseInt(payload.options[payload.options.text.length-1].charAt(0));
+                        for (let i=1; i<payload.options.text.length-1; i++){
+                            state.newItem.chipsnumb.push(payload.options.text[i])
                         }
                         state.newItem.id=payload._id;
                     }

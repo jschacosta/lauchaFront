@@ -1,15 +1,15 @@
 <template>
-  <div class="container">
+  <div >
     <v-tabs background-color="white" color="primary" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
       <v-tab>  
         <i class="fas fa-trophy"></i>
         Equipos
       </v-tab>
-      <v-tab>
+      <v-tab disabled>
         <i class="fas fa-running"></i>
         Jugadores
       </v-tab>
-      <v-tab>
+      <v-tab disabled>
         <i class="fas fa-file-signature"></i>
         Nombres Torneos
       </v-tab>

@@ -1,6 +1,9 @@
 <template>
     <div>
-        <h4 class="mb-5">Acá se crean editan y eliminan los 3 tipos posibles de reglas para el juego. <br>Reglas tipo Boleanas (sí/no), reglas tipos evento (ej: tiro de esquina, expulsion, falta, etc) y reglas tipo numérica ( 5 o más, 1 o menos y simplemente números). </h4>
+        <h4 class="mb-3" align="justify">En esta pestaña se crean, editan y eliminan los tres tipos posibles de reglas para el juego.</h4>
+        <h4 class="mb-3" align="justify"> Dentro de las posibles reglas estan: tipo Boleanas (Sí / No), tipo Evento (tiro de esquina, expulsion, falta, etc) y tipo numérica (5 o más, 1 o menos y sólo números). </h4>
+        <h4 align="justify">Además se designa su puntaje por defecto de apuesta para cada posible alternativa. Este valor puede ser modificado en la sección "Crear Partidos"</h4>
+        <br>
         <TablaReglas></TablaReglas>
         <dialogRule></dialogRule>
         <dialogEliminar></dialogEliminar>
