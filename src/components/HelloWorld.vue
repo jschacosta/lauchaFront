@@ -2,9 +2,8 @@
   <v-container>
       <template>
     <v-tabs>
-      <v-tab>Torneos Actuales</v-tab>
-      <v-tab>Noticias</v-tab>
-      <v-tab>Otras cosas</v-tab>
+      <v-tab>Torneos Actual</v-tab>
+      <v-tab>Calendario Partidos</v-tab>
     </v-tabs>
   </template>
     <v-row class="text-center">

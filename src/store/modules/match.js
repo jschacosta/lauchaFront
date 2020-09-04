@@ -3,7 +3,15 @@ export default{
     state:{
         tiempo:null,
         fecha:null,
-        partidos: []
+        partidos: [],
+        verReglas: {
+            estado: false,
+            partido: {}
+        },
+        reglasEditadas: {
+            estado: false,
+            partido: {}
+        },
     },
     mutations:{
         saveTime(state,payload){
@@ -13,15 +21,40 @@ export default{
             state.fecha=payload
         },
         agregarPartido(state,payload){
-            state.partidos.push(payload)
+            let partido=payload
+            partido.boton=true
+            state.partidos.push(partido)
         },
         verPartidos(state,payload){
-            state.partidos=payload
+            var matches = payload
+            for (let i of matches){
+                if(i.rules.length === 0){
+                    i.boton= true
+                }else{
+                    i.boton= false
+                }
+            }
+            state.partidos=matches
         },
         deletePartido(state,payload){ //elimina un {name:'Chile'} al arreglo equipos  
             let eliminar = payload;
             const index=state.partidos.findIndex(item=>item._id === eliminar._id);
             state.partidos.splice(index,1);
+        },
+        dialogReglas(state,payload){
+            state.verReglas.estado = !state.verReglas.estado
+            state.verReglas.partido = payload
+        },
+        actualizarReglas(state,payload){
+            let partido = payload
+            const index=state.partidos.findIndex(item=>item._id === partido._id);
+            state.partidos.splice(index,1);
+            state.partidos.push(partido)
+        },
+        subirReglas(state,payload){
+            state.reglasEditadas.estado = !state.reglasEditadas.estado
+            state.reglasEditadas.partido = payload
+            console.log(payload)
         }
     },    
 }

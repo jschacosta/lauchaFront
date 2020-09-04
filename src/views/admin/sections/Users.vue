@@ -256,6 +256,7 @@ export default {
         } 
     },
     created(){
+        console.log(this.usuarios)
         if(this.usuarios.length === 0 || this.usuarios === undefined)
         {
             this.obtenerUsuarios()

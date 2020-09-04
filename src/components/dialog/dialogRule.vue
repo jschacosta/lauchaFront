@@ -11,7 +11,7 @@
                         <v-row>
                             <v-col>
                             <v-text-field label="Nombre*" v-model="newItem.nuevoNombre" require></v-text-field>
-                            </v-col>
+                            </v-col>    
                             <v-col>
                                 <v-select v-model="newItem.seleccion" @change="limpiarArray()" :items="opciones" label="Tipo de regla*"></v-select>
                             </v-col>      

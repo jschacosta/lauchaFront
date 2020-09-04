@@ -11,7 +11,7 @@ Vue.config.productionTip = false
 //vue axios 
 Vue.use(VueAxios, axios)
 // Agregamos la URL base de nuestra API
-axios.defaults.baseURL = 'http://localhost:4000/api'; // para el caso local
+axios.defaults.baseURL = 'http://localhost:3000/api'; // para el caso local
 
 
 new Vue({

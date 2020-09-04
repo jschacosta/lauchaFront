@@ -24,7 +24,7 @@ export default [
           {
             path: 'create',
             name: 'Create',
-            component: () => import(/* webpackChunkName: "Admin-Partidos" */ '../views/admin/sections/Create'),
+            component: () => import(/* webpackChunkName: "Admin-Partidos" */ '../views/admin/sections/create/Index'),
             meta:{requireAuth:['ADMIN','EDITOR']}
           },
           {

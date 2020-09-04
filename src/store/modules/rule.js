@@ -64,18 +64,19 @@ export default{
                         state.newItem.id=payload._id;
                     }
                     if(payload.numeric==="RANGOS"){
+                        console.log(payload)
                         state.newItem.nuevoNombre=payload.name;
                         state.newItem.selectNum="RANGOS",
                         state.newItem.seleccion=payload.type;   
-                        state.newItem.text=payload.text;
+                        state.newItem.text=payload.text; 
                         state.newItem.valores=payload.options.values
                         state.newItem.ultimoValor=payload.options.values[payload.options.values.length-1]
                         state.newItem.min=parseInt(payload.options.text[0].charAt(0)),
-                        state.newItem.max=parseInt(payload.options[payload.options.text.length-1].charAt(0));
+                        state.newItem.max=parseInt(payload.options.text[payload.options.text.length-1].charAt(0));
                         for (let i=1; i<payload.options.text.length-1; i++){
                             state.newItem.chipsnumb.push(payload.options.text[i])
                         }
-                        state.newItem.id=payload._id;
+                       state.newItem.id=payload._id;
                     }
                 } 
             }

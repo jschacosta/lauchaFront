@@ -6,8 +6,8 @@
             :items="rules"
             :single-expand="singleExpand"
             :expanded.sync="expanded"
-            item-key="name"
             show-expand
+            item-key="name"
             :search="search"
             class="elevation-4"
         >
@@ -43,7 +43,7 @@
                             
                 </v-toolbar>
             </template>
-            <template v-slot:item.accion="{ item }" >
+            <template v-slot:[`item.accion`]="{ item }" >
                 <v-btn class="mr-2"  tile large color="primary" icon  @click="editarRegla(item)">
                     <v-icon dark>mdi-pencil</v-icon>
                 </v-btn>      
@@ -53,7 +53,7 @@
             </template>
             <template v-slot:expanded-item="{headers,item}">
                 <v-list-item-group v-if="headers">
-                    <v-row>
+                    <v-row class="d-flex flex-nowrap">
                         <v-col>
                             <v-list-item v-for="(alternativa,i) of item.options.text " :key="i" >
                                     <v-list-item-title > {{i+1}}) {{alternativa}}   </v-list-item-title>
