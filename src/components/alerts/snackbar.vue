@@ -19,10 +19,10 @@ import {mapState, mapMutations} from 'vuex'
     data: () => ({
     }),
     computed: {
-        ...mapState('TextoSnack',['superTexto'])
+      ...mapState('textoSnack',['superTexto'])
     },
     methods: {
-      ...mapMutations('TextoSnack',['apagarSnack'])
+      ...mapMutations('textoSnack',['apagarSnack'])
     },
   }
 </script>

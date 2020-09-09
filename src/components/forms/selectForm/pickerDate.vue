@@ -11,7 +11,7 @@
             v-on="on"
           ></v-text-field>
         </template>
-        <v-date-picker v-model="date" scrollable>
+        <v-date-picker v-model="date" scrollable :min="new Date().toISOString().substr(0, 10)">
           <v-spacer></v-spacer>
           <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
           <v-btn text color="primary" @click="$refs.dialog.save(date);enviar()">OK</v-btn>
@@ -24,7 +24,7 @@ import { mapMutations} from 'vuex';
 export default {
     name:'pickerTime',
     data:()=>({
-        date: new Date().toISOString().substr(0, 10),
+        date: null,
         modal: false,
     }),
     methods:{

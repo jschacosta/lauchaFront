@@ -138,6 +138,7 @@ export default {
     methods: {
         ...mapMutations( 'loading',['loadingFunction']),
         ...mapMutations('teams',['agregarFiltro','confirmar']),
+        ...mapMutations('textoSnack',['agregarSnack']),
         onChange(event) { //se ocupa en el opciones 2 c
             this.eleccion4=""
             this.eleccion5=""
@@ -154,7 +155,8 @@ export default {
                     })
                     .catch(e=>{ 
                         this.loadingFunction()
-                        console.log(e.response.data.mensaje);
+                        const snack= e.response.data.mensaje
+                        this.agregarSnack(snack)
                         this.confirmar(false)
                     })
             }
@@ -168,7 +170,8 @@ export default {
                     })
                     .catch(e=>{ 
                         this.loadingFunction()
-                        console.log(e.response.data.mensaje);
+                        const snack= e.response.data.mensaje
+                        this.agregarSnack(snack)
                         this.confirmar(false)
                     })
             }
@@ -182,7 +185,8 @@ export default {
                     })
                     .catch(e=>{ 
                         this.loadingFunction()
-                        console.log(e.response.data.mensaje);
+                        const snack= e.response.data.mensaje
+                        this.agregarSnack(snack)
                         this.confirmar(false)
                     })
             }

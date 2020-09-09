@@ -30,6 +30,7 @@
     <tablaPartidos></tablaPartidos> 
     <allRules></allRules>
     <editRules></editRules>
+    <dialogoConfirmar></dialogoConfirmar>
   </div>
 </template>
 
@@ -40,6 +41,7 @@ import pickerDate from '@/components/forms/selectForm/pickerDate';
 import tablaPartidos from '@/components/tables/tablaPartidos';
 import allRules from '@/components/dialog/allRules.vue'
 import editRules from '@/components/dialog/editRules.vue'
+import dialogoConfirmar from '@/components/dialog/confirmar.vue'
 import { mapMutations, mapState } from 'vuex';
 export default {
   name: 'Armado',
@@ -49,7 +51,8 @@ export default {
       pickerDate,
       tablaPartidos,
       allRules,
-      editRules
+      editRules,
+      dialogoConfirmar
   },
   data:()=>({
       equipo1:"",
@@ -61,6 +64,7 @@ export default {
   },
   methods:{
     ...mapMutations('match',['agregarPartido']),
+    ...mapMutations('textoSnack',['agregarSnack']),
     nuevoPartido(){
       let nuevoPartido={
         local : this.equipo1,
@@ -69,14 +73,26 @@ export default {
         horaPartido : this.tiempo,
         fechaPartido : this.fecha
       }
-      this.axios.post(`/match`,nuevoPartido)
-      .then(res=>{
-        let partido =res.data;
-        this.agregarPartido(partido)
-      })
-      .catch(e=>{ 
-        console.log(e.response.data.mensaje);
-      })
+      let vacio = true
+      for (let valor of Object.values(nuevoPartido)){
+          if(valor==="" || valor===null){
+            vacio = false
+          }
+      }
+      if(vacio === false){
+        const snack= 'Faltan datos por llenar'
+        this.agregarSnack(snack)
+      }
+      else{
+        this.axios.post(`/match`,nuevoPartido)
+        .then(res=>{
+          let partido =res.data;
+          this.agregarPartido(partido)
+        })
+        .catch(e=>{ 
+          console.log(e.response.data.mensaje);
+        })
+      }
     }
   }
 }

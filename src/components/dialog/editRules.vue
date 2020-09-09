@@ -72,7 +72,7 @@
                 this.loadingFunction()
                 let nuevoPartido=this.reglasEditadas.partido
                 nuevoPartido.rules=this.selected
-                this.axios.put('/match', nuevoPartido)
+                this.axios.put('/match-rule', nuevoPartido)
                 .then(res=>{
                     let partido =res.data;
                     partido.boton=false

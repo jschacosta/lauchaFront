@@ -12,6 +12,7 @@ export default{
             estado: false,
             partido: {}
         },
+        pedido:false
     },
     mutations:{
         saveTime(state,payload){
@@ -36,7 +37,7 @@ export default{
             }
             state.partidos=matches
         },
-        deletePartido(state,payload){ //elimina un {name:'Chile'} al arreglo equipos  
+        deletePartido(state,payload){ 
             let eliminar = payload;
             const index=state.partidos.findIndex(item=>item._id === eliminar._id);
             state.partidos.splice(index,1);
@@ -54,7 +55,12 @@ export default{
         subirReglas(state,payload){
             state.reglasEditadas.estado = !state.reglasEditadas.estado
             state.reglasEditadas.partido = payload
-            console.log(payload)
+        },
+        limpiarPartidos(state){
+            state.partidos=[]
+        },
+        pedir(state){
+            state.pedido=true
         }
-    },    
+    }  
 }

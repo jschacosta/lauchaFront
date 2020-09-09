@@ -128,7 +128,6 @@ export default{
                 commit('loading/loadingFunction', null, { root: true })
             })
             .catch(e=>{                    
-                console.log(e.response.data.error);
                 commit('loading/loadingFunction', null, { root: true })
             })
         },

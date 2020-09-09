@@ -1,15 +1,15 @@
 <template>
   <div>
-      <h2>Aca van los partidos Terminados provenientes de la sección "INICIAR PARTIDOS"</h2>
+      <tablaTerminados></tablaTerminados>
   </div>
 </template>
 
 <script>
+import tablaTerminados from '@/components/tables/tablaPartidosFinal.vue'
 export default {
-    name:'Finish'
+    name:'Finish',
+    components:{
+      tablaTerminados
+    }
 }
 </script>
-
-<style>
-
-</style>

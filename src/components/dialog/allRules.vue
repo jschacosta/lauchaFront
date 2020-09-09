@@ -66,14 +66,14 @@
             ...mapState('match',['verReglas'])
         },
         methods:{
-            ...mapMutations('match',['dialogReglas','actualizarReglas','cambiarBotones']),
+            ...mapMutations('match',['dialogReglas','actualizarReglas']),
             ...mapMutations( 'loading',['loadingFunction']),
             ...mapActions('rule',['getRules']),
             reglasPartido(){
                 this.loadingFunction()
                 let nuevoPartido=this.verReglas.partido
                 nuevoPartido.rules=this.selected
-                this.axios.put('/match', nuevoPartido)
+                this.axios.put('/match-rule', nuevoPartido)
                 .then(res=>{
                     let partido =res.data;
                     partido.boton=false

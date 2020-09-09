@@ -28,11 +28,17 @@ export default [
             meta:{requireAuth:['ADMIN','EDITOR']}
           },
           {
-            path: 'play',
+            path: 'play', 
             name: 'Play',
-            component: () => import(/* webpackChunkName: "Admin-Relatos" */ '../views/admin/sections/Play'),
+            component: () => import(/* webpackChunkName: "Admin-Relatos" */ '../views/admin/sections/relato/Calendar'),
             meta:{requireAuth:['ADMIN','EDITOR','RELATOR']}
           },
+          {
+            path: '/admin/play/:id',
+            name: 'MatchLive',
+            component: () => import(/* webpackChunkName: "Admin-Relatos" */ '../views/admin/sections/relato/LiveMatch'),
+            meta:{requireAuth:['ADMIN','EDITOR','RELATOR']}
+          }, 
           {
             path: 'analitycs',
             name: 'Analitycs',

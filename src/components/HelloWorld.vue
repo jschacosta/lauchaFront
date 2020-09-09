@@ -1,11 +1,5 @@
 <template>
   <v-container>
-      <template>
-    <v-tabs>
-      <v-tab>Torneos Actual</v-tab>
-      <v-tab>Calendario Partidos</v-tab>
-    </v-tabs>
-  </template>
     <v-row class="text-center">
       <v-col cols="12">
         <v-img

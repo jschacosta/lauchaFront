@@ -4,11 +4,15 @@ import Vuex from 'vuex'
 import decode from 'jwt-decode';
 //modulos
 import teams from './modules/teams'
-import TextoSnack from './modules/TextoSnack'
+import userAdmin from './modules/userAdmin'
+import textoSnack from './modules/textoSnack'
 import loading from './modules/loading'
 import rule from './modules/rule'
-import elections from './data/elections'
+import relato from './modules/relato'
 import match from './modules/match'
+import confirmar from './modules/confirmar'
+//arreglo de info EQUIPOS
+import elections from './data/elections'
 
 Vue.use(Vuex)
 
@@ -68,9 +72,14 @@ export default new Vuex.Store({
   modules:{
     teams,
     match,
-    TextoSnack, 
-    loading,
+    relato,
     rule,
+    userAdmin,
+    //generales:
+    textoSnack, 
+    loading,
+    confirmar,
+    //arreglo Equipos:
     elections
   }
 })
