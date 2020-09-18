@@ -28,13 +28,15 @@
                       >
                       </v-text-field>
                       <v-text-field
+                        :append-icon="mostrarPass1 ? 'mdi-eye' : 'mdi-eye-off'"
                         v-model="Password1"
                         :rules="passwordRules"
                         id="password"
                         label="Password"
                         name="Password"
                         prepend-icon="mdi-lock"
-                        type="password"
+                        :type="mostrarPass1 ? 'text' : 'password'"
+                        @click:append="mostrarPass1 = !mostrarPass1"
                         color="indigo"
                         required
                       >
@@ -140,12 +142,14 @@
                       <v-row>
                         <v-col cols="12" lg='6'>
                           <v-text-field
+                            :append-icon="mostrarPass2 ? 'mdi-eye' : 'mdi-eye-off'"
                             label="Pass"
                             name="Password"
                             prepend-icon="mdi-lock"
-                            type="password"
+                            :type="mostrarPass2 ? 'text' : 'password'"
                             color="indigo"
                             v-model="Password1"
+                            @click:append="mostrarPass2 = !mostrarPass2"
                             :rules="passwordRules"
                             required
                           >
@@ -154,12 +158,14 @@
                         </v-col>
                         <v-col cols="12" lg='6'>
                           <v-text-field
+                            :append-icon="mostrarPass3 ? 'mdi-eye' : 'mdi-eye-off'"
                             label="Confirmar Pass"
                             name="Password"
                             prepend-icon="mdi-lock"
-                            type="password"
+                            :type="mostrarPass3 ? 'text' : 'password'"
                             color="indigo"
                             v-model="Password2"
+                            @click:append="mostrarPass3 = !mostrarPass3"
                             :rules="passwordRules"
                             required
                           >
@@ -201,6 +207,9 @@ export default {
     Email: "",
     Password1: "",
     Password2: "",
+    mostrarPass1:false,
+    mostrarPass2:false,
+    mostrarPass3:false,
     nameRules: [
       (v) => !!v || "El nombre es requerido",
       (v) =>
@@ -228,7 +237,7 @@ export default {
     source: String,
   },
   methods: {
-    ...mapMutations("TextoSnack", ["agregarSnack"]),
+    ...mapMutations("textoSnack", ["agregarSnack"]),
     ...mapMutations("loading", ["loadingFunction"]),
     ...mapActions(["guardarUsuario"]),
     validate() {

@@ -15,7 +15,8 @@
     <v-bottom-navigation v-if="estaActivo && imagen==='xs' && !rutaAdmin && !rutaLogin"  app  background-color="#2C3A47" dark >
           <v-item-group multiple >
           <v-item  v-for="item in items" :key="item.text" >
-              <v-btn   height="100%"  route :to="item.route" active-class="orange--text" 
+              <v-btn   :disabled="(item.text==='Mis Torneos' || item.text==='Mis Stats') ? true : false"
+              height="100%"  route :to="item.route" active-class="orange--text" 
               :class="anchoPantalla===true?'px-1':'px-4'">
                   <caption>{{item.text}}</caption>
                   <v-icon  >{{item.icon}}</v-icon>

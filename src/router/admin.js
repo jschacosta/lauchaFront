@@ -38,6 +38,12 @@ export default [
             name: 'MatchLive',
             component: () => import(/* webpackChunkName: "Admin-Relatos" */ '../views/admin/sections/relato/LiveMatch'),
             meta:{requireAuth:['ADMIN','EDITOR','RELATOR']}
+          },
+          {
+            path: '/admin/finish/:id',
+            name: 'FinishMatch',
+            component: () => import(/* webpackChunkName: "Admin-Relatos" */ '../views/admin/sections/create/FinishMatch'),
+            meta:{requireAuth:['ADMIN','EDITOR','RELATOR']}
           }, 
           {
             path: 'analitycs',
@@ -48,7 +54,7 @@ export default [
           {
             path:'users',
             name:'Users',
-            component: () => import(/* webpackChunkName: "Admin-Users" */ '../views/admin/sections/Users'),
+            component: () => import(/* webpackChunkName: "Admin-Users" */ '../views/admin/sections/users/Index'),
             meta:{requireAuth:['ADMIN']},
           },
           {

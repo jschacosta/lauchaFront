@@ -3,8 +3,8 @@ export default{
     state:{
         partidosCalendario:[],
         partidosTerminados:[],
-        pedido:false,
-        pedido2:false
+        pedidoCal:false,
+        pedidoTer:false
     },
     mutations:{
         ordenarCalendario(state){
@@ -27,14 +27,17 @@ export default{
                 if (valor1.horaPartido > valor2.horaPartido) return 1;
             })
         },
-        pedir(state){
+        pedirCalendario(state){
             state.pedido=true
         },
-        pedir2(state){
+        pedirTerminados(state){
             state.pedido2=true
         }
     },
-    actions:{    
+    actions:{
+
+        //ACCIONES PARA ZONA DE INICIAR PARTIDOS
+
         añadirCalendario({commit, state},payload){
             const partidos = payload
             for (let item of partidos){
@@ -46,7 +49,7 @@ export default{
             state.partidosCalendario= payload
             commit('ordenarCalendario')
         },
-        estadoCalendario({commit,state},payload){
+        editarCalendario({commit,state},payload){
             let partido = payload
             const index=state.partidosCalendario.findIndex(item=>item._id === partido._id);
             state.partidosCalendario.splice(index,1);
@@ -60,10 +63,27 @@ export default{
             state.partidosTerminados.push(partido)
             commit('ordenarTerminados')
         },
-        mostrarEliminados({commit, state}, payload){
+
+        //ACCIONES PARA ZONA DE PARTIDOS TERMINADOS
+
+        obtenerTerminados({commit, state}, payload){
             state.partidosTerminados = payload
             commit('ordenarTerminados')
         },
-        
+        editarTerminados({commit,state},payload){
+            let partido = payload
+            const index=state.partidosTerminados.findIndex(item=>item._id === partido._id);
+            state.partidosTerminados.splice(index,1);
+            state.partidosTerminados.push(partido)
+            commit('ordenarTerminados')
+        },
+        eliminarTerminados({commit,state},payload){
+            let partidos = payload
+            for (let match of partidos){
+                let index=state.partidosTerminados.findIndex(item=>item._id === match._id);
+                state.partidosTerminados.splice(index,1);
+            }
+            commit('ordenarTerminados')
+        }  
     }    
 }

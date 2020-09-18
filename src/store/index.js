@@ -11,6 +11,7 @@ import rule from './modules/rule'
 import relato from './modules/relato'
 import match from './modules/match'
 import confirmar from './modules/confirmar'
+import torneo from './modules/torneo'
 //arreglo de info EQUIPOS
 import elections from './data/elections'
 
@@ -23,6 +24,8 @@ export default new Vuex.Store({
     role:"",
     nombre:"",
     apellido:"",
+    _id:"",
+    losTorneos:[],
     estadoMenu:false
   },
   mutations: {
@@ -33,6 +36,8 @@ export default new Vuex.Store({
         state.nombre=""
         state.apellido=""
         state.role =''
+        state._id = ""
+        state.losTorneos= []
         
       }
       else{
@@ -40,6 +45,8 @@ export default new Vuex.Store({
         state.role=state.usuarioDB.data.role;
         state.nombre=state.usuarioDB.data.name;
         state.apellido=state.usuarioDB.data.lastName
+        state._id=state.usuarioDB.data._id
+        state.losTorneos=state.usuarioDB.data.torneos
       }
     },
     activarMenuLateral(state,payload){ //para activar el menu lateral
@@ -75,6 +82,7 @@ export default new Vuex.Store({
     relato,
     rule,
     userAdmin,
+    torneo,
     //generales:
     textoSnack, 
     loading,

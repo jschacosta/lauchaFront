@@ -48,7 +48,7 @@
 <script>
     import { mapState, mapMutations, mapActions } from 'vuex'
     export default {
-        name:'allRules',
+        name:'editRuleMatch',
         data:()=>({
             idVacio: "",
             singleExpand: true,

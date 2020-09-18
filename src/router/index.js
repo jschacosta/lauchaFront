@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 import store from '../store/index'
 //Import Routes
 import AdminRoutes from './admin'
@@ -16,7 +15,7 @@ const router  = new VueRouter({
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: () => import(/* webpackChunkName: "No Autorizado" */ '../views/home/Index.vue'), 
     },
     ...UserRoutes,
     ...AdminRoutes,

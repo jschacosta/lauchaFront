@@ -11,7 +11,7 @@
 <script>
 import Navbar from './components/global/navbar';
 import Footer from './components/global/footer';
-import SnackBar from './components/alerts/snackbar'
+import SnackBar from '@/components/utils/alerts/snackbar.vue'
 import {mapActions} from 'vuex'
 export default {
   name: 'App',

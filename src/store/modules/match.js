@@ -27,7 +27,7 @@ export default{
             state.partidos.push(partido)
         },
         verPartidos(state,payload){
-            var matches = payload
+            var matches = payload 
             for (let i of matches){
                 if(i.rules.length === 0){
                     i.boton= true

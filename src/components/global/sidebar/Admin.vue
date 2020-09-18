@@ -38,7 +38,7 @@ export default {
         { icon: "dashboard", text: "Dashboard", route: "/admin/dashboard", roles:['ADMIN','EDITOR','RELATOR']},
         { icon: "fas fa-edit", text: "Editar Campos", route: "/admin/edit", roles:['ADMIN','EDITOR']},
         { icon: "sports_soccer", text: "Crear Partidos", route: "/admin/create", roles:['ADMIN','EDITOR']},
-        { icon: "fas fa-microphone-alt", text: "Iniciar Partidos", route: "/admin/play", roles:['ADMIN','EDITOR','RELATOR']},
+        { icon: "fas fa-microphone-alt", text: "Relatar Partidos", route: "/admin/play", roles:['ADMIN','EDITOR','RELATOR']},
         { icon: "mdi-finance", text: "Analitycs", route: "/admin/analitycs", roles:[,'ADMIN'] },
         { icon: "fas fa-users-cog", text: "Usuarios", route: "/admin/users", roles:['ADMIN']},
         { icon: "fas fa-user-circle", text: "Mi Perfil", route: "/admin/profile", roles:['ADMIN','EDITOR','RELATOR']},

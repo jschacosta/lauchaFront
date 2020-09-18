@@ -19,7 +19,6 @@ export default{
             valores:[],
             ultimoValor:null
         },
-        deleteItem:{nombre:"",id:"",estado:false}
     },
     mutations:{
         ruleDialog(state,payload){
@@ -80,11 +79,6 @@ export default{
                     }
                 } 
             }
-        },
-        deleteDialog(state,payload){ 
-            state.deleteItem.estado=!state.deleteItem.estado;
-            state.deleteItem.nombre=payload.name;
-            state.deleteItem.id=payload._id;
         },
         createRule(state,payload){
             state.rules.push(payload)

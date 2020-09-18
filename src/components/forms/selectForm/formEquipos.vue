@@ -145,50 +145,50 @@ export default {
         },
         buscarEquipos(){
             this.loadingFunction()
-            if(this.opciones===1){                
+            if(this.opciones===1){             
                 this.axios.get(`/teams?1=${this.eleccion1}&2=${this.eleccion2}&3=${this.eleccion3}`)
-                    .then(res=>{
-                        this.equipo =res.data;
-                        this.agregarFiltro({equipos:this.equipo,torneo:this.eleccion3,elecciones:[this.eleccion1,this.eleccion2,this.eleccion3]});
-                        this.confirmar(true)
-                        this.loadingFunction()
-                    })
-                    .catch(e=>{ 
-                        this.loadingFunction()
-                        const snack= e.response.data.mensaje
-                        this.agregarSnack(snack)
-                        this.confirmar(false)
-                    })
+                .then(res=>{
+                    this.equipo =res.data;
+                    this.agregarFiltro({equipos:this.equipo,torneo:this.eleccion3,elecciones:[this.eleccion1,this.eleccion2,this.eleccion3]});
+                    this.confirmar(true)
+                    this.loadingFunction()
+                })
+                .catch(e=>{ 
+                    this.loadingFunction()
+                    const snack= e.response.data.mensaje
+                    this.agregarSnack(snack)
+                    this.confirmar(false)
+                })
             }
             if(this.opciones===2 && this.opciones2===1){
                 this.axios.get(`/teams?1=${this.eleccion1}&2=${this.eleccion2}&3=${this.eleccion3}&4=${this.eleccion4}`)
-                    .then(res=>{
-                        this.equipo =res.data;
-                        this.agregarFiltro({equipos:this.equipo,torneo:this.eleccion4,elecciones:[this.eleccion1,this.eleccion2,this.eleccion3,this.eleccion4]})
-                        this.confirmar(true)
-                        this.loadingFunction()
-                    })
-                    .catch(e=>{ 
-                        this.loadingFunction()
-                        const snack= e.response.data.mensaje
-                        this.agregarSnack(snack)
-                        this.confirmar(false)
-                    })
+                .then(res=>{
+                    this.equipo =res.data;
+                    this.agregarFiltro({equipos:this.equipo,torneo:this.eleccion4,elecciones:[this.eleccion1,this.eleccion2,this.eleccion3,this.eleccion4]})
+                    this.confirmar(true)
+                    this.loadingFunction()
+                })
+                .catch(e=>{ 
+                    this.loadingFunction()
+                    const snack= e.response.data.mensaje
+                    this.agregarSnack(snack)
+                    this.confirmar(false)
+                })
             }
             if(this.opciones===2 && this.opciones2===2){
                 this.axios.get(`/teams?1=${this.eleccion1}&2=${this.eleccion2}&3=${this.eleccion3}&4=${this.eleccion4}&5=${this.eleccion5}`)
-                    .then(res=>{
-                        this.equipo =res.data;
-                        this.agregarFiltro({equipos:this.equipo,torneo:this.eleccion5,elecciones:[this.eleccion1,this.eleccion2,this.eleccion3,this.eleccion4,this.eleccion5]})
-                        this.confirmar(true)
-                        this.loadingFunction()
-                    })
-                    .catch(e=>{ 
-                        this.loadingFunction()
-                        const snack= e.response.data.mensaje
-                        this.agregarSnack(snack)
-                        this.confirmar(false)
-                    })
+                .then(res=>{
+                    this.equipo =res.data;
+                    this.agregarFiltro({equipos:this.equipo,torneo:this.eleccion5,elecciones:[this.eleccion1,this.eleccion2,this.eleccion3,this.eleccion4,this.eleccion5]})
+                    this.confirmar(true)
+                    this.loadingFunction()
+                })
+                .catch(e=>{ 
+                    this.loadingFunction()
+                    const snack= e.response.data.mensaje
+                    this.agregarSnack(snack)
+                    this.confirmar(false)
+                })
             }
         }   
     }

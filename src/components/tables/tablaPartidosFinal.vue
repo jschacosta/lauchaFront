@@ -19,10 +19,19 @@
         class="elevation-3">
         </v-text-field>
       </v-card-title>
-      <v-data-table :headers="headers" :items="partidosTerminados" :search="search" class="elevation-2" dense >
-          <template v-slot:[`item.estado`]="{ item }">
-      <v-chip color="black" outlined x-small dark>{{ item.estado }}</v-chip>
-    </template>
+      <v-data-table
+      v-model="seleccion"
+      :headers="headers" 
+      :items="partidosTerminados"
+      item-key="_id"
+      show-select 
+      dense
+      :search="search" 
+      class="elevation-2"  
+      >
+        <template v-slot:[`item.estado`]="{ item }">
+          <v-chip color="black" outlined x-small dark>{{ item.estado }}</v-chip>
+        </template>
         <template v-slot:[`item.accion`]="{ item }">
           <v-btn class="mr-2" x-small color="primary"  @click="editarResultado(item)">
             EDITAR RESULTADOS FINAL
@@ -34,11 +43,11 @@
 </template> 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import loadingBarVue from '../bars/loadingBar.vue';
 export default {
   name: 'tablaTerminados',
   data:()=>({
       search:"",
+      seleccion: [],
       eleccion:"",
       headers: [
       {text: 'TORNEO', align: 'start', sortable: true, value: 'torneo'},
@@ -51,24 +60,45 @@ export default {
       ],
   }),
   computed:{
-    ...mapState('relato',['partidosTerminados','pedido2'])
+    ...mapState('relato',['partidosTerminados','pedidoTer'])
   },
   methods:{
     ...mapMutations( 'loading',['loadingFunction']),
-    ...mapMutations( 'relato',['pedir2']),
-    ...mapActions( 'relato',['mostrarEliminados']),
+    ...mapMutations('textoSnack',['agregarSnack']),
+    ...mapMutations( 'confirmar',['confirmar']),
+    ...mapMutations( 'relato',['pedirTerminados']),
+    ...mapActions( 'relato',['obtenerTerminados']),
     editarResultado(item){
+      this.$router.push({path:`/admin/finish/${item._id}`})
     },
     archivarPartidos(){
+      if(this.seleccion.length!=0){
+        const info = {
+          titulo:"¿Está seguro de desea archivar estos Partidos?",
+          cuerpo:'Al confirmar, estos partidos ya no podrán ser modificados y serán eliminados de la interfaz del usuario y el candario de partidos',
+          boton: 'archivarPartidos',
+          datos:[]
+        }
+        const archivar = this.seleccion
+        for(let item of archivar){
+            item.estado ="GUARDADO"
+        }
+        info.datos = archivar
+        this.confirmar(info)
+      }
+      if(this.seleccion.length===0){
+        const snack = 'No ha seleccionado partidos'
+        this.agregarSnack(snack)
+      }
     },
   },
   created: function(){
-    if(this.pedido2===false){
+    if(this.pedidoTer===false){
       this.loadingFunction()
       this.axios.get(`/match-estado/TERMINADO`)
       .then(res=>{
-        this.mostrarEliminados(res.data)
-        this.pedir2(true)
+        this.obtenerTerminados(res.data)
+        this.pedirTerminados(true)
         this.loadingFunction()
       })
       .catch(e=>{

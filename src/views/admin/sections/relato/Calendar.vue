@@ -7,7 +7,7 @@
 
 <script>
 import CalendarioAdmin from '@/components/cards/calendarioAdmin.vue'
-import dialogoConfirmar from '@/components/dialog/confirmar.vue'
+import dialogoConfirmar from '@/components/utils/dialog/dialogConfirmar.vue'
 export default {
     name:'Play',
     components:{

@@ -66,7 +66,7 @@ export default {
         respuesta:""
     }),
     methods:{
-        ...mapMutations("TextoSnack", ["agregarSnack"]),
+        ...mapMutations("textoSnack", ["agregarSnack"]),
         ...mapMutations("loading", ["loadingFunction"]),
         forgot(e){
             if(e) {e.preventDefault()};

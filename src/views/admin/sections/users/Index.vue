@@ -1,37 +1,37 @@
 <template>
-  <v-container>
+  <div >
     <v-tabs background-color="white" color="primary" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
       <v-tab>  
-        <i class="fa fa-trophy"></i>
-        Torneo Actual
+        <i class="fa fa-cog"></i>
+        Gestión Usuarios
       </v-tab>
       <v-tab >
-        <i class="fa fa-calendar"></i>
-        Calendario Partidos
+        <i class="fa fa-cogs"></i>
+        Crear Torneo
       </v-tab>
       <!-- Tab1 -->
       <v-tab-item>
         <v-container fluid>
-          <HelloWorld msg="Welcome to Your Vue.js App"/>
+          <Users></Users>
         </v-container>
       </v-tab-item>
       <!-- Tab2 -->
       <v-tab-item>
         <v-container fluid>
-          <CalendarioUser></CalendarioUser>
+          <Torneo></Torneo>
         </v-container>
       </v-tab-item>
     </v-tabs>
-  </v-container>
+  </div>
 </template>
 <script>
-import HelloWorld from '@/components/HelloWorld.vue'
-import CalendarioUser from '@/components/cards/calendarioUser.vue'
+import Users from './tabs/Users';
+import Torneo from './tabs/Torneo';
 export default {
-    name:"Home",
+    name:"Index",
     components:{//son vistas pero se consideran como componentes para comodidad
-      HelloWorld,
-      CalendarioUser
-    }
+      Torneo,
+      Users
+    },
 }
 </script>

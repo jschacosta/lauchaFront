@@ -5,21 +5,21 @@
         <h4 align="justify">Además se designa su puntaje por defecto de apuesta para cada posible alternativa. Este valor puede ser modificado en la sección "Crear Partidos"</h4>
         <br>
         <TablaReglas></TablaReglas>
-        <dialogRule></dialogRule>
-        <dialogEliminar></dialogEliminar>
+        <createRule></createRule>
+        <dialogoConfirmar></dialogoConfirmar>
     </div>
 </template>
 
 <script>
 import TablaReglas from '@/components/tables/tablaReglas';
-import dialogRule from '@/components/dialog/dialogRule';
-import dialogEliminar from '@/components/dialog/dialogEliminar';
+import createRule from '@/components/dialog/createRule';
+import dialogoConfirmar from '@/components/utils/dialog/dialogConfirmar.vue';
 export default {
     name:'Rules',
     components:{
         TablaReglas,
-        dialogRule,
-        dialogEliminar
+        createRule,
+        dialogoConfirmar
     }
 }
 </script>

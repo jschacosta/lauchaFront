@@ -16,7 +16,9 @@
       </v-toolbar-title >
       <v-item-group multiple v-if="(imagen==='lg' || imagen==='xl')&& !rutaAdmin">
         <v-item v-for="item in itemsRevisado" :key="item.text">
-          <v-btn route :to="item.route" class="mx-2" text small outlined color="white" >
+          <v-btn route :to="item.route" class="mx-2" 
+          :disabled="(item.text==='Mis Torneos' || item.text==='Mis Stats') ? true : false" 
+          text small outlined color="white" >
             <caption>{{item.text}}</caption>
           </v-btn>
         </v-item>
@@ -36,16 +38,15 @@
       <loadingBar ></loadingBar>
     </v-app-bar>
     
-    
   <!-- Config Menu Lateral -->
     <v-navigation-drawer
+    fixed
     v-model="drawer"
     :temporary="!rutaAdmin?true:false"
     color="#2C3A47"
     dark
     :permanent="rutaAdmin?true:false"
     :mini-variant=" !rutaAdmin?false:mini"
-    :absolute=" !rutaAdmin?true:false"
     :app="rutaAdmin?true:false"
     >   
     <!--Menu Lateral Usuario  -->
@@ -80,7 +81,7 @@ import router from '@/router/index'
 import NavUser from './sidebar/User'
 import NavAdmin from './sidebar/Admin'
 import UserButton from './sidebar/UserButton'
-import loadingBar from '../bars/loadingBar'
+import loadingBar from '../utils/bars/loadingBar.vue'
 
 export default {
   name:'Navbar',

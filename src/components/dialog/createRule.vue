@@ -147,7 +147,7 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 export default {
-    name:'dialogRule',
+    name:'createRule',
     data:()=>({
         opciones: ['BOLEANO', 'EVENTO', 'NUMERICO'],
         numericos: ['VALORES FIJOS', 'RANGOS'],
@@ -158,7 +158,7 @@ export default {
     },
     methods:{
         ...mapMutations('rule',['ruleDialog','createRule','updateRule']),
-        ...mapMutations('TextoSnack',['agregarSnack']),
+        ...mapMutations('textoSnack',['agregarSnack']),
         ...mapMutations('loading',['loadingFunction']),
         limpiarArray(){
             this.newItem.valores=[],

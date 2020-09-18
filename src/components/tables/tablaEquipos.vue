@@ -29,7 +29,7 @@
                 dense
                 class="elevation-2"
                 >
-                <template v-slot:item.accion="{ item }">          
+                <template v-slot:[`item.accion`]="{ item }">          
                     <v-btn class="mr-2" large tile icon color="error" @click="borrarEquipo(item)">
                         <v-icon dark>mdi-delete</v-icon>
                     </v-btn>
@@ -82,7 +82,7 @@ data(){
 },
 computed:{  
     ...mapState('teams',['equipos','torneos','confirmacion']), //confirmacion es para el boton verde de agregar salga sólo si 
-    ...mapState('TextoSnack',['superTexto']),
+    ...mapState('textoSnack',['superTexto']),
     
     llenadoTabla(){ //para que vacie la tabla si se anota mal en formEquipos
         if(this.confirmacion===true){
@@ -94,7 +94,7 @@ computed:{
 },
 methods: {
     ...mapMutations('teams',['agregarFiltro','updateEquipos','deleteEquipos']),
-    ...mapMutations( 'TextoSnack',['agregarSnack']),
+    ...mapMutations( 'textoSnack',['agregarSnack']),
     ...mapMutations( 'loading',['loadingFunction']),
     mostrar(){
         this.busqueda=!this.busqueda   

@@ -22,14 +22,27 @@
         <pickerDate></pickerDate>                   
         <v-select :items="torneos.equipos" v-model="equipo1" label="Equipo Local"></v-select>
         <v-select :items="torneos.equipos" v-model="equipo2" label="Equipo Visita"></v-select>
+        <h4>Valores de Apuesta:</h4>
+        <v-row>
+          <v-col>
+            <v-text-field type="number" v-model.number="apuesta[0]" min="0" label="Apuesta L" outlined></v-text-field>
+          </v-col>
+          <v-col>
+            <v-text-field type="number" v-model.number="apuesta[1]" min="0" label="Apuesta E" outlined></v-text-field>
+          </v-col>
+          <v-col>
+            <v-text-field type="number" v-model.number="apuesta[2]" min="0" label="Apuesta V" outlined></v-text-field>
+          </v-col>
+        </v-row>
         <v-row class="d-flex justify-center mt-4">
           <v-btn dark color="orange accent-4" @click="nuevoPartido()">Crear Partido</v-btn>
         </v-row>
+        {{apuesta}}
       </v-col>
     </v-row>
     <tablaPartidos></tablaPartidos> 
-    <allRules></allRules>
-    <editRules></editRules>
+    <selectRuleMatch></selectRuleMatch>
+    <editRuleMatch></editRuleMatch>
     <dialogoConfirmar></dialogoConfirmar>
   </div>
 </template>
@@ -39,9 +52,9 @@ import formEquipos from '@/components/forms/selectForm/formEquipos';
 import pickerTime from '@/components/forms/selectForm/pickerTime';
 import pickerDate from '@/components/forms/selectForm/pickerDate';
 import tablaPartidos from '@/components/tables/tablaPartidos';
-import allRules from '@/components/dialog/allRules.vue'
-import editRules from '@/components/dialog/editRules.vue'
-import dialogoConfirmar from '@/components/dialog/confirmar.vue'
+import selectRuleMatch from '@/components/dialog/selectRuleMatch.vue'
+import editRuleMatch from '@/components/dialog/editRuleMatch.vue'
+import dialogoConfirmar from '@/components/utils/dialog/dialogConfirmar.vue'
 import { mapMutations, mapState } from 'vuex';
 export default {
   name: 'Armado',
@@ -50,13 +63,14 @@ export default {
       pickerTime,
       pickerDate,
       tablaPartidos,
-      allRules,
-      editRules,
+      selectRuleMatch,
+      editRuleMatch,
       dialogoConfirmar
   },
   data:()=>({
       equipo1:"",
-      equipo2:""
+      equipo2:"",
+      apuesta:[]
   }),
   computed:{
     ...mapState('teams',['torneos','confirmacion']),
@@ -71,7 +85,8 @@ export default {
         visita : this.equipo2,
         torneo : this.torneos.torneo,
         horaPartido : this.tiempo,
-        fechaPartido : this.fecha
+        fechaPartido : this.fecha,
+        apuesta:this.apuesta,
       }
       let vacio = true
       for (let valor of Object.values(nuevoPartido)){
@@ -83,11 +98,18 @@ export default {
         const snack= 'Faltan datos por llenar'
         this.agregarSnack(snack)
       }
+      if(this.apuesta.length<3){
+        const snack= 'Faltan los valores de apuesta'
+        this.agregarSnack(snack)
+      }
+
       else{
         this.axios.post(`/match`,nuevoPartido)
         .then(res=>{
           let partido =res.data;
           this.agregarPartido(partido)
+          let Snack = 'Partido Agregado'
+          this.agregarSnack(Snack)
         })
         .catch(e=>{ 
           console.log(e.response.data.mensaje);

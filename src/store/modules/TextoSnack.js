@@ -1,6 +1,6 @@
 export default{
     namespaced:true,
-    name:'TextoSnack',
+    name:'textoSnack',
     state:{
         superTexto:{texto:"",estado:false},
     },

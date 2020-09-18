@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="mx-5 d d-flex align-end"> 
-    <v-btn rounded small color="#2C3A47" @click="$router.push({path:`/admin/play/`})" dark>Volver</v-btn> 
+    <v-btn rounded small color="#2C3A47" @click="$router.push({path:`/admin/create/`})" dark>Volver</v-btn> 
     <v-spacer></v-spacer>
     <v-btn color="success" @click="activar()" dark>Guardar Cambios</v-btn>
     </v-row>
@@ -46,23 +46,18 @@ export default {
   data:()=>({
   }),
   computed:{
-      ...mapState('relato',['partidosCalendario']),
+      ...mapState('relato',['partidosTerminados']),
       partido(){
           const idPartido = this.$route.params.id
-          const index=this.partidosCalendario.findIndex(item=>item._id === idPartido);
-          return this.partidosCalendario[index]
+          const index=this.partidosTerminados.findIndex(item=>item._id === idPartido);
+          return this.partidosTerminados[index]
       },
       goles(){
-        if(this.partido.score[0]===null){
-          return [0,0]
-        }
-        else{
           return this.partido.score
-        }
       },
       radioGroup(){
-          return this.partido.ruleResult
-        },
+          return this.partido.ruleChoices
+      },
 
       fontSize() {
         switch (this.$vuetify.breakpoint.name) {
@@ -72,7 +67,7 @@ export default {
     },
   },
   methods:{
-    ...mapActions( 'relato',['editarCalendario','obtenerCalendario']),
+    ...mapActions( 'relato',['editarTerminados']),
     ...mapMutations('loading',['loadingFunction']),
     ...mapMutations('textoSnack',['agregarSnack']),
 
@@ -84,12 +79,14 @@ export default {
       const respuestas =this.radioGroup
       for (let i=0 ; i< (a-b); i++){
         respuestas.push(null)
+
       }
       partido.score = this.goles
       partido.ruleResult = respuestas
       var j = 0
       const apuestas = []
       for(let coso of partido.ruleResult){
+        console.log(coso)
         if(coso ===null){
           apuestas.push(null)
         }
@@ -102,8 +99,7 @@ export default {
       this.axios.put('/match-rule', partido)
       .then(res=>{
         let partidoNuevo=res.data;
-        partidoNuevo.boton= false
-        this.editarCalendario(partidoNuevo)
+        this.editarTerminados(partidoNuevo)
         const snack = 'Partido Actualizado'
         this.loadingFunction()
         this.agregarSnack(snack)
@@ -111,7 +107,6 @@ export default {
       .catch(e=>{
           this.loadingFunction()
           this.agregarSnack(e.error.data.mensaje)
-
       })
     }
   }

@@ -1,64 +1,87 @@
-<template>
-    <div >
-        <v-card class="elevation-15  fluid" max-width="610px" >
-            <div v-for="(item,i) of partidosCalendario " :key="i">
-            <v-list-item-content class="ma-0 pa-0">
-            <div class="overline ml-3 ">{{item.fechaPartido}}</div>
-        </v-list-item-content>
+<template >
+  <v-container >
+    <v-row>
+    <v-card class="elevation-12 general" max-width="800px">
+        <div v-for="(item,i) of fechas " :key="i">
+        <v-list-item-content class="ma-0 pa-0 fondoFecha">
+        <div class="overline ml-3" >{{item}}</div>
+    </v-list-item-content>
+    <v-divider></v-divider>
+        <v-list dense flat class="pa-0 ma-0" >
+            <v-list-item-group class="  pa-0 fondoPartidos" v-for="(partido,j) of partidosCalendario " :key="j">
+                <v-row class="pa-0" v-if="partido.fechaPartido===item">
+                    <v-col class=" pa-0" cols="5" >
+                        <v-list-item class="d-flex justify-center">{{partido.local}}</v-list-item>
+                    </v-col>
+                    <v-col class="pa-0 ma-0" cols="2">
+                            <v-row class="d-flex justify-center" >                                    
+                              <v-chip class="mt-1" x-small color="success" v-if="partido.estado==='JUGANDO'">En vivo</v-chip>
+                              <v-chip class="mt-1" x-small color="error" v-if="partido.estado==='TERMINADO'">Finalizado</v-chip>
+                            </v-row >
+                            <v-row class="d-flex justify-center" v-if="partido.estado==='JUGANDO' || partido.estado==='TERMINADO'">                                    
+                              {{partido.score.join('-')}}
+                            </v-row>
+                            <v-row class="d-flex justify-center mt-2 pa-0 ma-0" v-if="partido.estado==='POR JUGAR'">                                    
+                            {{partido.horaPartido}}
+                            </v-row> 
+                    </v-col>
+                    <v-col class="pa-0" cols="5">
+                        <v-list-item class="d-flex justify-center">{{partido.visita}}</v-list-item>
+                    </v-col>
+                    
+                </v-row>
+                <v-divider v-if="partido.fechaPartido===item"></v-divider>
+            </v-list-item-group>
+        </v-list>
         <v-divider></v-divider>
-            <v-list dense flat class="pa-0 ma-0" disabled>
-                <v-list-item-group class=" container-fluid pa-0" >
-                    <v-row class="container-fluid pa-0" >
-                        <v-col class="fluid pa-0" cols="4">
-                            <v-list-item class="d-flex justify-center align-center">{{item.local}}</v-list-item>
-                        </v-col>
-                        <v-col class="pa-0 ma-0" cols="3">
-                                <v-row class="fluid d-flex justify-center" v-if="item.estado==='JUGANDO'">                                    
-                                  <v-chip class="mt-1" x-small color="success">En vivo</v-chip>
-                                  <v-chip class="mt-1" x-small color="error" v-if="item.estado==='TERMINADO'">Finalizado</v-chip>
-                                </v-row >
-                                <v-row class="d-flex justify-center" v-if="item.estado==='JUGANDO' || item.estado==='TERMINADO'">                                    
-                                  2-1
-                                </v-row>
-                                <v-row class="d-flex justify-center mt-2 pa-0 ma-0" v-if="item.estado==='POR JUGAR'">                                    
-                                {{item.horaPartido}}
-                                </v-row> 
-                        </v-col>
-                        <v-col class="fluid pa-0 " cols="4">
-                            <v-list-item class="d-flex pa-0 justify-center align-center">{{item.visita}}</v-list-item>
-                        </v-col>
-                    </v-row>
-                </v-list-item-group>
-            </v-list>
-            <v-divider></v-divider>
-            </div>
-        </v-card>
-    </div>
+        </div>
+
+        <v-row>
+
+        <v-list-item-content v-if="this.partidosCalendario.length===0" class="fondoPartidos"> 
+        <v-list-item-title class="headline mb-1 d-flex justify-center ">
+          <v-icon
+        large
+        left
+        color="#2C3A47"
+      >
+        fas fa-beer
+      </v-icon>No hay Partidos Agendados</v-list-item-title>
+      </v-list-item-content>
+        </v-row>
+    </v-card>
+    </v-row>
+  </v-container>
 </template> 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
+import meses from '@/store/data/months';
 export default {
     name: 'CalendarioUser',
+    data:()=>({
+      meses
+    }),
     computed:{
-      ...mapState('relato',['partidosCalendario',])
+      ...mapState('relato',['partidosCalendario',]),
+      fechas(){
+        const tiempo=[]
+        for (let item of this.partidosCalendario){
+          tiempo.push(item.fechaPartido)
+        }
+        return [...new Set(tiempo)]
+      }
     },
     methods:{
       ...mapMutations( 'loading',['loadingFunction']),
       ...mapActions( 'relato',['calendario']),
+      ...mapActions( 'relato',['obtenerCalendario']),
     },
     created: function(){
-      if(this.partidosCalendario.length === 0 || this.partidosCalendario === undefined){
+      if(this.partidosCalendario.length === 0 ){
         this.loadingFunction()
-        this.axios.get(`/match`)
+        this.axios.get(`/match-estado/JUGANDO&POR-JUGAR&TERMINADO`)
         .then(res=>{
-        let nuevosPartidos =res.data;
-        const partidosFilter = []
-        for (let edicion of nuevosPartidos){
-          if(edicion.estado != 'PENDIENTE' ){
-            partidosFilter.push(edicion)
-          }
-        }
-        this.ontenerCalendario(partidosFilter)
+        this.obtenerCalendario(res.data)
         this.loadingFunction()
       })
       .catch(e=>{
@@ -69,3 +92,18 @@ export default {
   }    
 }
 </script>
+
+<style scoped>
+.fondoFecha{
+  background-color: #2C3A47;
+  color: white
+}
+.fondoPartidos{
+  background-color: #E0E0E0 ;
+}
+.general{
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

@@ -96,7 +96,7 @@ export default {
         }
     },
     methods:{
-        ...mapMutations("TextoSnack", ["agregarSnack"]),
+        ...mapMutations("textoSnack", ["agregarSnack"]),
         ...mapMutations("loading", ["loadingFunction"]),
         forgot(e){
             console.log(this.Password1,this.Password2)

@@ -2,7 +2,6 @@
   <div>
     <v-card class="elevation-15">
       <v-card-title>
-        Total Partidos: {{partidos.length}}
         <v-spacer></v-spacer>
         <v-btn  class="ml-10"  small color="primary" v-if="partidos.length > 0"  @click="enviarPartidos()">
             Enviar Partidos<v-icon dark>mdi-share</v-icon>
@@ -53,6 +52,7 @@ export default {
       {text: 'VISITA', sortable: true, value: 'visita'},
       {text: 'FECHA', sortable: true, value: 'fechaPartido'},
       {text: 'HORA', sortable: true, value: 'horaPartido'},
+      {text: 'APUESTA L-E-V', sortable: true, value: 'apuesta'},
       {text: 'ACCION', value: 'accion', sortable: false },
       ],
   }),

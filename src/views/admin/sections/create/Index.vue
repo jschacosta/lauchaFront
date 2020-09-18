@@ -32,6 +32,7 @@ export default {
     components:{//son vistas pero se consideran como componentes para comodidad
       Armado,
       Finish
-    }
+    },
+
 }
 </script>

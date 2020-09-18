@@ -16,11 +16,9 @@
                     <v-row>
                         <v-col>
                             <v-toolbar-title class="mr-2 hidden-sm-and-down">Reglas </v-toolbar-title>
-
                         </v-col>
                         <v-col>
                             <v-btn class="mr-3" small dark ml-auto color="green accent-5" @click="nuevaRegla()">Crear Regla</v-btn>
-
                         </v-col>
                     </v-row>
                     <v-row>
@@ -33,14 +31,11 @@
                                 hide-details
                                 class="elevation-1 hidden-sm-and-down">
                             </v-text-field>
-
                         </v-col>
                         <v-col>
-                            <v-switch v-model="singleExpand" label="Unico"></v-switch>
-                            
+                            <v-switch v-model="singleExpand" label="Unico"></v-switch>            
                         </v-col>
-                    </v-row>
-                            
+                    </v-row>              
                 </v-toolbar>
             </template>
             <template v-slot:[`item.accion`]="{ item }" >
@@ -62,7 +57,7 @@
                         <v-col>
                             <v-list-item v-for="(apuesta,j) of item.options.values " :key="j+15" >
                                 <!-- el j+15 es para que no cause conflicto :key i con :key j -->
-                                    <v-list-item-title >({{apuesta}} pts)     </v-list-item-title>
+                                    <v-list-item-title >({{apuesta}} pts) </v-list-item-title>
                             </v-list-item>
                         </v-col>
                     </v-row>
@@ -93,7 +88,8 @@ import {mapState, mapMutations, mapActions} from 'vuex'
         ...mapState('rule',['rules']),
     },
     methods:{
-        ...mapMutations('rule',['ruleDialog','deleteDialog']),
+        ...mapMutations('rule',['ruleDialog']),
+        ...mapMutations( 'confirmar',['confirmar']),
         ...mapActions('rule',['getRules']),
         nuevaRegla(){
             let item={}
@@ -103,7 +99,15 @@ import {mapState, mapMutations, mapActions} from 'vuex'
             this.ruleDialog(item)
         },
         borrarRegla(item){
-            this.deleteDialog(item)
+            console.log(item)
+            const info = {
+            titulo:`¿Estás seguro que quieres borrar esta regla ?`,
+            cuerpo:`La regla ${item.name}, se borrará junto con toda su información y no podrá ser recuperada.`,
+            boton: 'borrarRegla',
+            datos:[]
+            }
+            info.datos=item
+            this.confirmar(info)
         }
     },
     created(){

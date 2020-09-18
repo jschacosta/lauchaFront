@@ -36,7 +36,6 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import loadingBarVue from '../bars/loadingBar.vue';
 export default {
   name: 'CalendarioAdmin',
   data:()=>({
@@ -53,11 +52,11 @@ export default {
       ],
   }),
   computed:{
-    ...mapState('relato',['partidosCalendario','pedido'])
+    ...mapState('relato',['partidosCalendario','pedidoCal'])
   },
   methods:{
     ...mapMutations( 'loading',['loadingFunction']),
-    ...mapMutations( 'relato',['pedir']),
+    ...mapMutations( 'relato',['pedirCalendario']),
     ...mapMutations( 'confirmar',['confirmar']),
     ...mapActions( 'relato',['obtenerCalendario']),
     getColor (estado) {
@@ -90,7 +89,7 @@ export default {
     }
   },
   created: function(){
-    if(this.pedido===false){
+    if(this.pedidoCal===false){
       this.loadingFunction()
       this.axios.get(`/match-estado/JUGANDO&POR-JUGAR`)
       .then(res=>{
@@ -106,7 +105,7 @@ export default {
           }
         }
         this.obtenerCalendario(partidosFilter)
-        this.pedir(true)
+        this.pedirCalendario(true)
         this.loadingFunction()
       })
       .catch(e=>{
