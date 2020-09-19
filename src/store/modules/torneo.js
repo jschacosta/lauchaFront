@@ -4,11 +4,9 @@ export default{
     name:'torneo',
     state:{
         torneos:[{name:"",players:[]}],
-        boton:true,
-        botonDos:false,
         porJugar:[],
         matchJugador:[],
-        dialogo:false
+        dialogo:false       
     },
     mutations:{
         cambiarDialog(state,payload){
@@ -23,6 +21,7 @@ export default{
                     state.torneos=payload
                 }
                 if(payload[0].players.length!=0){
+                    
                     payload[0].players.sort(function (valor1,valor2){
                         //si valor1 tiene un valor mayor que valor2, se va hacia abajo
                         if (valor1.points > valor2.points) return -1;
@@ -35,12 +34,6 @@ export default{
                 }    
             }
         }, 
-        cambiarBoton(state, payload){ 
-            state.boton= payload
-        },
-        cambiarBotonDos(state){
-            state.botonDos=!state.botonDos
-        },
         eliminarTorneo(state,payload){
             let eliminar = payload;
             const index=state.torneos.findIndex(item=>item._id === eliminar._id);
@@ -85,8 +78,6 @@ export default{
                     }
                 }
             }
-            console.log(arrayPorjugar)
-            console.log(arrayJugador)
             commit('ordenarPorJugar',arrayPorjugar)
             commit('ordenarJugador',arrayJugador)
         },
@@ -121,7 +112,6 @@ export default{
                 commit('obtenerTorneos',torneo)
             }
         }
-
     },
     modules:{
         puntuacion

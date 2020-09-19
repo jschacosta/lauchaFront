@@ -2,28 +2,32 @@
   <v-container >
     <v-row>
       <v-card max-width="600px "  class="general elevation-8 pa-0 " >
-        <v-list class="pa-0 ma-0" >
-          <v-list-item-group class="pa-0 ma-0 " v-if="torneos[0].name!=''">
+        <v-list class="pa-0 ma-0">
+
+          <v-list-item-group class="pa-0 ma-0 ">
             
-            <v-list-item-content class="pa-0 ma-0 fondoFecha">
-              <v-row class="text-center pa-0 ma-0 font-weight-bold">
-                <v-col cols="2">Pos</v-col>
+            <v-list-item-content class="pa-0 ma-0 fondoFecha" v-if="torneos[0].players.length>0">
+              <v-row class="pa-0 ma-0  ancho font-weight-bold">
+                <v-col cols="2" class="text-left pa-0 py-3">Pos</v-col>
               <v-divider vertical></v-divider>
-                <v-col cols="6">Nombre</v-col>
+
+                <v-col cols="6" class="text-center">Nombre</v-col>
               <v-divider vertical></v-divider>
-                <v-col cols="3" class="ml-4" >Pts</v-col>
+                <v-col cols="2"  class="text-right" >Pts</v-col>
               </v-row>
             </v-list-item-content>
-            
             <v-divider></v-divider>
+
             <div v-for="(jugador,k) of torneos[0].players" :key="k" >
-              <v-list-item class="pa-0 ma-0 "  :class="hola">
-              <v-row class="text-center pa-0 ma-0 ">
-                <v-col cols="2">{{k+1}}</v-col>
+
+              <v-list-item class="pa-0 ma-0 "  :class="colores[k]">
+              <v-row class="ancho">
+                <v-col cols="2" class="text-left">{{k+1}}</v-col>
               <v-divider vertical></v-divider>
-                <v-col cols="6">{{jugador.nickName}}</v-col>
+                <v-col cols="6" class="text-center">{{jugador.nickName}}</v-col>
               <v-divider vertical></v-divider>
-                <v-col cols="3" class="ml-4" >{{jugador.points}}</v-col>
+                <v-col cols="2" class="text-right"  >{{jugador.points}}</v-col>
+
               </v-row>
               </v-list-item>
               <v-divider></v-divider>
@@ -31,19 +35,19 @@
 
           </v-list-item-group>
 
-
           <v-list-item-content v-if="torneos[0].name===''" class="normal"> 
-          <v-list-item-title class="headline mb-1 d-flex justify-center ">
-          <v-icon
-          large
-          left
-          color="#2C3A47"
-          >
-          fas fa-beer
-        </v-icon>No hay Torneos Creados</v-list-item-title>
-        </v-list-item-content>
+            <v-list-item-title class="headline mb-1 d-flex justify-center ">
+              <v-icon large left color="#2C3A47">fas fa-beer</v-icon>
+              No hay Torneos Creados
+            </v-list-item-title>
+          </v-list-item-content>
 
-
+         <v-list-item-content  v-if="torneos[0].players.length===0" class="normal"> 
+            <v-list-item-title class="headline mb-1 d-flex justify-center ">
+              <v-icon large left color="#2C3A47">fab fa-old-republic</v-icon>
+              Aún no hay jugadores en este torneo, <br> Sé el primero en unirte
+            </v-list-item-title>
+          </v-list-item-content>
 
         </v-list>
       </v-card>
@@ -53,29 +57,43 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-  export default {
-    name: 'tablaPosiciones',
-
-    computed:{
-      ...mapState('torneo',['torneos']),
-      hola(){
-        const x= 1
-        if(x===1){
-          return 'ascenso'
-        }if(x===2){
-          return 'descenso'
+export default {
+  name: 'tablaPosiciones',
+  computed:{
+    ...mapState('torneo',['torneos']),
+    colores(){
+      const largo = this.torneos[0].players.length
+      const array=[]
+      if(largo<4){
+        for (let i = 0 ; i < largo ; i++) {
+          array.push('normal')
         }
-        if(x===3){
-          return 'normal'
-        }
+        return array
       }
-    },
-    methods:{
-      ...mapMutations( 'loading',['loadingFunction']),
-      ...mapMutations( 'torneo',['obtenerTorneos']),
-    },
-  
+      if(4<largo && largo<7){
+        array.push('ascenso')
+        for (let i = 0; i < largo-2; i++) {
+          array.push('normal')
+        }
+        array.push('descenso')
+        return array
+      }
+      if(largo>=7){
+        array.push('ascenso')
+        for (let i = 0; i < largo-3; i++) {
+            array.push('normal')
+        }
+        array.push('descenso')
+        array.push('descenso')
+        return array
+      }  
+    }
+  },
+  methods:{
+    ...mapMutations( 'loading',['loadingFunction']),
+    ...mapMutations( 'torneo',['obtenerTorneos']),
   }
+}
 </script>
 
 <style scoped>
@@ -84,7 +102,6 @@ import { mapState, mapMutations } from 'vuex'
   margin-left: auto;
   margin-right: auto;
 }  
-
 .fondoFecha{
   background-color: #2C3A47;
   color: white
@@ -106,9 +123,14 @@ import { mapState, mapMutations } from 'vuex'
   color: #2C3A47
 }
 .basico{
-  
-  margin-left: auto;
-  margin-right: auto;
-
+    margin: 0 auto;
 }
+.ancho{
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+/* .theme--light.v-divider {
+    border-color: #B0ABAB !important; 
+} */
 </style>

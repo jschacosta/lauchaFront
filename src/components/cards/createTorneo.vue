@@ -1,8 +1,8 @@
 <template>
 <div>
-  <v-btn class="my-10" @click="dialogo=true" v-if="boton===true" rounded color="primary" dark>Crear Torneo</v-btn>
-  <v-btn class="my-10" v-if="boton===false" rounded color="error" @click="terminarTorneo()" dark>Terminar Torneo</v-btn>
-  <v-card class="pa-0"  v-if="boton===false" >
+  <v-btn class="my-10" @click="dialogo=true" v-if="torneos[0].name===''" rounded color="primary" dark>Crear Torneo</v-btn>
+  <v-btn class="my-10" v-if="torneos[0].name!=''" rounded color="error" @click="terminarTorneo()" dark>Terminar Torneo</v-btn>
+  <v-card class="pa-0"  v-if="torneos[0].name!=''" >
     <v-list class="pa-0">
       <v-list-item-group class="pa-0">
         <v-list-item class="pa-0">
@@ -14,8 +14,8 @@
               {{torneos[0].players.length}}/10
             </v-col>
             <v-col cols="4">
-              <v-btn small @click="edicion" v-if="botonDos===true" rounded color="warning" dark>Activar Edicion</v-btn>
-              <v-btn small @click="edicion" v-if="botonDos===false" rounded color="error" dark>Desactivar Edicion</v-btn>
+              <v-btn small @click="edicion('true')" v-if="torneos[0].edition==='false'" rounded color="warning" dark>Activar Edicion</v-btn>
+              <v-btn small @click="edicion('false')" v-if="torneos[0].edition==='true'" rounded color="error" dark>Desactivar Edicion</v-btn>
             </v-col>
           </v-row>
         </v-list-item>
@@ -88,19 +88,33 @@ export default {
           for (let item of partidos){
             nuevoTorneo.matches.push({_id:item._id, score:null, ruleResult:[], valorRegla:[],apuesta:item.apuesta, ruleApuesta:[]})
           }
-          console.log(nuevoTorneo)
           await this.axios.post(`/torneos`, nuevoTorneo)
           .then(res=>{
             this.obtenerTorneos(res.data)
-            this.cambiarBoton(false)
           })
           .catch(e=>{
             console.log(e.response.data.mensaje);
           })  
         this.loadingFunction()
       },
-      edicion(){
+      edicion(estado){
         this.loadingFunction()
+        const elTorneo = this.torneos[0]
+        elTorneo.edition=estado
+        console.log(elTorneo)
+        this.axios.put(`/torneos`, elTorneo)
+        .then(res=>{
+          const array=[]
+          array.push(res.data)
+          this.obtenerTorneos(array)
+          this.loadingFunction()
+
+        })
+        .catch(e=>{
+          console.log(e.response.data.mensaje);
+        this.loadingFunction()
+        })  
+        
       },
       terminarTorneo(){
           this.loadingFunction()
@@ -108,14 +122,12 @@ export default {
         this.axios.delete(`/torneos/${this.torneos[0]._id}`)
         .then(res=>{
           this.eliminarTorneo(res.data)
-          this.cambiarBoton(true)
           this.loadingFunction()
 
         })
         .catch(e=>{
           console.log(e.response.data.mensaje);
         this.loadingFunction()
-
         })  
       }
     },

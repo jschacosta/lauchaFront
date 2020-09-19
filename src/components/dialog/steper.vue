@@ -39,13 +39,13 @@
                   {{partido.local}}
               </v-col>
               <v-col class="mt-6 d-flex justify-start align-center" cols="2" >
-                <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='score[j][0]' min="0"></v-text-field>
+                <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='partido.score[0]' min="0"></v-text-field>
               </v-col >
               <v-col class="d-flex justify-center align-center" cols="1">
                 <h3>-</h3>
               </v-col>
               <v-col class="mt-6 d-flex justify-start align-center" cols="2">
-                <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='score[j][1]' min="0"></v-text-field>
+                <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='partido.score[1]' min="0"></v-text-field>
               </v-col>
               <v-col class="d-flex justify-start align-center" cols="2"> 
                   {{partido.visita}}
@@ -114,13 +114,34 @@ export default {
   computed:{
     ...mapState('torneo',['torneos','porJugar','dialogo']),
     ...mapState(['_id','nombre','apellido','losTorneos','usuarioDB']),
-    score(){
-      const array=[]
-      for(let partido of this.porJugar){
-        array.push(partido.score)
-      } 
-      return array
+
+    lospartidos(){
+      if(this.torneos[0].players.length===0){
+        return this.porJugar
+      }
+      if(this.torneos[0].players.length!=0){
+        const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
+        if(index=== -1){
+          return this.porJugar
+        }
+        if(index != -1){
+          const arrayJugador=[]
+            const matchUsuario = this.torneos[0].players[index].matches
+            for(let item of matchUsuario){
+                for(let item2 of this.matchJugador){
+                    if( item._id===item2._id){
+                        item2.score=item.score
+                        item2.ruleResult=item.ruleElections
+                        arrayJugador.push(item2)
+                    }
+                } 
+            }
+            return arrayJugador
+        }
+      }
     },
+
+
     nickName(){
       const nombre= this.nombre.charAt(0).toUpperCase() + '.' + this.apellido.charAt(0).toUpperCase() +this.apellido.slice(1)
       return {name:nombre}
@@ -131,6 +152,7 @@ export default {
     ...mapActions( ['guardarUsuario']),
     ...mapMutations( 'loading',['loadingFunction']),
     ...mapMutations( 'torneo',['cambiarDialog','obtenerTorneos']),
+    ...mapMutations( 'textoSnack',['agregarSnack']),
     ...mapActions( 'torneo',['agregarPorJugar','puntajes']),
     nextStep(n){
       if (n === this.porJugar.length+1){
@@ -147,7 +169,6 @@ export default {
       this.cambiarDialog(false)
     },
     enviar(){
-      console.log(this.torneos)
       this.loadingFunction()
       const player ={
             _id:this._id, 
@@ -157,14 +178,13 @@ export default {
         }
       var j = 0
       for (let partido of this.porJugar){
-        player.matches.push({_id:partido._id,score:[],ruleElections:[]})
+        player.matches.push({ _id:partido._id , score:partido.score , ruleElections:[]})
         const a = partido.rules.length
         const b = partido.ruleResult.length
         player.matches[j].ruleElections =partido.ruleResult
         for (let i=0 ; i< (a-b); i++){
           player.matches[j].ruleElections.push(null)
         }
-        player.matches[j].score = this.score[j]
         j++
       }
       const index=this.losTorneos.indexOf(this.torneos[0]._id);
@@ -183,7 +203,7 @@ export default {
         const elTorneo = this.torneos[0]
         elTorneo.players.push(player)
         //Luego se agregan los datos del jugador al torneo
-        this.axios.put(`torneos`,elTorneo)
+        this.axios.put(`/torneos`,elTorneo)
         .then(res=>{
           const array=[]
           array.push(res.data)
@@ -206,18 +226,25 @@ export default {
             if(item._id===item2._id){ item=item2}
           }
         }
-
-        this.axios.put(`torneos`,elTorneo)
-        .then(res=>{
-          const array=[]
-          array.push(res.data)
-          this.puntajes(array)
-          this.loadingFunction()
-        })
-        .catch(e=>{
-          console.log(e.response.data.mensaje);
-          this.loadingFunction()
-        })
+        this.axios.put(`/torneos-confirmar`,elTorneo)
+          .then(res=>{
+            console.log(res.data)
+            if(res.data==='false'){
+              let aviso="No es momento de editar ahora"
+              this.agregarSnack(aviso)
+              this.loadingFunction()
+            }
+            if(res.data!='false'){
+              const array=[]
+              array.push(res.data)
+              this.puntajes(array)
+              this.loadingFunction()
+            }
+          })
+          .catch(e=>{
+            console.log(e.response.data.mensaje);
+            this.loadingFunction()
+          })
       }
     }
   },

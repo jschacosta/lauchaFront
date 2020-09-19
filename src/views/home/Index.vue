@@ -9,7 +9,7 @@
         Calendario 
         <i class="fa fa-calendar-alt"></i>
       </v-tab>
-      <v-tab >
+      <v-tab v-if="estaJugador===true">
         Mis Jugadas 
         <i class="fas fa-chess-knight"></i>
       </v-tab>
@@ -26,7 +26,7 @@
         </v-container>
       </v-tab-item>
       <!-- Tab3 -->
-      <v-tab-item>
+      <v-tab-item v-if="estaJugador===true">
         <v-container>
           <Juegos/>
         </v-container>
@@ -38,6 +38,8 @@
 import Posiciones from './tabs/Posiciones.vue'
 import Calendario from './tabs/Calendario.vue'
 import Juegos from './tabs/Juegos.vue'
+import {  mapState } from 'vuex'
+
 export default {
     name:"Home",
     components:{
@@ -45,6 +47,18 @@ export default {
       Calendario,
       Juegos
     },
+    computed:{
+        ...mapState('torneo',['torneos']),
+        ...mapState(['_id']),
+        estaJugador(){
+            const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
+            if(index===-1){
+              return false
+            }else{
+              return true
+            }
+        }
+    }
 }
 </script>
 

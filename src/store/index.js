@@ -38,7 +38,6 @@ export default new Vuex.Store({
         state.role =''
         state._id = ""
         state.losTorneos= []
-        
       }
       else{
         state.usuarioDB=decode(payload);
@@ -66,7 +65,6 @@ export default new Vuex.Store({
       const token = localStorage.getItem('token');
       if(token){
         commit('obtenerUsuario', token);
-        
       }
       else{
         commit('obtenerUsuario', '');
