@@ -56,7 +56,7 @@ export default {
           return this.partido.score
       },
       radioGroup(){
-          return this.partido.ruleChoices
+          return this.partido.ruleResult
       },
 
       fontSize() {
@@ -86,7 +86,6 @@ export default {
       var j = 0
       const apuestas = []
       for(let coso of partido.ruleResult){
-        console.log(coso)
         if(coso ===null){
           apuestas.push(null)
         }

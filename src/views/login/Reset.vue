@@ -7,10 +7,21 @@
                     <h1 class=" text-center black--text titulo my-4">
                         Nueva contraseña
                     </h1>
-                    <h3 class="text-center subtitulo mt-4"  >
-                        Escribe tu nueva contraseña
-                    </h3>
+                    
                     <v-form  class="mx-5" ref="form" v-model="valid" lazy-validation>
+                        
+                    <v-text-field
+                        label="Email"
+                        name="Email"
+                        prepend-icon="mdi-email"
+                        type="email"
+                        color="indigo"
+                        v-model="email"
+                        :rules="emailRules"
+                        required
+                      >
+                      </v-text-field>
+                    
                          <v-text-field
                             v-model="Password1"
                             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -76,6 +87,7 @@ import { mapMutations} from "vuex";
 export default {
     name: 'Reset',
     data:()=>({
+        email:"",
         Password1:"",
         show1: false,
         Password2:"",
@@ -88,7 +100,11 @@ export default {
             (v) =>
                 (v && v.length >= 6) ||
                 "La contraseña debe tener al menos 6 carácteres",
-        ]
+        ],
+        emailRules: [
+            (v) => !!v || "Email is requerido",
+            (v) => /.+@.+\..+/.test(v) || "E-mail no es válido",
+        ],
     }),
     computed:{
         token(){
@@ -98,14 +114,13 @@ export default {
     methods:{
         ...mapMutations("textoSnack", ["agregarSnack"]),
         ...mapMutations("loading", ["loadingFunction"]),
-        forgot(e){
-            console.log(this.Password1,this.Password2)
-            if(this.Password1!=this.Password2){
+        forgot(){
+            if(this.Password1!=this.Password2){ 
                 this.agregarSnack('Las contraseñas no coinciden');
             }
             else{
                 this.loadingFunction();
-                this.axios.put(`/reset-password/${this.token}`, {password1: this.Password1, password2:this.Password2})
+                this.axios.put(`/reset-password/${this.token}`, {email:this.email, password1: this.Password1, password2:this.Password2})
                     .then((res) => {
                         let mensaje = res.data.mensaje;
                         this.agregarSnack(mensaje)
@@ -113,7 +128,7 @@ export default {
                         this.estado=true;
                         this.loadingFunction();
                     })
-                    .catch((e) => {
+                    .catch(e => {
                         this.loadingFunction();
                         let error = e.response.data.mensaje;
                         this.agregarSnack(error);

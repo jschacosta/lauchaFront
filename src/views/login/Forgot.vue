@@ -72,16 +72,16 @@ export default {
             if(e) {e.preventDefault()};
             this.loadingFunction();
             this.axios.put("/forgot-password", { email: this.Email})
-                .then((res) => {
-                    this.respuesta = res.data.mensaje;
-                    this.estado=true;
-                    this.loadingFunction();
-                })
-                .catch((e) => {
-                    this.loadingFunction();
-                    let error = e.response.data.mensaje;
-                    this.agregarSnack(error);
-                });
+            .then((res) => {
+                this.respuesta = res.data.mensaje;
+                this.estado=true;
+                this.loadingFunction();
+            })
+            .catch((e) => {
+                this.loadingFunction();
+                let error = e.response.data.mensaje;
+                this.agregarSnack(error);
+            });
         } 
     }
 }

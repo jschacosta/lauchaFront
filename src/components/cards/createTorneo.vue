@@ -3,7 +3,7 @@
   <v-btn class="my-10" @click="dialogo=true" v-if="torneos[0].name===''" rounded color="primary" dark>Crear Torneo</v-btn>
   <v-btn class="my-10" v-if="torneos[0].name!=''" rounded color="error" @click="terminarTorneo()" dark>Terminar Torneo</v-btn>
   <v-card class="pa-0"  v-if="torneos[0].name!=''" >
-    <v-list class="pa-0">
+    <v-list class="pa-0 mb-10">
       <v-list-item-group class="pa-0">
         <v-list-item class="pa-0">
           <v-row class="text-center">
@@ -22,7 +22,6 @@
       </v-list-item-group>
     </v-list>
   </v-card>
-  {{torneos}}
   <v-dialog v-model="dialogo" max-width="500px" persistent>
     <v-card class="container">
       <v-card-title>
@@ -101,7 +100,6 @@ export default {
         this.loadingFunction()
         const elTorneo = this.torneos[0]
         elTorneo.edition=estado
-        console.log(elTorneo)
         this.axios.put(`/torneos`, elTorneo)
         .then(res=>{
           const array=[]

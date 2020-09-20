@@ -1,36 +1,36 @@
 <template>
   <div>
-    <CreateTorneo></CreateTorneo> 
+    <CreateTorneo></CreateTorneo>
+    <tablaTorneoPlayers></tablaTorneoPlayers>
   </div>
 </template>
 
 <script>
 import CreateTorneo from '@/components/cards/createTorneo.vue'
+import tablaTorneoPlayers from '@/components/tables/tablaTorneoPlayers.vue'
 import { mapState, mapMutations} from 'vuex';
 
 export default {
     name:'Torneo',
     components:{
-      CreateTorneo
+      CreateTorneo,
+      tablaTorneoPlayers
     },
     methods:{
-    ...mapMutations( 'torneo',['obtenerTorneos', 'cambiarBoton']),
+    ...mapMutations( 'torneo',['obtenerTorneos']),
     ...mapMutations( 'loading',['loadingFunction']),
     },
     created(){
       this.loadingFunction()
       this.axios.get(`/torneos`)
       .then(res=>{
-        console.log(res.data)
         if(res.data.length===0){
           this.loadingFunction()
           this.obtenerTorneos([{name:"",players:[]}])
-          this.cambiarBoton(true)
         }
         if(res.data.length!=0){
           this.loadingFunction()
           this.obtenerTorneos(res.data)
-          this.cambiarBoton(false)
         }
       })
       .catch(e=>{

@@ -1,6 +1,5 @@
 <template >
   <v-dialog v-model='dialogo' persistent max-width="800px"  >
-    <v-card>{{losTorneos}}</v-card>
     <v-stepper v-model="paso" dark dense >
       <!-- ENCABEZADO - PASO 1 -->
       <v-stepper-header >
@@ -187,9 +186,13 @@ export default {
         }
         j++
       }
-      const index=this.losTorneos.indexOf(this.torneos[0]._id);
+      console.log('aqui')
+      const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
+      console.log(index)
       //En caso que sea nuevo en el torneo, se debe agregar el id de torneo a su usuario
         if(index===-1){
+      console.log('nuevo')
+
           const paraToken = {torneoId:this.torneos[0]._id, usuarioId:this._id}
         this.axios.put(`/user-torneo`,paraToken)
         .then(res=>{
@@ -207,6 +210,8 @@ export default {
           const array=[]
           array.push(res.data)
           this.puntajes(array)
+          let aviso="Jugadas ingresadas con éxito"
+          this.agregarSnack(aviso)
           this.loadingFunction()
         })
         .catch(e=>{
@@ -215,8 +220,10 @@ export default {
         })
         }
 
-        //En caso que esté editando sus datos del torneo
+        //En caso que esté editando sus datos del torneo 
       if(index!=-1){
+      console.log('antiguo')
+
         const elTorneo = this.torneos[0]
         const indexPlayer=elTorneo.players.indexOf(player.idPlayer);
         
@@ -237,6 +244,8 @@ export default {
               const array=[]
               array.push(res.data)
               this.puntajes(array)
+              let aviso="Jugadas actualizadas"
+              this.agregarSnack(aviso)
               this.loadingFunction()
             }
           })

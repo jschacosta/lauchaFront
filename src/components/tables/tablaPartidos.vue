@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="elevation-15">
+    <v-card class="elevation-15 mt-5">
       <v-card-title>
         <v-spacer></v-spacer>
         <v-btn  class="ml-10"  small color="primary" v-if="partidos.length > 0"  @click="enviarPartidos()">

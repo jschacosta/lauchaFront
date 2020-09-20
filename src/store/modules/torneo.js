@@ -95,7 +95,6 @@ export default{
             commit('ordenarTodos',payload[1])
         },
         puntajes({commit},torneo){
-            console.log(torneo)
             if(torneo[0].name==='' && torneo[0].players.length===0){
                 const vacio= []
                 commit('obtenerTorneos',vacio)

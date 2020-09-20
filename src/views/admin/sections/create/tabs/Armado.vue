@@ -37,7 +37,6 @@
         <v-row class="d-flex justify-center mt-4">
           <v-btn dark color="orange accent-4" @click="nuevoPartido()">Crear Partido</v-btn>
         </v-row>
-        {{apuesta}}
       </v-col>
     </v-row>
     <tablaPartidos></tablaPartidos> 
