@@ -6,6 +6,7 @@
           <SnackBar></SnackBar>
       </v-main>
       <Footer/>
+
   </v-app> 
 </template>
 <script>

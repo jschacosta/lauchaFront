@@ -1,6 +1,6 @@
 <template >
   <v-dialog v-model='dialogo' persistent max-width="800px"  >
-    <!-- <v-card>{{losTorneos}}</v-card> -->
+    <v-card>{{losTorneos}}</v-card>
     <v-stepper v-model="paso" dark dense >
       <!-- ENCABEZADO - PASO 1 -->
       <v-stepper-header >
@@ -188,7 +188,6 @@ export default {
         j++
       }
       const index=this.losTorneos.indexOf(this.torneos[0]._id);
-
       //En caso que sea nuevo en el torneo, se debe agregar el id de torneo a su usuario
         if(index===-1){
           const paraToken = {torneoId:this.torneos[0]._id, usuarioId:this._id}
@@ -255,7 +254,7 @@ export default {
       .then(res=>{
         const todoTorneo=res.data
         this.puntajes(res.data)
-        this.axios.get(`/match-estado/JUGANDO&TERMINADO&POR-JUGAR`)
+        this.axios.get(`/match-estado/JUGANDO&POR-JUGAR&TERMINADO`)
         .then(res=>{
           const ambosArreglos=[todoTorneo,res.data]
           this.loadingFunction()

@@ -5,7 +5,7 @@
             <v-btn @click="unirse()" color="primary" v-if="estaJugador===false">Unirse</v-btn>
         </v-row>
         <tablaPosiciones></tablaPosiciones>
-        <steper></steper>  
+        <steper></steper>
     </v-container>
 </template>
 
@@ -18,7 +18,7 @@ export default {
     name:'Posiciones',
     components:{
         tablaPosiciones,
-        steper
+        steper,
     },
     computed:{
         ...mapState('torneo',['torneos']),

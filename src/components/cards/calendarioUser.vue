@@ -1,7 +1,7 @@
 <template >
   <v-container >
     <v-row>
-    <v-card class="elevation-12 general" max-width="800px">
+    <v-card class="elevation-12 general" max-width="600px">
         <div v-for="(item,i) of fechas " :key="i">
         <v-list-item-content class="ma-0 pa-0 fondoFecha">
         <div class="overline ml-3" >{{item}}</div>

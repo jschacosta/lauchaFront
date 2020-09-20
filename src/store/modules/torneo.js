@@ -4,8 +4,9 @@ export default{
     name:'torneo',
     state:{
         torneos:[{name:"",players:[]}],
-        porJugar:[],
-        matchJugador:[],
+        porJugar:[], //contine datos de partidos por jugar del torneo
+        matchJugador:[], // contiene datos de partidos del torneo para el jugador
+        matchTodos:[], // contiene todos los datos de partidos del torneo 
         dialogo:false       
     },
     mutations:{
@@ -51,6 +52,17 @@ export default{
             })
             state.porJugar=payload
         },
+        ordenarTodos(state, payload){
+            payload.sort(function (valor1,valor2){
+                //si valor1 tiene un valor mayor que valor2, se va hacia abajo
+                if (valor1.fechaPartido < valor2.fechaPartido) return -1;
+                if (valor1.fechaPartido > valor2.fechaPartido) return 1;
+                //lo mismo pero para la hora
+                if (valor1.horaPartido < valor2.horaPartido) return -1;
+                if (valor1.horaPartido > valor2.horaPartido) return 1;
+            })
+            state.matchTodos=payload
+        },
         ordenarJugador(state, payload){
             payload.sort(function (valor1,valor2){
                 //si valor1 tiene un valor mayor que valor2, se va hacia abajo
@@ -80,8 +92,10 @@ export default{
             }
             commit('ordenarPorJugar',arrayPorjugar)
             commit('ordenarJugador',arrayJugador)
+            commit('ordenarTodos',payload[1])
         },
         puntajes({commit},torneo){
+            console.log(torneo)
             if(torneo[0].name==='' && torneo[0].players.length===0){
                 const vacio= []
                 commit('obtenerTorneos',vacio)
@@ -96,7 +110,7 @@ export default{
                     for (let partido of jugador.matches){
                         const index=torneo[0].matches.findIndex(item=>item._id === partido._id);
                         //Funcion que suma puntajes según score, las entradas son arreglos
-                        const suma = puntuacion.score(torneo[0].matches[index].score, partido.score)
+                        const suma = puntuacion.score(torneo[0].matches[index].score, partido.score,torneo[0].matches[index].apuesta)
                         ptsAcumulados+=suma
                         //funcion que suma puntajes segun reglas escogidas
                         const i = 0

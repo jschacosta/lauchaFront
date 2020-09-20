@@ -42,7 +42,7 @@
             </v-list-item-title>
           </v-list-item-content>
 
-         <v-list-item-content  v-if="torneos[0].players.length===0" class="normal"> 
+         <v-list-item-content  v-if="torneos[0].players.length===0 && torneos[0].name!=''" class="normal"> 
             <v-list-item-title class="headline mb-1 d-flex justify-center ">
               <v-icon large left color="#2C3A47">fab fa-old-republic</v-icon>
               Aún no hay jugadores en este torneo, <br> Sé el primero en unirte
