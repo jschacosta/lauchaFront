@@ -2,7 +2,7 @@
   <v-dialog v-model='dialogo' persistent max-width="800px"  >
     <v-stepper v-model="paso" dark dense >
       <!-- ENCABEZADO - PASO 1 -->
-      <v-stepper-header >
+      <v-stepper-header v-if="(imagen==='xl' || imagen ==='lg') && porJugar.length<7">
         <v-stepper-step editable :complete="paso > 1" :step="1" >Inicio</v-stepper-step>
       <!-- ENCABEZADO - PASOS INTERMEDIOS-->
         <div v-for="(item,i) of porJugar" :key="i">
@@ -10,6 +10,8 @@
           <v-divider  v-if="i !== porJugar.length"></v-divider>
         </div>
       </v-stepper-header>
+
+      
 
       <v-stepper-items >
       <!-- CUERPO - PASO 1 -->
@@ -25,16 +27,33 @@
           >
           </v-text-field>
           </v-card>
-          <v-btn class="mx-5" color="primary" @click="nextStep(1)"> Iniciar</v-btn>
-            <v-btn  class="mx-5" text @click ="cerrarDialog()">Salir</v-btn>
+            <v-btn  class="mx-3" text @click ="cerrarDialog()">Salir</v-btn>
+          <v-btn class="mx-3" color="primary" @click="nextStep(1)"> Iniciar</v-btn>
         </v-stepper-content>
       <!-- CUERPO - PASOS INTERMEDIOS -->
         <div v-for="(partido,j) of porJugar" :key="j"  >
         <v-stepper-content :step="j+2"  >
+
+
+
+          <v-stepper-header v-if="imagen==='xs' || imagen ==='sm' || imagen==='md' || porJugar.length>=7">
+        <v-row class="ma-0 pa-0">
+            <v-btn class="mx-3" color="primary" v-if="j+2===porJugar.length+1" @click="nextStep(j+2)"> Volver a Inicio</v-btn>
+            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j); scrollToTop()"  v-if="j+2!=porJugar.length+1"> 
+              <v-icon>keyboard_arrow_left</v-icon>
+            </v-btn>
+            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=porJugar.length+1"> 
+              <v-icon>keyboard_arrow_right</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn text @click ="cerrarDialog()">Salir</v-btn>
+            <v-btn  class="mx-3" color="success" v-if="j+2===porJugar.length+1" @click="enviar(); cerrarDialog()">Enviar Presagio</v-btn>
+          </v-row>
+      </v-stepper-header>
           
           <v-card class="mb-12" color="#2C3A47">
             <v-row class="d-flex justify-center align-center " dense>
-              <v-col class="d-flex justify-end" cols="2">
+              <v-col class="d-flex justify-end text-center" cols="2">
                   {{partido.local}}
               </v-col>
               <v-col class="mt-6 d-flex justify-start align-center" cols="2" >
@@ -46,7 +65,7 @@
               <v-col class="mt-6 d-flex justify-start align-center" cols="2">
                 <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='partido.score[1]' min="0"></v-text-field>
               </v-col>
-              <v-col class="d-flex justify-start align-center" cols="2"> 
+              <v-col class="d-flex justify-start align-center text-center" cols="2"> 
                   {{partido.visita}}
               </v-col>
             </v-row>
@@ -57,7 +76,7 @@
 
             <v-row class="d-flex justify-center align-center mb-5 " dense>
                 <v-col class=" pa-0 ma-0 d-flex flex-column justify-center align-center ">
-                  <p class="ma-0 pa-0">Local</p>
+                  <p class="ma-0 pa-0 ">Local</p>
                     <v-chip class="ma-1 font-weight-bold"  color="lime accent-4" text-color="black"> {{partido.apuesta[0]}} </v-chip>
                 </v-col>
                 <v-col class=" pa-0 ma-0 d-flex flex-column justify-center align-center ">
@@ -78,19 +97,28 @@
                   class="mx-8"
                   v-for="(texto,m) of partido.rules[k].options.text"
                   :key="m"
-                  :label="`${texto}${espacio.repeat(30-texto.length)}(${partido.rules[k].options.values[m]} pts )`"
+                  :label="`${texto}${espacio.repeat(10)}(${partido.rules[k].options.values[m]} pts ) `"
                   :value="m"
-                ></v-radio>
+                >
+                
+                
+                
+                </v-radio>
               </v-radio-group>
             </div>
           </v-card>
           
           <v-row>
-            <v-btn class="mx-10" color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=porJugar.length+1"> Siguiente</v-btn>
-            <v-btn class="mx-10" color="primary" v-if="j+2===porJugar.length+1" @click="nextStep(j+2)"> Volver a Inicio</v-btn>
-            <v-btn text @click ="cerrarDialog()">Salir</v-btn>
+            <v-btn class="mx-3" color="primary" v-if="j+2===porJugar.length+1" @click="nextStep(j+2)"> Volver a Inicio</v-btn>
+            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j); scrollToTop()"  v-if="j+2!=porJugar.length+1"> 
+              <v-icon>keyboard_arrow_left</v-icon>
+            </v-btn>
+            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=porJugar.length+1"> 
+              <v-icon>keyboard_arrow_right</v-icon>
+            </v-btn>
             <v-spacer></v-spacer>
-            <v-btn  class="mx-10" color="success" v-if="j+2===porJugar.length+1" @click="enviar(); cerrarDialog()">Enviar Presagio</v-btn>
+            <v-btn text @click ="cerrarDialog()">Salir</v-btn>
+            <v-btn  class="mx-3" color="success" v-if="j+2===porJugar.length+1" @click="enviar(); cerrarDialog()">Enviar Presagio</v-btn>
           </v-row>
         </v-stepper-content>
         </div>
@@ -139,13 +167,19 @@ export default {
         }
       }
     },
-
-
     nickName(){
       const nombre= this.nombre.charAt(0).toUpperCase() + '.' + this.apellido.charAt(0).toUpperCase() +this.apellido.slice(1)
       return {name:nombre}
     },
-    
+    imagen(){
+      switch (this.$vuetify.breakpoint.name){
+          case 'xs': return 'xs'
+          case 'sm': return 'sm'
+          case 'md': return 'md'
+          case 'lg': return 'lg'
+          case 'xl': return 'xl'
+      }
+    }
   },
   methods:{
     ...mapActions( ['guardarUsuario']),
