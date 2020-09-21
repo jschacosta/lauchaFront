@@ -21,7 +21,13 @@
         <template v-slot:[`item.accion`]="{ item }">
           <v-btn class="mr-2" small color="primary"  @click="añadirReglas(item)" v-if="item.boton===true">
             + Rule
+          </v-btn>
+
+          <v-btn class="mr-2"  small color="deep-purple darken-1" dark @click="editarApuestas(item)" >
+            <v-icon dark>mdi-pencil</v-icon> 
+            Apuestas
           </v-btn> 
+
           <v-btn class="mr-2"  small color="yellow darken-1"  @click="editarReglas(item)" v-if="item.boton===false">
             <v-icon dark>mdi-pencil</v-icon> 
             Rules
@@ -61,7 +67,7 @@ export default {
       ...mapState('match',['partidos','boton','pedido'])
   },
   methods:{
-      ...mapMutations('match',['verPartidos','deletePartido','dialogReglas','actualizarReglas','subirReglas','pedir']),
+      ...mapMutations('match',['verPartidos','deletePartido','dialogReglas','actualizarReglas','subirReglas','subirApuestas','pedir']),
       ...mapMutations( 'loading',['loadingFunction']),
       ...mapMutations( 'confirmar',['confirmar']),
       ...mapActions('relato',['añadirCalendario']),
@@ -84,6 +90,9 @@ export default {
       },
       editarReglas(item){
         this.subirReglas(item)
+      },
+      editarApuestas(item){
+        this.subirApuestas(item)
       },
       borrarReglas(item){
         this.loadingFunction()

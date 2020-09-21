@@ -43,6 +43,7 @@
     <selectRuleMatch></selectRuleMatch>
     <editRuleMatch></editRuleMatch>
     <dialogoConfirmar></dialogoConfirmar>
+    <editApuesta></editApuesta>
   </div>
 </template>
 
@@ -54,6 +55,7 @@ import tablaPartidos from '@/components/tables/tablaPartidos';
 import selectRuleMatch from '@/components/dialog/selectRuleMatch.vue'
 import editRuleMatch from '@/components/dialog/editRuleMatch.vue'
 import dialogoConfirmar from '@/components/utils/dialog/dialogConfirmar.vue'
+import editApuesta from '@/components/dialog/editApuesta.vue'
 import { mapMutations, mapState } from 'vuex';
 export default {
   name: 'Armado',
@@ -64,7 +66,8 @@ export default {
       tablaPartidos,
       selectRuleMatch,
       editRuleMatch,
-      dialogoConfirmar
+      dialogoConfirmar,
+      editApuesta
   },
   data:()=>({
       equipo1:"",

@@ -6,11 +6,12 @@
       class="font-weight-medium "
       color="#2C3A47"
       dark 
+      
     >
-      <v-col class="text-center" cols="12">
-          {{ new Date().getFullYear() }} — <strong>Johann Schwarze</strong>
+      <v-col class="text-center subtitle-2 ma-0 pa-0" cols="12">
+          {{ new Date().getFullYear() }} — <strong >Johann Schwarze</strong>
         </v-col>
-    </v-footer>
+    </v-footer> 
     <!-- Footer para Telefonos con botones -->
     <v-bottom-navigation v-if="estaActivo && imagen==='xs' && !rutaAdmin && !rutaLogin"  app  background-color="#2C3A47" dark >
           <v-item-group multiple >
@@ -63,3 +64,6 @@ export default {
   }
 }
 </script>
+<style scoped>
+  
+</style>

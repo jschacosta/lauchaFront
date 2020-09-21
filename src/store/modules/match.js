@@ -12,6 +12,14 @@ export default{
             estado: false,
             partido: {}
         },
+        apuestaPartido:{
+            estado: false,
+            partido: {
+                local:"",
+                visita:"",
+                apuesta:[null,null,null]
+            },
+        },
         pedido:false
     },
     mutations:{
@@ -55,6 +63,10 @@ export default{
         subirReglas(state,payload){
             state.reglasEditadas.estado = !state.reglasEditadas.estado
             state.reglasEditadas.partido = payload
+        },
+        subirApuestas(state,payload){
+            state.apuestaPartido.estado = !state.apuestaPartido.estado
+            state.apuestaPartido.partido = payload
         },
         limpiarPartidos(state){
             state.partidos=[]

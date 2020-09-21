@@ -2,6 +2,7 @@
     <v-row justify="center">
         <v-dialog v-model="newItem.estado" persistent max-width="600px">
             <v-card>
+                {{newItem}}
                 <v-card-title>
                     <span class="headline" v-if="newItem.id===''">Nueva Regla</span>
                     <span class="headline" v-if="newItem.id!=''">Editar Regla</span>
@@ -230,32 +231,38 @@ export default {
                 name:this.newItem.nuevoNombre,
                 text:this.newItem.text,
                 type:this.newItem.seleccion,
-                options:[],
+                options:{text:[],values:[]},
                 numeric:"",
                 date:this.newItem.date
             };
             if(nuevo.type==='EVENTO'){
-                nuevo.options=this.newItem.chips
+                nuevo.options.text=this.newItem.chips
+                nuevo.options.values=this.newItem.valores
             };
             if(nuevo.type==='BOLEANO'){
-                nuevo.options=['Sí','No']
+                nuevo.options.text=['Sí','No']
+                nuevo.options.values=this.newItem.valores
             };
             if(nuevo.type==='NUMERICO'){
-                    nuevo.numeric="RANGOS";
                 if(this.newItem.selectNum==="RANGOS"){
-                    nuevo.options.push(`${this.newItem.min} o menos`);
+                    nuevo.numeric="RANGOS";
+                    nuevo.options.text.push(`${this.newItem.min} o menos`);
                     for (let i of this.newItem.chipsnumb ){
-                        nuevo.options.push(i);
+                        nuevo.options.text.push(i);
                     }
-                    nuevo.options.push(`${this.newItem.max} o más`);
+                    nuevo.options.text.push(`${this.newItem.max} o más`);
+                    nuevo.options.values=this.newItem.valores
+                    nuevo.options.values.push(this.newItem.ultimoValor)
                 }
                 else{
                     nuevo.numeric="VALORES FIJOS";
                    for (let i of this.newItem.chipsnumb ){
-                        nuevo.options.push(i);
-                    } 
+                        nuevo.options.text.push(i);
+                    }
+                    nuevo.options.values=this.newItem.valores
                 }
             }
+            console.log(nuevo)
             this.axios.put(`/rules/${this.newItem.id}`,nuevo,config)
                 .then(res=>{
                     let regla=res.data
