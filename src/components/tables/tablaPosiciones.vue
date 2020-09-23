@@ -6,7 +6,7 @@
 
           <v-list-item-group class="pa-0 ma-0 ">
             
-            <v-list-item-content class="pa-0 ma-0 fondoFecha" v-if="torneos[0].players.length>0">
+            <v-list-item-content class="pa-0 ma-0 fondoFecha" v-if="torneos[0].name!=''">
               <v-row class="pa-0 ma-0  ancho font-weight-bold">
                 <v-col cols="2" class="text-left pa-0 py-3">Pos</v-col>
               <v-divider vertical></v-divider>
@@ -17,21 +17,18 @@
               </v-row>
             </v-list-item-content>
             <v-divider></v-divider>
-
-            <div v-for="(jugador,k) of torneos[0].players" :key="k" >
-
-              <v-list-item class="pa-0 ma-0 "  :class="colores[k]">
-              <v-row class="ancho">
-                <v-col cols="2" class="text-left">{{k+1}}</v-col>
-              <v-divider vertical></v-divider>
-                <v-col cols="6" class="text-center">{{jugador.nickName}}</v-col>
-              <v-divider vertical></v-divider>
-                <v-col cols="2" class="text-right"  >{{jugador.points}}</v-col>
-
-              </v-row>
-              </v-list-item>
-              <v-divider></v-divider>
-            </div>
+              <div  v-for="(jugador,k) of torneos[0].players" :key="k" >
+                <v-list-item class="pa-0 ma-0 " :class="colores[k]">
+                <v-row class="ancho" >
+                  <v-col cols="2" class="text-left">{{k+1}}</v-col>
+                <v-divider vertical></v-divider>
+                  <v-col cols="6" class="text-center">{{jugador.nickName}}</v-col>
+                <v-divider vertical></v-divider>
+                  <v-col cols="2" class="text-right">{{jugador.points}}</v-col>
+                </v-row>
+                </v-list-item>
+                <v-divider></v-divider>
+              </div>
 
           </v-list-item-group>
 
@@ -42,12 +39,17 @@
             </v-list-item-title>
           </v-list-item-content>
 
-         <v-list-item-content  v-if="torneos[0].players.length===0 && torneos[0].name!=''" class="normal"> 
+         <v-list-item-content   v-if="torneos[0].players.length===0 && torneos[0].name!=''  && imagen!='xs'"   class="normal"> 
             <v-list-item-title class="headline mb-1 d-flex justify-center ">
               <v-icon large left color="#2C3A47">fab fa-old-republic</v-icon>
-              Aún no hay jugadores en este torneo, <br> Sé el primero en unirte
+              <p>Aún no hay jugadores en este torneo <br> Sé el primero en unirte</p>
             </v-list-item-title>
           </v-list-item-content>
+
+          <v-list-item v-if="torneos[0].players.length===0 && torneos[0].name!='' && (imagen==='xs')" class="normal">>
+              <v-icon large  color="#2C3A47">fab fa-old-republic</v-icon>
+              <p class="d-flex mt-2 mx-2">Aún no hay jugadores en este torneo <br> Sé el primero en unirte</p>
+           </v-list-item>
 
         </v-list>
       </v-card>
@@ -62,31 +64,45 @@ export default {
   computed:{
     ...mapState('torneo',['torneos']),
     colores(){
-      const largo = this.torneos[0].players.length
       const array=[]
-      if(largo<4){
-        for (let i = 0 ; i < largo ; i++) {
-          array.push('normal')
-        }
-        return array
-      }
-      if(4<largo && largo<7){
-        array.push('ascenso')
-        for (let i = 0; i < largo-2; i++) {
-          array.push('normal')
-        }
-        array.push('descenso')
-        return array
-      }
-      if(largo>=7){
-        array.push('ascenso')
-        for (let i = 0; i < largo-3; i++) {
+      if(this.torneos[0].name!=""){
+        const largo = this.torneos[0].players.length
+        if(largo<=4){
+          for (let i = 0 ; i < largo ; i++) {
             array.push('normal')
+          }
+          return array
         }
-        array.push('descenso')
-        array.push('descenso')
+        if(4<largo && largo<7){
+          array.push('ascenso')
+          for (let i = 0; i < largo-2; i++) {
+            array.push('normal')
+          }
+          array.push('descenso')
+          return array
+        }
+        if(largo>=7){
+          array.push('ascenso')
+          for (let i = 0; i < largo-3; i++) {
+              array.push('normal')
+          }
+          array.push('descenso')
+          array.push('descenso')
+          return array
+        }  
+      }if(this.torneos[0].name===""){
+        array.push('hola')
         return array
-      }  
+      }
+    },
+    imagen(){
+      switch (this.$vuetify.breakpoint.name){
+          case 'xs': return 'xs'
+          case 'sm': return 'sm'
+          case 'md': return 'md'
+          case 'lg': return 'lg'
+          case 'xl': return 'xl'
+      }
     }
   },
   methods:{

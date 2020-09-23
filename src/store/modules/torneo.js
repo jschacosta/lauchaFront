@@ -3,19 +3,29 @@ export default{
     namespaced:true,
     name:'torneo',
     state:{
-        torneos:[{name:"",players:[]}],
+        torneos:[
+            {   name:"",
+                players:[
+                    
+                ]
+            }
+        ],
         porJugar:[], //contine datos de partidos por jugar del torneo
         matchJugador:[], // contiene datos de partidos del torneo para el jugador
         matchTodos:[], // contiene todos los datos de partidos del torneo 
         dialogo:false       
-    },
+    }, 
     mutations:{
         cambiarDialog(state,payload){
             state.dialogo=payload
         },
         obtenerTorneos(state,payload){
             if(payload.length===0){
-                state.torneos=[{name:"",players:[]}]
+                state.torneos=[{   name:"",
+                players:[
+                    
+                ]
+            }]
             }
             if(payload.length!=0){
                 if(payload[0].players.length===0){
@@ -97,16 +107,18 @@ export default{
         puntajes({commit},torneo){
             if(torneo[0].name==='' && torneo[0].players.length===0){
                 const vacio= []
+
                 commit('obtenerTorneos',vacio)
             }
             if(torneo[0].name!='' && torneo[0].players.length===0){
-                const vacio= []
                 commit('obtenerTorneos',torneo)
             }
             if(torneo[0].players.length!=0){
                 for (let jugador of torneo[0].players){
                     var ptsAcumulados=0
+
                     for (let partido of jugador.matches){
+
                         const index=torneo[0].matches.findIndex(item=>item._id === partido._id);
                         //Funcion que suma puntajes según score, las entradas son arreglos
                         const suma = puntuacion.score(torneo[0].matches[index].score, partido.score,torneo[0].matches[index].apuesta)

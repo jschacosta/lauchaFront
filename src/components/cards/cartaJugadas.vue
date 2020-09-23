@@ -43,21 +43,35 @@
           </v-row >
 
           <div  v-for="(item2,k) of parti2.rules" :key="k" >
-            <h4 class="mt-1 mb-2 mx-5 font-weight-regular">{{item2.text}}</h4>
-              <v-radio-group v-model="parti2.ruleResult[k]" disabled>
-              <v-radio
-                class="mx-8"
-                v-for="(texto,m) of parti2.rules[k].options.text"
-                :key="m"
-                :label="`${texto}(${parti2.rules[k].options.values[m]} pts )`"
-                :value="m"
-              ></v-radio>
+
+            <h4 class="mt-1 mb-2 mx-5 font-weight-regular">{{item2.text}}
+              <v-icon right v-if="parti2.ruleElections[k]===parti2.ruleResult[k]-1 && parti2.ruleResult[k]-1!=-1" color="success">fas fa-check</v-icon> 
+              </h4>
+         
+              <v-radio-group v-model="parti2.ruleElections[k]" disabled>
+                <v-row  dense v-for="(texto,m) of parti2.rules[k].options.text" :key="m">
+                  <v-col>
+                    <v-radio
+                      class="mx-8"
+                      :label="`${texto}`"
+                      :value="m"
+                    ></v-radio>
+                   </v-col>
+                   <v-col>
+                      {{parti2.rules[k].options.values[m]}} pts 
+                   </v-col>
+
+                 </v-row>
+
             </v-radio-group>
+                
+                
           </div>
               
         </v-card>
       </v-tab-item>
     </v-tabs>
+
   </div> 
 </template>
 
@@ -79,7 +93,7 @@ export default {
         for(let item2 of this.matchJugador){
           if( item._id===item2._id){
             item2.score=item.score
-            item2.ruleResult=item.ruleElections
+            item2.ruleElections=item.ruleElections
             arrayJugador.push(item2)
           }
         } 

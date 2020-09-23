@@ -1,6 +1,6 @@
 <template >
-  <v-dialog v-model='dialogo' persistent max-width="800px"  >
-    <v-stepper v-model="paso" dark dense >
+  <v-dialog v-model='dialogo' persistent max-width="800px" >
+    <v-stepper v-model="paso" dark dense>
       <!-- ENCABEZADO - PASO 1 -->
       <v-stepper-header v-if="(imagen==='xl' || imagen ==='lg') && porJugar.length<7">
         <v-stepper-step editable :complete="paso > 1" :step="1" >Inicio</v-stepper-step>
@@ -32,13 +32,14 @@
         </v-stepper-content>
       <!-- CUERPO - PASOS INTERMEDIOS -->
         <div v-for="(partido,j) of porJugar" :key="j"  >
-        <v-stepper-content :step="j+2"  >
+        <v-stepper-content :step="j+2"  class="ma-0 pa-0 pa-3">
 
 
 
           <v-stepper-header v-if="imagen==='xs' || imagen ==='sm' || imagen==='md' || porJugar.length>=7">
         <v-row class="ma-0 pa-0">
-            <v-btn class="mx-3" color="primary" v-if="j+2===porJugar.length+1" @click="nextStep(j+2)"> Volver a Inicio</v-btn>
+                        <v-btn class="mx-2" color="primary" v-if="j+2===porJugar.length+1" @click="nextStep(j+2)"> <v-icon left>keyboard_arrow_left</v-icon > Inicio</v-btn>
+
             <v-btn class="mx-3" fab small color="primary" @click="nextStep(j); scrollToTop()"  v-if="j+2!=porJugar.length+1"> 
               <v-icon>keyboard_arrow_left</v-icon>
             </v-btn>
@@ -47,35 +48,42 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn text @click ="cerrarDialog()">Salir</v-btn>
-            <v-btn  class="mx-3" color="success" v-if="j+2===porJugar.length+1" @click="enviar(); cerrarDialog()">Enviar Presagio</v-btn>
+            <v-btn  class="mx-2" color="success" v-if="j+2===porJugar.length+1" @click="enviar(); cerrarDialog()">
+             Enviar <v-icon right>fas fa-share</v-icon></v-btn>
           </v-row>
       </v-stepper-header>
           
-          <v-card class="mb-12" color="#2C3A47">
+          <v-card class=" mb-12" color="#2C3A47">
             <v-row class="d-flex justify-center align-center " dense>
-              <v-col class="d-flex justify-end text-center" cols="2">
+              <v-col class="d-flex justify-center align-center text-center text-caption" cols="3" v-if="imagen==='xs'">
+                  {{partido.local}}
+              </v-col>
+              <v-col class="d-flex justify-center align-center text-center" cols="3" v-if="imagen!='xs'">
                   {{partido.local}}
               </v-col>
               <v-col class="mt-6 d-flex justify-start align-center" cols="2" >
                 <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='partido.score[0]' min="0"></v-text-field>
               </v-col >
-              <v-col class="d-flex justify-center align-center" cols="1">
+              <v-col class="d-flex justify-center align-center" cols="2">
                 <h3>-</h3>
               </v-col>
-              <v-col class="mt-6 d-flex justify-start align-center" cols="2">
+              <v-col class="mt-6 d-flex justify-start align-center" cols="2"> 
                 <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='partido.score[1]' min="0"></v-text-field>
               </v-col>
-              <v-col class="d-flex justify-start align-center text-center" cols="2"> 
+              <v-col class="d-flex justify-center align-center text-center" cols="3" v-if="imagen!='xs'"> 
+                  {{partido.visita}}
+              </v-col>
+              <v-col class="d-flex justify-center align-center text-center text-caption" cols="3" v-if="imagen==='xs'">
                   {{partido.visita}}
               </v-col>
             </v-row>
 
-            <v-row class="d-flex justify-center align-center">
+            <v-row class="d-flex justify-center align-center" dense>
               <h2 class="font-weight-light mb-2" >Juega</h2>
             </v-row>
 
-            <v-row class="d-flex justify-center align-center mb-5 " dense>
-                <v-col class=" pa-0 ma-0 d-flex flex-column justify-center align-center ">
+            <v-row class=" ma-0 pa-0 mb-5 " dense>
+                <v-col class="  d-flex flex-column justify-center align-center ">
                   <p class="ma-0 pa-0 ">Local</p>
                     <v-chip class="ma-1 font-weight-bold"  color="lime accent-4" text-color="black"> {{partido.apuesta[0]}} </v-chip>
                 </v-col>
@@ -90,8 +98,12 @@
             </v-row>
 
 
+                <v-btn class="ml-2" color="primary" x-small  @click="uncheck(j)">Limpiar Valores</v-btn>
             <div  v-for="(item2,k) of partido.rules" :key="k" >
+              <v-row >
               <h4 class="mt-1 mb-2 mx-5 font-weight-regular">{{item2.text}}</h4>
+              </v-row>
+
                 <v-radio-group v-model="partido.ruleResult[k]">
                 <v-radio
                   class="mx-8"
@@ -99,17 +111,15 @@
                   :key="m"
                   :label="`${texto}${espacio.repeat(10)}(${partido.rules[k].options.values[m]} pts ) `"
                   :value="m"
+                 
                 >
-                
-                
-                
                 </v-radio>
               </v-radio-group>
             </div>
           </v-card>
           
           <v-row>
-            <v-btn class="mx-3" color="primary" v-if="j+2===porJugar.length+1" @click="nextStep(j+2)"> Volver a Inicio</v-btn>
+            <v-btn class="mx-3" color="primary" v-if="j+2===porJugar.length+1" @click="nextStep(j+2)"> <v-icon left>keyboard_arrow_left</v-icon > Inicio</v-btn>
             <v-btn class="mx-3" fab small color="primary" @click="nextStep(j); scrollToTop()"  v-if="j+2!=porJugar.length+1"> 
               <v-icon>keyboard_arrow_left</v-icon>
             </v-btn>
@@ -118,7 +128,8 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn text @click ="cerrarDialog()">Salir</v-btn>
-            <v-btn  class="mx-3" color="success" v-if="j+2===porJugar.length+1" @click="enviar(); cerrarDialog()">Enviar Presagio</v-btn>
+            <v-btn  class="mx-3" color="success" v-if="j+2===porJugar.length+1" @click="enviar(); cerrarDialog()">
+             Enviar <v-icon right>fas fa-share</v-icon></v-btn>
           </v-row>
         </v-stepper-content>
         </div>
@@ -201,6 +212,9 @@ export default {
     cerrarDialog(){
       this.cambiarDialog(false)
     },
+    uncheck(j){
+      this.porJugar[j].ruleResult=[]
+    },
     enviar(){
       this.loadingFunction()
       const player ={
@@ -256,8 +270,6 @@ export default {
 
         //En caso que esté editando sus datos del torneo 
       if(index!=-1){
-      console.log('antiguo')
-
         const elTorneo = this.torneos[0]
         const indexPlayer=elTorneo.players.indexOf(player.idPlayer);
         
@@ -323,7 +335,11 @@ export default {
   .centered-input >>> input {
     text-align: center
   }
-
+.ancho{
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
 
 
 </style>
