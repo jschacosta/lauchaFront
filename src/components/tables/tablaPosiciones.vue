@@ -6,7 +6,7 @@
 
           <v-list-item-group class="pa-0 ma-0 ">
             
-            <v-list-item-content class="pa-0 ma-0 fondoFecha" v-if="torneos[0].name!=''">
+            <v-list-item-content class="pa-0 ma-0 fondoFecha" v-if="torneos[0].name!=''" >
               <v-row class="pa-0 ma-0  ancho font-weight-bold">
                 <v-col cols="2" class="text-left pa-0 py-3">Pos</v-col>
               <v-divider vertical></v-divider>
@@ -18,7 +18,7 @@
             </v-list-item-content>
             <v-divider></v-divider>
               <div  v-for="(jugador,k) of torneos[0].players" :key="k" >
-                <v-list-item class="pa-0 ma-0 " :class="colores[k]">
+                <v-list-item class="pa-0 ma-0 " :class="colores[k]" @click="verOtro(jugador._id)">
                 <v-row class="ancho" >
                   <v-col cols="2" class="text-left">{{k+1}}</v-col>
                 <v-divider vertical></v-divider>
@@ -63,6 +63,7 @@ export default {
   name: 'tablaPosiciones',
   computed:{
     ...mapState('torneo',['torneos']),
+    ...mapState(['_id']),
     colores(){
       const array=[]
       if(this.torneos[0].name!=""){
@@ -108,6 +109,11 @@ export default {
   methods:{
     ...mapMutations( 'loading',['loadingFunction']),
     ...mapMutations( 'torneo',['obtenerTorneos']),
+    verOtro(id){
+      if(id!=this._id){
+        this.$router.push({path:`/torneos/${id}`})
+      }
+    }
   }
 }
 </script>
@@ -122,10 +128,7 @@ export default {
   background-color: #2C3A47;
   color: white
 }
-.fondoFecha{
-  background-color: #2C3A47;
-  color: white
-}
+
 .descenso{
   background-color: #ffcccc;
   color: #2C3A47
@@ -150,3 +153,6 @@ export default {
     border-color: #B0ABAB !important; 
 } */
 </style>
+
+
+

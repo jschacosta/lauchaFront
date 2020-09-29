@@ -1,3 +1,4 @@
+import ordenar from '../data/ordenar';
 export default{
     namespaced:true,
     state:{
@@ -8,24 +9,12 @@ export default{
     },
     mutations:{
         ordenarCalendario(state){
-            state.partidosCalendario.sort(function (valor1,valor2){
-                //si valor1 tiene un valor mayor que valor2, se va hacia abajo
-                if (valor1.fechaPartido < valor2.fechaPartido) return -1;
-                if (valor1.fechaPartido > valor2.fechaPartido) return 1;
-                //lo mismo pero para la hora
-                if (valor1.horaPartido < valor2.horaPartido) return -1;
-                if (valor1.horaPartido > valor2.horaPartido) return 1;
-            })
+            const datos = ordenar.ordenarFecha(state.partidosCalendario) //funcion que ordena por fecha y luego por hora
+            state.partidosCalendario=datos
         },
         ordenarTerminados(state){
-            state.partidosTerminados.sort(function (valor1,valor2){
-                //si valor1 tiene un valor mayor que valor2, se va hacia abajo
-                if (valor1.fechaPartido < valor2.fechaPartido) return -1;
-                if (valor1.fechaPartido > valor2.fechaPartido) return 1;
-                //lo mismo pero para la hora
-                if (valor1.horaPartido < valor2.horaPartido) return -1;
-                if (valor1.horaPartido > valor2.horaPartido) return 1;
-            })
+            const datos = ordenar.ordenarFecha(state.partidosTerminados) //funcion que ordena por fecha y luego por hora
+            state.partidosTerminados=datos
         },
         pedirCalendario(state){
             state.pedido=true
@@ -85,5 +74,8 @@ export default{
             }
             commit('ordenarTerminados')
         }  
-    }    
+    },
+    modules:{
+        ordenar
+    } 
 }

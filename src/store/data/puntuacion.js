@@ -3,12 +3,16 @@ function score(p,j,apuesta) {
     //const j = [ j1, j2 ];  Resultado jugador final [ local , visita ]
     // const apuesta = [local,empate,visita]
     var suma = 0;
+    var desglose = [null,null,null]
     if (p[0] - p[1] === 0 && p[0]!=null) {
         if (j[0] - j[1] === 0) {
             suma += apuesta[1] //resultado
-            suma += 50 + 50 * p[0]; //diferencia goles
+            suma += 50 ; //diferencia goles
+            desglose[0] = apuesta[1]
+            desglose[1] = 50 
             if (j[0] - p[0] === 0) {
                 suma += 100; //exacto con goles
+                desglose[2]=100
             }
         }
     }
@@ -16,25 +20,32 @@ function score(p,j,apuesta) {
         if ( (p[0] - p[1] > 0 && j[0] - j[1] > 0) || (p[0] - p[1] < 0 && j[0] - j[1] < 0) ) {
             if(p[0] - p[1] > 0 && j[0] - j[1] > 0){
                 suma += apuesta[0]; //resultado
+                desglose[0] = apuesta[0]
                 if (p[0] - p[1] === j[0] - j[1] || p[1] - p[0] === j[1] - j[0]) {
                     suma += 50 + 50 * Math.abs(p[0] - p[1]); // diferencia goles
+                    desglose[1] = 50 + 50 * Math.abs(p[0] - p[1]);
                     if (p[0] === j[0] && p[1] == j[1]) {
                         suma += 100; // exacto con goles
+                        desglose[2]=100
                     }
                 }
             }
             if(p[0] - p[1] < 0 && j[0] - j[1] < 0){
                 suma += apuesta[2]; //resultado
+                desglose[0] = apuesta[2]
                 if (p[0] - p[1] === j[0] - j[1] || p[1] - p[0] === j[1] - j[0]) {
                     suma += 50 * Math.abs(p[0] - p[1]); // diferencia goles
+                    desglose[1] = 50 * Math.abs(p[0] - p[1]);
+
                     if (p[0] === j[0] && p[1] == j[1]) {
                         suma += 100; // exacto con goles
+                        desglose[2]=100
                     }
                 }
             }
         }
     }
-    return suma  
+    return {suma:suma,desglose:desglose}  
 }
 
 module.exports = {score}

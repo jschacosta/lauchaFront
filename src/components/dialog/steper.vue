@@ -234,12 +234,9 @@ export default {
         }
         j++
       }
-      console.log('aqui')
       const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
-      console.log(index)
       //En caso que sea nuevo en el torneo, se debe agregar el id de torneo a su usuario
         if(index===-1){
-      console.log('nuevo')
 
           const paraToken = {torneoId:this.torneos[0]._id, usuarioId:this._id}
         this.axios.put(`/user-torneo`,paraToken)
@@ -257,6 +254,7 @@ export default {
         .then(res=>{
           const array=[]
           array.push(res.data)
+          console.log(array)
           this.puntajes(array)
           let aviso="Jugadas ingresadas con éxito"
           this.agregarSnack(aviso)

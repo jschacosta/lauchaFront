@@ -45,7 +45,7 @@
             <v-icon>fas fa-arrow-right</v-icon>
           </v-list-item-icon>
           <v-list-item-content class="eltexto">
-          <p class="font-weight-black">Pronósticos Especiales:</p> Cada partido puede tener preguntas adicionales que tiene su puntaje propio. Te llevas el puntaje en caso de acertar al evento exacto. Puedes no responder estas preguntas.
+          <p class="font-weight-black">Pronósticos Especiales:</p> Cada partido puede tener preguntas adicionales que tiene su puntaje propio. Te llevas el puntaje en caso de acertar al evento exacto. <p  class="font-weight-black">En el caso que no aciertes, ese puntaje se descontará de tu acumulado.</p>Este tipo de jugada puede llevarte a la cima o dejarte en el abismo.
             <v-list-item-title ></v-list-item-title>
           </v-list-item-content>
         </v-list-item>

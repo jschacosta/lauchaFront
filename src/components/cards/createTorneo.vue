@@ -85,10 +85,17 @@ export default {
           matches:[]
           }
           for (let item of partidos){
-            nuevoTorneo.matches.push({_id:item._id, score:null, ruleResult:[], valorRegla:[],apuesta:item.apuesta, ruleApuesta:[]})
+            const elemento = {_id:item._id, score:null, ruleResult:[], valorRegla:[],apuesta:item.apuesta, ruleApuesta:[], valorApuestaRegla:[]}
+            for (let objeto of item.rules){
+              elemento.valorApuestaRegla.push(objeto.options.values)
+            }
+            nuevoTorneo.matches.push(elemento)
+
           }
+          console.log(nuevoTorneo)
           await this.axios.post(`/torneos`, nuevoTorneo)
           .then(res=>{
+            console.log(res.data)
             this.obtenerTorneos(res.data)
           })
           .catch(e=>{

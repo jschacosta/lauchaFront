@@ -41,26 +41,26 @@ import Juegos from './tabs/Juegos.vue'
 import {  mapState } from 'vuex'
 
 export default {
-    name:"Home",
-    components:{
-      Posiciones,
-      Calendario,
-      Juegos
-    },
-    computed:{
-        ...mapState('torneo',['torneos']),
-        ...mapState(['_id']),
-        estaJugador(){
-            const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
-            if(index===-1){
-              return false
-            }else{
-              return true
-            }
+  name:"Home",
+  components:{
+    Posiciones,
+    Calendario,
+    Juegos
+  },
+  computed:{
+    ...mapState('torneo',['torneos']),
+    ...mapState(['_id']),
+    estaJugador(){
+        const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
+        if(index===-1){
+          return false
+        }else{
+          return true
         }
+      if(this.torneos[0].players.length=0){
+        return false
+      }
     }
+  }
 }
 </script>
-
-
-}

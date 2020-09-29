@@ -4,14 +4,8 @@ export default{
         tiempo:null,
         fecha:null,
         partidos: [],
-        verReglas: {
-            estado: false,
-            partido: {}
-        },
-        reglasEditadas: {
-            estado: false,
-            partido: {}
-        },
+        verReglas: { estado: false, partido: {} },
+        reglasEditadas: { estado: false, partido: {} },
         apuestaPartido:{
             estado: false,
             partido: {
