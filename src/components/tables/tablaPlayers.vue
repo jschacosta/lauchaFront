@@ -37,7 +37,7 @@
       :search="search"
       class="elevation-2"
       >
-        <template v-slot:item.accion="{ item }">          
+        <template v-slot:[`item.accion`]="{ item }">          
           <v-btn class="mr-2" fab dark small color="error" @click="borrarEquipo(item)">
             <v-icon dark>mdi-delete</v-icon>
           </v-btn>

@@ -1,17 +1,16 @@
 <template >
   <v-dialog v-model='dialogo' persistent max-width="800px" >
-    <v-stepper v-model="paso" dark dense>
+
+      <v-stepper v-model="paso" dark dense>
       <!-- ENCABEZADO - PASO 1 -->
-      <v-stepper-header v-if="(imagen==='xl' || imagen ==='lg') && porJugar.length<7">
+      <v-stepper-header v-if="(imagen==='xl' || imagen ==='lg') && losPartidos.length<7 &&paso!=1">
         <v-stepper-step editable :complete="paso > 1" :step="1" >Inicio</v-stepper-step>
       <!-- ENCABEZADO - PASOS INTERMEDIOS-->
-        <div v-for="(item,i) of porJugar" :key="i">
+        <div v-for="(item,i) of losPartidos" :key="i">
           <v-stepper-step editable :complete="paso > i+2" :step="i+2" >P{{i+1}}</v-stepper-step>
-          <v-divider  v-if="i !== porJugar.length"></v-divider>
+          <v-divider  v-if="i !== losPartidos.length"></v-divider>
         </div>
       </v-stepper-header>
-
-      
 
       <v-stepper-items >
       <!-- CUERPO - PASO 1 -->
@@ -24,31 +23,35 @@
             label="Escribe tu nombre de Jugador"
             color="white"
             v-model="nickName.name"
+            :rules="nameRules"
+            @keyup.enter="estado===false?revNombre():nextStep(1)"
           >
           </v-text-field>
           </v-card>
-            <v-btn  class="mx-3" text @click ="cerrarDialog()">Salir</v-btn>
-          <v-btn class="mx-3" color="primary" @click="nextStep(1)"> Iniciar</v-btn>
+          <v-row>
+            <v-btn  class="mx-3" text @click ="cerrarDialog(); estado=false; paso=1">Salir</v-btn>
+            <v-btn v-if="!estado" class="mx-3" color="primary" @click="revNombre()"> Siguiente</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn v-if="estado" class="mx-3" color="success" @click="nextStep(1); estado=false"> Iniciar</v-btn>
+          </v-row>
         </v-stepper-content>
       <!-- CUERPO - PASOS INTERMEDIOS -->
-        <div v-for="(partido,j) of porJugar" :key="j"  >
+        <div v-for="(partido,j) of losPartidos" :key="j"  >
         <v-stepper-content :step="j+2"  class="ma-0 pa-0 pa-3">
 
-
-
-          <v-stepper-header v-if="imagen==='xs' || imagen ==='sm' || imagen==='md' || porJugar.length>=7">
+          <v-stepper-header v-if="imagen==='xs' || imagen ==='sm' || imagen==='md' || losPartidos.length>=7">
         <v-row class="ma-0 pa-0">
-                        <v-btn class="mx-2" color="primary" v-if="j+2===porJugar.length+1" @click="nextStep(j+2)"> <v-icon left>keyboard_arrow_left</v-icon > Inicio</v-btn>
+                        <v-btn class="mx-2" color="primary" v-if="j+2===losPartidos.length+1" @click="nextStep(j+2)"> <v-icon left>keyboard_arrow_left</v-icon > Inicio</v-btn>
 
-            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j); scrollToTop()"  v-if="j+2!=porJugar.length+1"> 
+            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j); scrollToTop()" @keyright="nextStep(j); scrollToTop()" v-if="j+2!=losPartidos.length+1"> 
               <v-icon>keyboard_arrow_left</v-icon>
             </v-btn>
-            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=porJugar.length+1"> 
+            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=losPartidos.length+1"> 
               <v-icon>keyboard_arrow_right</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn text @click ="cerrarDialog()">Salir</v-btn>
-            <v-btn  class="mx-2" color="success" v-if="j+2===porJugar.length+1" @click="enviar(); cerrarDialog()">
+            <v-btn text @click ="cerrarDialog(); estado=false; paso=1">Salir</v-btn>
+            <v-btn  class="mx-2" color="success" v-if="j+2===losPartidos.length+1" @click="enviar(); cerrarDialog()">
              Enviar <v-icon right>fas fa-share</v-icon></v-btn>
           </v-row>
       </v-stepper-header>
@@ -62,13 +65,13 @@
                   {{partido.local}}
               </v-col>
               <v-col class="mt-6 d-flex justify-start align-center" cols="2" >
-                <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='partido.score[0]' min="0"></v-text-field>
+                <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='partido.score[0]'  min="0"  :rules="numberRules"></v-text-field>
               </v-col >
               <v-col class="d-flex justify-center align-center" cols="2">
                 <h3>-</h3>
               </v-col>
               <v-col class="mt-6 d-flex justify-start align-center" cols="2"> 
-                <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='partido.score[1]' min="0"></v-text-field>
+                <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='partido.score[1]' min="0" :rules="numberRules"></v-text-field>
               </v-col>
               <v-col class="d-flex justify-center align-center text-center" cols="3" v-if="imagen!='xs'"> 
                   {{partido.visita}}
@@ -104,31 +107,35 @@
               <h4 class="mt-1 mb-2 mx-5 font-weight-regular">{{item2.text}}</h4>
               </v-row>
 
-                <v-radio-group v-model="partido.ruleResult[k]">
-                <v-radio
-                  class="mx-8"
-                  v-for="(texto,m) of partido.rules[k].options.text"
-                  :key="m"
-                  :label="`${texto}${espacio.repeat(10)}(${partido.rules[k].options.values[m]} pts ) `"
-                  :value="m"
-                 
-                >
-                </v-radio>
+                <v-radio-group v-model="partido.ruleElections[k]">
+                  <v-row dense v-for="(texto,m) of partido.rules[k].options.text" :key="m">
+                    <v-col>
+                      <v-radio
+                        class="mx-8"
+                        :label="texto"
+                        :value="m"
+                      >
+                      </v-radio>
+                    </v-col>
+                    <v-col>
+                      {{partido.rules[k].options.values[m]}} pts
+                    </v-col>
+                  </v-row>
               </v-radio-group>
             </div>
           </v-card>
           
           <v-row>
-            <v-btn class="mx-3" color="primary" v-if="j+2===porJugar.length+1" @click="nextStep(j+2)"> <v-icon left>keyboard_arrow_left</v-icon > Inicio</v-btn>
-            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j); scrollToTop()"  v-if="j+2!=porJugar.length+1"> 
+            <v-btn class="mx-3" color="primary" v-if="j+2===losPartidos.length+1" @click="nextStep(j+2)"> <v-icon left>keyboard_arrow_left</v-icon > Inicio</v-btn>
+            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j); scrollToTop()"  v-if="j+2!=losPartidos.length+1"> 
               <v-icon>keyboard_arrow_left</v-icon>
             </v-btn>
-            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=porJugar.length+1"> 
+            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=losPartidos.length+1"> 
               <v-icon>keyboard_arrow_right</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn text @click ="cerrarDialog()">Salir</v-btn>
-            <v-btn  class="mx-3" color="success" v-if="j+2===porJugar.length+1" @click="enviar(); cerrarDialog()">
+            <v-btn text @click ="cerrarDialog(); estado=false; paso=1">Salir</v-btn>
+            <v-btn  class="mx-3" color="success" v-if="j+2===losPartidos.length+1" @click="enviar(); cerrarDialog()">
              Enviar <v-icon right>fas fa-share</v-icon></v-btn>
           </v-row>
         </v-stepper-content>
@@ -146,30 +153,48 @@ export default {
   name: 'steper',
   data:()=>( {
       paso: 1,
-      espacio: '\u00A0',
-      // '\u00A0' es un espacio en html
+      espacio: '\u00A0',  // '\u00A0' es un espacio en html
+      estado: false,
+      numberRules: [
+      (v) =>
+        (v >= 0) || "Debe ser positivo",
+      (v) =>
+        (v < 10) || "¿No será mucho?", 
+    ],
+     nameRules: [
+      (v) =>
+        (v.length < 16) || "Apodo muy largo",
+      (v) =>
+        (v.length > 0) || "No haz escrito Apodo",
+    ],
   }),
   computed:{
     ...mapState('torneo',['torneos','porJugar','dialogo']),
     ...mapState(['_id','nombre','apellido','losTorneos','usuarioDB']),
 
-    lospartidos(){
-      if(this.torneos[0].players.length===0){
+    losPartidos(){
+      if(this.torneos[0].players.length===0){ //no hay jugadores
+        for(let item of this.porJugar){
+          item.ruleElections=[]
+        }
         return this.porJugar
       }
-      if(this.torneos[0].players.length!=0){
+      if(this.torneos[0].players.length!=0){  // hay jugadores
         const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
         if(index=== -1){
+          for(let item of this.porJugar){
+          item.ruleElections=[]
+          }
           return this.porJugar
         }
         if(index != -1){
           const arrayJugador=[]
             const matchUsuario = this.torneos[0].players[index].matches
             for(let item of matchUsuario){
-                for(let item2 of this.matchJugador){
+                for(let item2 of this.porJugar){
                     if( item._id===item2._id){
                         item2.score=item.score
-                        item2.ruleResult=item.ruleElections
+                        item2.ruleElections=item.ruleElections
                         arrayJugador.push(item2)
                     }
                 } 
@@ -179,7 +204,19 @@ export default {
       }
     },
     nickName(){
-      const nombre= this.nombre.charAt(0).toUpperCase() + '.' + this.apellido.charAt(0).toUpperCase() +this.apellido.slice(1)
+      var index=this.torneos[0].players.findIndex(item=>item._id === this._id);
+      if(index!=-1 && index!=undefined){
+        var jugador = this.torneos[0].players[index]
+        if(!jugador.nickName){
+          var nombre= this.nombre.charAt(0).toUpperCase() + '.' + this.apellido.charAt(0).toUpperCase() +this.apellido.slice(1)
+        }
+        if (!!jugador.nickName){
+          var nombre= jugador.nickName
+        }
+      }
+      if(index===-1 || index===undefined){
+        var nombre= this.nombre.charAt(0).toUpperCase() + '.' + this.apellido.charAt(0).toUpperCase() +this.apellido.slice(1)
+      }
       return {name:nombre}
     },
     imagen(){
@@ -199,7 +236,7 @@ export default {
     ...mapMutations( 'textoSnack',['agregarSnack']),
     ...mapActions( 'torneo',['agregarPorJugar','puntajes']),
     nextStep(n){
-      if (n === this.porJugar.length+1){
+      if (n === this.losPartidos.length+1){
         this.paso = 1
       } 
       else{
@@ -213,64 +250,69 @@ export default {
       this.cambiarDialog(false)
     },
     uncheck(j){
-      this.porJugar[j].ruleResult=[]
+      this.losPartidos[j].ruleElections=[]
     },
     enviar(){
-      this.loadingFunction()
-      const player ={
-            _id:this._id, 
-            nickName:this.nickName.name,
-            position:null,  
-            matches:[]
+        this.loadingFunction()
+        const player ={
+              _id:this._id, 
+              nickName:this.nickName.name,
+              position:null,  
+              matches:[]
+          }
+        var j = 0
+        for (let partido of this.losPartidos){
+          if(partido.score[0]<0){
+            partido.score[0]=0
+          }
+          if(partido.score[1]<0){
+            partido.score[1]=0
+          }
+          player.matches.push({ _id:partido._id , score:partido.score , ruleElections:[]})
+          const a = partido.rules.length
+          const b = partido.ruleElections.length
+          player.matches[j].ruleElections =partido.ruleElections
+          for (let i=0 ; i< (a-b); i++){
+            player.matches[j].ruleElections.push(null)
+          }
+          j++
         }
-      var j = 0
-      for (let partido of this.porJugar){
-        player.matches.push({ _id:partido._id , score:partido.score , ruleElections:[]})
-        const a = partido.rules.length
-        const b = partido.ruleResult.length
-        player.matches[j].ruleElections =partido.ruleResult
-        for (let i=0 ; i< (a-b); i++){
-          player.matches[j].ruleElections.push(null)
-        }
-        j++
-      }
-      const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
-      //En caso que sea nuevo en el torneo, se debe agregar el id de torneo a su usuario
-        if(index===-1){
-
+        const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
+        // En caso que sea nuevo en el torneo, se debe agregar el id de torneo a su usuario
+          if(index===-1){
           const paraToken = {torneoId:this.torneos[0]._id, usuarioId:this._id}
-        this.axios.put(`/user-torneo`,paraToken)
-        .then(res=>{
-          localStorage.removeItem('token');
-          this.guardarUsuario(res.data)
-        })
-        .catch(e=>{
-          console.log(e.response.data.mensaje);
-        })
-        const elTorneo = this.torneos[0]
-        elTorneo.players.push(player)
-        //Luego se agregan los datos del jugador al torneo
-        this.axios.put(`/torneos`,elTorneo)
-        .then(res=>{
-          const array=[]
-          array.push(res.data)
-          console.log(array)
-          this.puntajes(array)
-          let aviso="Jugadas ingresadas con éxito"
-          this.agregarSnack(aviso)
-          this.loadingFunction()
-        })
-        .catch(e=>{
-          console.log(e.response.data.mensaje);
-          this.loadingFunction()
-        })
-        }
+          this.axios.put(`/user-torneo`,paraToken)
+          .then(res=>{
+            localStorage.removeItem('token');
+            this.guardarUsuario(res.data)
+          })
+          .catch(e=>{
+            console.log(e.response.data.mensaje);
+          })
+          const elTorneo = this.torneos[0]
+          elTorneo.players.push(player)
+          //Luego se agregan los datos del jugador al torneo
+          this.axios.put(`/torneos`,elTorneo)
+          .then(res=>{
+            const array=[]
+            array.push(res.data)
+            this.puntajes(array)
+            let aviso="Jugadas ingresadas con éxito"
+            this.agregarSnack(aviso)
+            this.loadingFunction()
+          })
+          .catch(e=>{
+            console.log(e.response.data.mensaje);
+            this.loadingFunction()
+          })
+          }
+        // En caso que esté editando sus datos del torneo 
+        if(index!=-1){
 
-        //En caso que esté editando sus datos del torneo 
-      if(index!=-1){
+      }
         const elTorneo = this.torneos[0]
         const indexPlayer=elTorneo.players.indexOf(player.idPlayer);
-        
+        elTorneo.players[index].nickName=this.nickName.name
         for(let item of  elTorneo.players[index].matches){
           for(let item2 of player.matches){
             if(item._id===item2._id){ item=item2}
@@ -278,7 +320,6 @@ export default {
         }
         this.axios.put(`/torneos-confirmar`,elTorneo)
           .then(res=>{
-            console.log(res.data)
             if(res.data==='false'){
               let aviso="No es momento de editar ahora"
               this.agregarSnack(aviso)
@@ -297,36 +338,40 @@ export default {
             console.log(e.response.data.mensaje);
             this.loadingFunction()
           })
+    },
+    revNombre(){
+      const array=[]
+      const largo = this.nickName.name.length
+      if(this.torneos[0].players.length>0){
+        for (let jugador of this.torneos[0].players){
+          let coso= jugador.nickName.toLowerCase()
+          array.push(coso) 
+        }
+        const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
+        if(index!=-1){
+          var index2 = array.findIndex(item=>item === this.torneos[0].players[index].nickName)
+          array.splice(index2,1)
+        }
       }
+      if(array.includes( this.nickName.name)){
+        let aviso="Este apodo ya está en uso"
+        this.agregarSnack(aviso)
+      }
+      if(largo==0  ){
+        let aviso="No haz escrito apodo"
+        this.agregarSnack(aviso)
+      }
+      if(largo>15){
+        let aviso="Apodo muy Largo"
+        this.agregarSnack(aviso)
+      }
+      if(array.includes( this.nickName.name)===false && largo<16 && largo>0){
+        this.estado=true
+      }
+
     }
   },
-  async created(){
-    if(this.torneos[0].name===""){
-      this.loadingFunction()
-      this.axios.get(`/torneos`)  
-      .then(res=>{
-        const todoTorneo=res.data
-        this.puntajes(res.data)
-        this.axios.get(`/match-estado/JUGANDO&POR-JUGAR&TERMINADO`)
-        .then(res=>{
-          const ambosArreglos=[todoTorneo,res.data]
-          this.loadingFunction()
-          this.agregarPorJugar(ambosArreglos)
-        })
-        .catch(e=>{
-          this.loadingFunction()
-          console.log(e.response.data.mensaje);
-        })
-
-      })
-      .catch(e=>{
-        this.puntajes([{name:"",players:[]}])
-        this.loadingFunction()
-        console.log(e.response.data.mensaje);
-      })
-    }
-   
-  }
+  
 }
 </script>
 <style scoped>

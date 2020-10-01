@@ -23,6 +23,7 @@
                 {{partido.visita}}
             </v-col>
         </v-row>
+        <v-btn class="ml-2" color="primary" x-small  @click="uncheck()">Limpiar Valores</v-btn>
         <div  v-for="(item,i) of partido.rules" :key="i" >
           <h4 class="mt-1 mb-2 mx-5">{{item.text}}</h4>
             <v-radio-group v-model="radioGroup[i]">
@@ -75,6 +76,10 @@ export default {
     ...mapActions( 'relato',['editarCalendario','obtenerCalendario']),
     ...mapMutations('loading',['loadingFunction']),
     ...mapMutations('textoSnack',['agregarSnack']),
+
+    uncheck(j){
+      this.partido.ruleResult=[]
+    },
 
     activar(){
       this.loadingFunction()

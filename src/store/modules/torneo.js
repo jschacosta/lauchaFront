@@ -10,7 +10,8 @@ export default{
         matchTorneo:[],                 // contiene datos detallados de Partidos del torneo (estado:Por Jugar-Jugando-Terminado)
         matchTodos:[],                 // contiene todos los datos los partidos de la app, incluso si no estan en el torneo 
         dialogo:false,
-        puntosSeparados:[]           // es un array de puntajes de puntos por partido [RES, DIFGOL, MARC EXAC, REGLAS ADIC]
+        puntosSeparados:[],            // es un array de puntajes de puntos por partido [RES, DIFGOL, MARC EXAC, REGLAS ADIC]
+        contadorTorneo:false
     }, 
     mutations:{
         cambiarDialog(state,payload){
@@ -47,6 +48,9 @@ export default{
         },
         enviarPuntos(state, payload){
             state.puntosSeparados=payload
+        },
+        pedirContador(state){
+            state.contadorTorneo=true
         }
     },
     actions:{
@@ -98,6 +102,7 @@ export default{
                         for(let reglas of partido.ruleElections){
                             var resTorneo= torneo[0].matches[index].ruleResult[i]
                             var resJugador = reglas
+                            
                             if(resTorneo!=undefined && resTorneo!=null && (resTorneo-1!=NaN || resTorneo-1!=-1) && resJugador!=null){
 
                                 if(resJugador===resTorneo-1){
@@ -119,7 +124,7 @@ export default{
                     jugador.points=ptsAcumulados
                 }
                 commit('obtenerTorneos',torneo)
-                const indexJugador=torneo[0].players.findIndex(item=>item._id === rootState._id);
+                const indexJugador=arrayResultados.findIndex(item=>item.jugador === rootState._id);
                 var arrayFinal=arrayResultados[indexJugador]
                 commit('enviarPuntos', arrayFinal)
             }

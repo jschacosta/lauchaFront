@@ -7,45 +7,8 @@
         P {{i+1}}
       </v-tab>
       <v-tab-item v-if="sumadeTodo!=0">
-        
-            <v-list class="pa-0 ma-0 encabezado" >
-          <v-list-item-group class="pa-0 ma-0 text-center">
-            <v-list-item-content class="pa-0 ma-0 ">
-              <v-row class="text-center ma-0 pa-0 text-caption ">
-                <v-col cols="2" class="ancho" v-if="imagen!='xs'">PARTIDO</v-col>
-                <v-col cols="2" class="ancho" v-if="imagen==='xs'">P</v-col>
-                <v-col cols="2" class="ancho">RES</v-col>
-                <v-col cols="2" class="ancho" v-if="imagen!='xs'">DIF GOLES</v-col>
-                <v-col cols="2" class="ancho" v-if="imagen==='xs'">DG</v-col>
-                <v-col cols="2" class="ancho" v-if="imagen!='xs' && imagen!='sm'">MARCA EXAC</v-col>
-                <v-col cols="2" class="ancho" v-if="imagen==='xs' || imagen==='sm'">ME</v-col>
-                <v-col cols="2" class="ancho" v-if="imagen!='xs'">R ESP</v-col>
-                <v-col cols="2" class="ancho" v-if="imagen==='xs'">RE</v-col>
-                <v-col class="ancho" v-if="imagen!='xs'">TOTAL</v-col>
-                <v-col class="ancho" v-if="imagen==='xs'">T</v-col>
-              </v-row>
-            </v-list-item-content>
-
-              <v-row v-for="(item,i) of puntosSeparados.matches" :key="i" class="pa-0 ma-0 text-center normal" >
-                <v-col cols="2" class="ancho d-flex align-center font-weight-bold" >
-                    P{{i+1}}
-                </v-col>
-            <v-list-item-content v-for="(item2,j) of item" :key="j" class="pa-0 ma-0" background-color="primary">
-                <v-col cols="2" class="ancho " v-if="item2!=null && item2!=0 && imagen!='xs'" >
-                  <v-chip :x-small="imagen==='xs'?true:false" :color="item2>0?'primary':'error'">{{item2}}</v-chip></v-col>
-                <v-col cols="2" class="ancho py-5" v-if="item2===null || item2===0 "></v-col>
-                
-                <v-col cols="2" class="ancho " v-if="item2!=null && item2!=0 && imagen==='xs'" :class="item2>0?'primary--text':'error--text'" >
-                  {{item2}}</v-col>
-            </v-list-item-content>
-              <!-- <v-divider vertical></v-divider> -->
-                <v-col v-if="item.reduce((a, b) => a + b, 0)!=0 && imagen!='xs' " cols="2" class="ancho" ><v-chip :x-small="imagen==='xs'?true:false" :color="item.reduce((a, b) => a + b, 0)>0?'primary':'error'">{{item.reduce((a, b) => a + b, 0)}}</v-chip></v-col>
-                <v-col v-if="item.reduce((a, b) => a + b, 0)!=0 && imagen==='xs'" cols="2" class="ancho" :class="item.reduce((a, b) => a + b, 0)>0>0?'primary--text':'error--text'" >{{item.reduce((a, b) => a + b, 0)}}</v-col>
-  
-              </v-row>
-          </v-list-item-group>
-          </v-list>
-        </v-tab-item>
+          <MiniTabla></MiniTabla>
+      </v-tab-item>
 
       <v-tab-item v-for="(parti2,j) of partidos" :key="j">
         <v-card  color="#E0E0E0" >
@@ -111,13 +74,14 @@
 </template>
 
 <script>
-import tablaPosiciones from '@/components/tables/tablaPosiciones.vue'
-import steper from '@/components/dialog/steper.vue'
+import MiniTabla from '@/components/tables/minitabla.vue'
 import { mapMutations, mapState } from 'vuex'
 
 export default {
   name:'Juegos',
-
+  components:{
+    MiniTabla
+  },
   computed:{
     ...mapState('torneo',['torneos','matchTorneo', 'puntosSeparados']),
     ...mapState(['_id']),
@@ -150,49 +114,21 @@ export default {
       return array.reduce((a, b) => a + b, 0)
 
     }
-   
   },
   methods:{
-    ...mapMutations('torneo',['cambiarDialog','obtenerTorneos']),
-    ...mapMutations( 'loading',['loadingFunction']),
+    ...mapMutations('torneo',['cambiarDialog']),
     unirse(){
       this.cambiarDialog(true)
     }
-  },
+  }
 }
 </script>
+
 <style scoped>
 .ancho{
   margin: 0 auto;
   display: flex;
   justify-content: center;
   max-width: 800px;
-}
-.lateral { width: 30px;
-max-width: 60px; }
-
-.encabezado{
-  background-color: #2C3A47;
-  color: white
-}
-.claro{
-  background-color: #E0E0E0;
-  color:  #2C3A47
-}
-.oscuro{
-  background-color: #D1CBCA;
-  color:  #2C3A47
-}
-.normal{
-  background-color:  #E0E0E0;
-  color: #2C3A47
-}
-.descenso{
-  background-color: #ffcccc;
-  color: #2C3A47
-}
-.ascenso{
-  background-color: #b3ffcc;
-  color: #2C3A47
 }
 </style>

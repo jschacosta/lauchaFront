@@ -39,6 +39,7 @@
                         @click:append="mostrarPass1 = !mostrarPass1"
                         color="indigo"
                         required
+                        @keyup.enter="signIn()"
                       >
                       </v-text-field>
                     </v-form>
@@ -51,7 +52,7 @@
                   <div class="text-center mt-3">
                     <v-btn
                       rounded
-                      color="indigo"
+                      color="indigo"  
                       dark
                       :disabled="!valid"
                       @click="signIn()"
@@ -168,6 +169,7 @@
                             @click:append="mostrarPass3 = !mostrarPass3"
                             :rules="passwordRules"
                             required
+                            @keyup.enter="signUp()"
                           >
                           </v-text-field>
                         </v-col>

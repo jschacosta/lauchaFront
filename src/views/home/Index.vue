@@ -38,7 +38,7 @@
 import Posiciones from './tabs/Posiciones.vue'
 import Calendario from './tabs/Calendario.vue'
 import Juegos from './tabs/Juegos.vue'
-import {  mapState } from 'vuex'
+import {  mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name:"Home",
@@ -48,7 +48,7 @@ export default {
     Juegos
   },
   computed:{
-    ...mapState('torneo',['torneos']),
+    ...mapState('torneo',['torneos','contadorTorneo']),
     ...mapState(['_id']),
     estaJugador(){
         const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
@@ -61,6 +61,39 @@ export default {
         return false
       }
     }
+  },
+  methods:{
+    ...mapMutations( 'loading',['loadingFunction']),
+    ...mapMutations( 'torneo',['cambiarDialog','obtenerTorneos', 'pedirContador']),
+...mapActions( 'torneo',['agregarPorJugar','puntajes']),
+  },
+  async created(){
+    if(this.contadorTorneo===false){
+      this.loadingFunction()
+      this.axios.get(`/torneos`)  
+      .then(res=>{
+        const todoTorneo=res.data
+        this.puntajes(res.data)
+        this.axios.get(`/match-estado/JUGANDO&POR-JUGAR&TERMINADO`)
+        .then(respuesta=>{
+          const ambosArreglos=[todoTorneo,respuesta.data]
+          this.loadingFunction()
+          this.agregarPorJugar(ambosArreglos)
+          this.pedirContador()
+        })
+        .catch(e=>{
+          this.loadingFunction()
+          console.log(e.response.data.mensaje);
+        })
+
+      })
+      .catch(e=>{
+        this.puntajes([{name:"",players:[]}])
+        this.loadingFunction()
+        console.log(e.response.data.mensaje);
+      })
+    }
+   
   }
 }
 </script>
