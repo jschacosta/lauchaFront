@@ -252,7 +252,9 @@ export default {
           const token = res.data.token;
           this.guardarUsuario(token);
           this.loadingFunction();
-          router.push({ name: "Home" });
+          // router.push({ name: "Home" });
+          window.location.href = "http://pollagol.herokuapp.com/";
+
         })
         .catch((e) => {
           this.loadingFunction();
@@ -287,7 +289,8 @@ export default {
               const token = res.data.token;
               this.guardarUsuario(token);
               this.loadingFunction();
-              router.push({ name: "Home" });
+              // router.push({ name: "Home" });
+              window.location.href = "http://pollagol.herokuapp.com/";
             })
             .catch((e) => {
               this.loadingFunction();

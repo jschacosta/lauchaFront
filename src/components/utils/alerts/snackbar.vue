@@ -1,10 +1,10 @@
 <template>
   <div class="text-center ma-2">
-    <v-snackbar app top
+    <v-snackbar app top 
       v-model="superTexto.estado">
       {{superTexto.texto}}
       <template v-slot:action="{ attrs }">
-        <v-btn color="pink" text v-bind="attrs" @click="apagarSnack()">
+        <v-btn color="pink"  text v-bind="attrs" @click="apagarSnack()">
           Close
         </v-btn>
       </template>

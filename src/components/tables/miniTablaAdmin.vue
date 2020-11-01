@@ -4,7 +4,7 @@
           <v-list-item-group class="pa-0 ma-0 text-center">
             <v-list-item-content class="pa-0 ma-0 ">
               <v-row class="text-center ma-0 pa-0 text-caption ">
-                <v-col cols="2" class="ancho" v-if="imagen!='xs'">PARTIDO</v-col>
+                <v-col cols="2" class="ancho" v-if="imagen!='xs'">PARTIDOS</v-col>
                 <v-col cols="2" class="ancho" v-if="imagen==='xs'">P</v-col>
                 <v-col cols="2" class="ancho" v-if="imagen==='xs'">RES</v-col>
                 <v-col cols="2" class="ancho" v-if="imagen!='xs'">RESULTADO</v-col>
@@ -62,9 +62,9 @@
 import {mapState} from 'vuex'
 
 export default {
-  name:'MiniTabla',
+  name:'MiniTablaAdmin',
   computed:{
-    ...mapState('torneo',['puntosSeparados']),
+    ...mapState('torneo',['puntosSeparadosTodos']),
     imagen(){
       switch (this.$vuetify.breakpoint.name){
         case 'xs': return 'xs'
@@ -74,10 +74,17 @@ export default {
         case 'xl': return 'xl'
       }
     },
+    puntosSeparados(){
+        const indexJugador=this.puntosSeparadosTodos.findIndex(item=>item.jugador ===this.idPlayer);
+        return this.puntosSeparadosTodos[indexJugador]
+    },
     sumadeTodo(){
       const array= this.puntosSeparados.matches.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);
       return array.reduce((a, b) => a + b, 0)
     }
+  },
+  props:{
+      idPlayer:String
   }
 }
 </script>

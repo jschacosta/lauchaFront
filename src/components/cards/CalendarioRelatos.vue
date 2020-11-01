@@ -36,8 +36,8 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-export default {
-  name: 'CalendarioAdmin',
+export default { 
+  name: 'CalendarioRelatos',
   data:()=>({
       search:"",
       eleccion:"",

@@ -6,6 +6,7 @@
         <router-view class="marginbottom"></router-view>
           </transition>
           <SnackBar></SnackBar>
+          <SnackSteper></SnackSteper>
       </v-main>
       <Footer/>
 
@@ -15,13 +16,15 @@
 import Navbar from './components/global/navbar';
 import Footer from './components/global/footer';
 import SnackBar from '@/components/utils/alerts/snackbar.vue'
+import SnackSteper from '@/components/utils/alerts/SnackSteper.vue'
 import {mapActions} from 'vuex'
 export default {
   name: 'App',
   components: {
     Footer,
     Navbar,
-    SnackBar
+    SnackBar,
+    SnackSteper
   },
   methods: {
     ...mapActions(['leerToken']),

@@ -1,9 +1,16 @@
 <template >
-  <v-dialog v-model='dialogo' persistent max-width="800px" >
-
+<div>
+  <v-dialog v-model='dialogo' persistent max-width="800px" :retain-focus="false">
       <v-stepper v-model="paso" dark dense>
+        <v-row class="mt-3 mb-1 mx-2">
+          <v-btn class="mx-4" color="primary" v-if="paso===losPartidos.length+1" @click="paso=1"> <v-icon left>keyboard_arrow_left</v-icon > Inicio</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn  class="mx-3" color="success" v-if="paso===losPartidos.length+1" @click.stop="enviar();cerrarDialog()">
+             Enviar <v-icon right>fas fa-share</v-icon></v-btn>
+            <v-btn color="white" fab x-small outlined class="mx-3"  @click.stop ="cerrarDialog()">X</v-btn>
+        </v-row>
       <!-- ENCABEZADO - PASO 1 -->
-      <v-stepper-header v-if="(imagen==='xl' || imagen ==='lg') && losPartidos.length<7 &&paso!=1">
+      <v-stepper-header v-if="(imagen==='xl' || imagen ==='lg') && losPartidos.length<7 &&paso!=1 ">
         <v-stepper-step editable :complete="paso > 1" :step="1" >Inicio</v-stepper-step>
       <!-- ENCABEZADO - PASOS INTERMEDIOS-->
         <div v-for="(item,i) of losPartidos" :key="i">
@@ -11,11 +18,11 @@
           <v-divider  v-if="i !== losPartidos.length"></v-divider>
         </div>
       </v-stepper-header>
-
       <v-stepper-items >
+        
       <!-- CUERPO - PASO 1 -->
         <v-stepper-content :step="1" >
-          <v-card class="mb-12 pa-8" color="#2C3A47">
+          <v-card class="mb-5 pa-8" color="#2C3A47">
             <h2 class="ml-5  mb-2 font-weight-light"> Bienvenido al torneo {{espacio + espacio}} {{torneos[0].name}}</h2>
             <h4 class="ml-5 font-weight-regular">Este será tu carta de vaticinios para los próximos encuentros deportivos. Muestra tu jerarquía y sapiencia frente a tus débiles adversarios </h4>
             <h4 class="mt-5 ml-5 mb-10 font-weight-regular ">Escribe el nombre con el que serás Conocido en este torneo.</h4>
@@ -24,39 +31,31 @@
             color="white"
             v-model="nickName.name"
             :rules="nameRules"
-            @keyup.enter="estado===false?revNombre():nextStep(1)"
+            :disabled="estado?true:false"
+            @keyup.enter="!estado?revNombre():nextStep(1)"
           >
           </v-text-field>
           </v-card>
           <v-row>
-            <v-btn  class="mx-3" text @click ="cerrarDialog(); estado=false; paso=1">Salir</v-btn>
-            <v-btn v-if="!estado" class="mx-3" color="primary" @click="revNombre()"> Siguiente</v-btn>
             <v-spacer></v-spacer>
+            <v-btn v-if="!estado" class="mx-3" color="primary" @click="revNombre()"> Siguiente</v-btn>
             <v-btn v-if="estado" class="mx-3" color="success" @click="nextStep(1); estado=false"> Iniciar</v-btn>
           </v-row>
         </v-stepper-content>
       <!-- CUERPO - PASOS INTERMEDIOS -->
-        <div v-for="(partido,j) of losPartidos" :key="j"  >
-        <v-stepper-content :step="j+2"  class="ma-0 pa-0 pa-3">
-
-          <v-stepper-header v-if="imagen==='xs' || imagen ==='sm' || imagen==='md' || losPartidos.length>=7">
-        <v-row class="ma-0 pa-0">
-                        <v-btn class="mx-2" color="primary" v-if="j+2===losPartidos.length+1" @click="nextStep(j+2)"> <v-icon left>keyboard_arrow_left</v-icon > Inicio</v-btn>
-
-            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j); scrollToTop()" @keyright="nextStep(j); scrollToTop()" v-if="j+2!=losPartidos.length+1"> 
+        <div v-for="(partido,j) of losPartidos" :key="j" >
+        <v-stepper-content :step="j+2"  class="pa-3">
+ 
+        <v-row  dense class="mb-2"  v-if="(imagen==='xs' || imagen ==='sm' || imagen==='md' || losPartidos.length>=7)&& paso!=1+losPartidos.length">
+            <v-btn class="mx-4" fab small color="primary" @click="nextStep(j); scrollToTop()"  v-if="j+2!=losPartidos.length+1"> 
               <v-icon>keyboard_arrow_left</v-icon>
             </v-btn>
-            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=losPartidos.length+1"> 
+            <v-btn class="mx-4" fab small color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=losPartidos.length+1"> 
               <v-icon>keyboard_arrow_right</v-icon>
             </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn text @click ="cerrarDialog(); estado=false; paso=1">Salir</v-btn>
-            <v-btn  class="mx-2" color="success" v-if="j+2===losPartidos.length+1" @click="enviar(); cerrarDialog()">
-             Enviar <v-icon right>fas fa-share</v-icon></v-btn>
           </v-row>
-      </v-stepper-header>
           
-          <v-card class=" mb-12" color="#2C3A47">
+          <v-card class=" mb-3" color="#2C3A47">
             <v-row class="d-flex justify-center align-center " dense>
               <v-col class="d-flex justify-center align-center text-center text-caption" cols="3" v-if="imagen==='xs'">
                   {{partido.local}}
@@ -66,7 +65,7 @@
               </v-col>
               <v-col class="mt-6 d-flex justify-start align-center" cols="2" >
                 <v-text-field label="Goles" class="centered-input pa-0" type="number" v-model.number='partido.score[0]'  min="0"  :rules="numberRules"></v-text-field>
-              </v-col >
+              </v-col>
               <v-col class="d-flex justify-center align-center" cols="2">
                 <h3>-</h3>
               </v-col>
@@ -100,9 +99,9 @@
                 </v-col>
             </v-row>
 
+                <v-btn class="ml-2" color="primary" x-small v-if="index!=-1" @click="uncheck(j)">Limpiar Jugadas</v-btn>
+            <div v-for="(item2,k) of partido.rules" :key="k">
 
-                <v-btn class="ml-2" color="primary" x-small  @click="uncheck(j)">Limpiar Valores</v-btn>
-            <div  v-for="(item2,k) of partido.rules" :key="k" >
               <v-row >
               <h4 class="mt-1 mb-2 mx-5 font-weight-regular">{{item2.text}}</h4>
               </v-row>
@@ -125,53 +124,72 @@
             </div>
           </v-card>
           
-          <v-row>
-            <v-btn class="mx-3" color="primary" v-if="j+2===losPartidos.length+1" @click="nextStep(j+2)"> <v-icon left>keyboard_arrow_left</v-icon > Inicio</v-btn>
-            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j); scrollToTop()"  v-if="j+2!=losPartidos.length+1"> 
+          <v-row dense>
+            <v-btn class="mx-4" fab small color="primary" @click="nextStep(j); scrollToTop()"  v-if="j+2!=losPartidos.length+1"> 
               <v-icon>keyboard_arrow_left</v-icon>
             </v-btn>
-            <v-btn class="mx-3" fab small color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=losPartidos.length+1"> 
+            <v-btn class="mx-4" fab small color="primary" @click="nextStep(j+2); scrollToTop()"  v-if="j+2!=losPartidos.length+1"> 
               <v-icon>keyboard_arrow_right</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn text @click ="cerrarDialog(); estado=false; paso=1">Salir</v-btn>
-            <v-btn  class="mx-3" color="success" v-if="j+2===losPartidos.length+1" @click="enviar(); cerrarDialog()">
-             Enviar <v-icon right>fas fa-share</v-icon></v-btn>
           </v-row>
         </v-stepper-content>
         </div>
+        <v-row class=" mx-2 mb-3">
+            <v-spacer></v-spacer>
+            <v-btn  class="mx-3" color="success" v-if="paso===losPartidos.length+1"  @click="enviar();cerrarDialog()">
+             Enviar <v-icon right>fas fa-share</v-icon></v-btn>
+            <v-btn v-if="paso===losPartidos.length+1" text @click ="cerrarDialog()">Salir</v-btn>
+        </v-row>
       </v-stepper-items>
-
     </v-stepper>
   </v-dialog>
+
+</div>
 
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 export default {
-  name: 'steper',
+  name: 'Steper',
   data:()=>( {
       paso: 1,
       espacio: '\u00A0',  // '\u00A0' es un espacio en html
       estado: false,
       numberRules: [
       (v) =>
-        (v >= 0) || "Debe ser positivo",
+        (v >= 0) || "No es válido",
       (v) =>
         (v < 10) || "¿No será mucho?", 
     ],
      nameRules: [
       (v) =>
-        (v.length < 16) || "Apodo muy largo",
+        (v.length < 16) || "Nombre muy largo",
       (v) =>
-        (v.length > 0) || "No haz escrito Apodo",
+        (v.length > 3) || "Nombre muy corto",
     ],
+    
   }),
   computed:{
     ...mapState('torneo',['torneos','porJugar','dialogo']),
     ...mapState(['_id','nombre','apellido','losTorneos','usuarioDB']),
-
+    inicial(){
+      return this.nombre.charAt(0).toUpperCase()
+    },
+    apellidoCortado(){
+      return this.apellido.slice(1)
+    },
+    elApellido(){
+      return this.apellido.charAt(0).toUpperCase() 
+    },
+    nickName(){
+      var nombre= this.inicial + '.' + this.elApellido + this.apellidoCortado
+      return {name:nombre}
+    },
+    index(){
+      return this.torneos[0].players.findIndex(item=>item._id === this._id);
+    },
     losPartidos(){
       if(this.torneos[0].players.length===0){ //no hay jugadores
         for(let item of this.porJugar){
@@ -181,44 +199,32 @@ export default {
       }
       if(this.torneos[0].players.length!=0){  // hay jugadores
         const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
-        if(index=== -1){
-          for(let item of this.porJugar){
+        if(index === -1){         
+          for(let item of this.porJugar){ //el jugador no está aun en el torneo
           item.ruleElections=[]
-          }
+        }         
           return this.porJugar
         }
-        if(index != -1){
+        if(index != -1){                  // el jugador ya está en el torneo
           const arrayJugador=[]
-            const matchUsuario = this.torneos[0].players[index].matches
-            for(let item of matchUsuario){
-                for(let item2 of this.porJugar){
-                    if( item._id===item2._id){
-                        item2.score=item.score
-                        item2.ruleElections=item.ruleElections
-                        arrayJugador.push(item2)
-                    }
-                } 
-            }
-            return arrayJugador
+          const matchUsuario = this.torneos[0].players[index].matches
+          for(let item of matchUsuario){
+            for(let item2 of this.porJugar){
+              if( item._id===item2._id){
+                item.rules=item2.rules
+                item.apuesta=item2.apuesta
+                item.local=item2.local
+                item.visita=item2.visita
+                item._id=item2._id
+                arrayJugador.push(item)
+              }
+            } 
+          }
+          return arrayJugador
         }
       }
     },
-    nickName(){
-      var index=this.torneos[0].players.findIndex(item=>item._id === this._id);
-      if(index!=-1 && index!=undefined){
-        var jugador = this.torneos[0].players[index]
-        if(!jugador.nickName){
-          var nombre= this.nombre.charAt(0).toUpperCase() + '.' + this.apellido.charAt(0).toUpperCase() +this.apellido.slice(1)
-        }
-        if (!!jugador.nickName){
-          var nombre= jugador.nickName
-        }
-      }
-      if(index===-1 || index===undefined){
-        var nombre= this.nombre.charAt(0).toUpperCase() + '.' + this.apellido.charAt(0).toUpperCase() +this.apellido.slice(1)
-      }
-      return {name:nombre}
-    },
+
     imagen(){
       switch (this.$vuetify.breakpoint.name){
           case 'xs': return 'xs'
@@ -233,7 +239,7 @@ export default {
     ...mapActions( ['guardarUsuario']),
     ...mapMutations( 'loading',['loadingFunction']),
     ...mapMutations( 'torneo',['cambiarDialog','obtenerTorneos']),
-    ...mapMutations( 'textoSnack',['agregarSnack']),
+    ...mapMutations( 'textoSnack',['agregarSnack','agregarSnackSteper']),
     ...mapActions( 'torneo',['agregarPorJugar','puntajes']),
     nextStep(n){
       if (n === this.losPartidos.length+1){
@@ -248,8 +254,12 @@ export default {
     },
     cerrarDialog(){
       this.cambiarDialog(false)
+      // this.$forceUpdate()
+      this.estado=false; 
+      this.paso=1
     },
-    uncheck(j){
+    uncheck(j,k){
+      console.log('hola')
       this.losPartidos[j].ruleElections=[]
     },
     enviar(){
@@ -257,6 +267,7 @@ export default {
         const player ={
               _id:this._id, 
               nickName:this.nickName.name,
+              email:this.usuarioDB.data.email,
               position:null,  
               matches:[]
           }
@@ -308,36 +319,38 @@ export default {
           }
         // En caso que esté editando sus datos del torneo 
         if(index!=-1){
-
-      }
-        const elTorneo = this.torneos[0]
-        const indexPlayer=elTorneo.players.indexOf(player.idPlayer);
-        elTorneo.players[index].nickName=this.nickName.name
-        for(let item of  elTorneo.players[index].matches){
-          for(let item2 of player.matches){
-            if(item._id===item2._id){ item=item2}
+          const elTorneo = this.torneos[0]
+          const indexPlayer=elTorneo.players.indexOf(player.idPlayer);
+          elTorneo.players[index].nickName=this.nickName.name
+          for(let item of  elTorneo.players[index].matches){
+            for(let item2 of player.matches){
+              if(item._id===item2._id){ 
+                item=item2
+                }
+            }
           }
-        }
-        this.axios.put(`/torneos-confirmar`,elTorneo)
-          .then(res=>{
-            if(res.data==='false'){
-              let aviso="No es momento de editar ahora"
-              this.agregarSnack(aviso)
-              this.loadingFunction()
-            }
-            if(res.data!='false'){
-              const array=[]
-              array.push(res.data)
-              this.puntajes(array)
-              let aviso="Jugadas actualizadas"
-              this.agregarSnack(aviso)
-              this.loadingFunction()
-            }
-          })
+          this.axios.put(`/torneos-confirmar`,elTorneo)
+            .then(res=>{
+              if(res.data==='false'){
+                let aviso="No es momento de editar ahora"
+                this.agregarSnack(aviso)
+                this.loadingFunction()
+              }
+              if(res.data!='false'){
+                const array=[]
+                array.push(res.data)
+                this.puntajes(array)
+                let aviso="Jugadas actualizadas"
+                this.agregarSnack(aviso)
+                this.loadingFunction()
+              }
+            })
           .catch(e=>{
             console.log(e.response.data.mensaje);
             this.loadingFunction()
           })
+
+        }
     },
     revNombre(){
       const array=[]
@@ -348,24 +361,25 @@ export default {
           array.push(coso) 
         }
         const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
-        if(index!=-1){
-          var index2 = array.findIndex(item=>item === this.torneos[0].players[index].nickName)
+        if(index!=-1 && index!=undefined){
+          var index2 = array.findIndex(item=>item === this.torneos[0].players[index].nickName.toLowerCase())
           array.splice(index2,1)
         }
       }
-      if(array.includes( this.nickName.name)){
-        let aviso="Este apodo ya está en uso"
-        this.agregarSnack(aviso)
+      const nombreOcupado=array.includes( this.nickName.name.toLowerCase())
+      if(nombreOcupado){
+        let aviso="Este nombre ya está en uso en el torneo"
+        this.agregarSnackSteper(aviso)
       }
-      if(largo==0  ){
-        let aviso="No haz escrito apodo"
-        this.agregarSnack(aviso)
+      if(largo<=3){
+        let aviso="Nombre muy corto"
+        this.agregarSnackSteper(aviso)
       }
       if(largo>15){
-        let aviso="Apodo muy Largo"
-        this.agregarSnack(aviso)
+        let aviso="Nombre muy Largo"
+        this.agregarSnackSteper(aviso)
       }
-      if(array.includes( this.nickName.name)===false && largo<16 && largo>0){
+      if(!nombreOcupado && largo<16 && largo>3){
         this.estado=true
       }
 

@@ -1,9 +1,10 @@
 <template>
 <div>
-  <v-btn class="my-10" @click="dialogo=true" v-if="torneos[0].name===''" rounded color="primary" dark>Crear Torneo</v-btn>
-  <v-btn class="my-10" v-if="torneos[0].name!=''" rounded color="error" @click="terminarTorneo()" dark>Terminar Torneo</v-btn>
-  <v-card class="pa-0"  v-if="torneos[0].name!=''" >
-    <v-list class="pa-0 mb-10">
+  <v-btn class="my-5" @click="dialogo=true" v-if="torneos[0].name===''" rounded color="primary" dark>Crear Torneo</v-btn>
+  <v-btn class="my-5" v-if="torneos[0].name!=''" rounded color="error" @click="terminarTorneo()" dark>Terminar Torneo</v-btn>
+  <v-card class="pa-0 mx-auto"  v-if="torneos[0].name!=''" max-width="800px" >
+    <v-system-bar color="#2C3A47"></v-system-bar>
+    <v-list class="pa-0 mb-5">
       <v-list-item-group class="pa-0">
         <v-list-item class="pa-0">
           <v-row class="text-center">
@@ -11,11 +12,11 @@
               {{torneos[0].name}}
             </v-col>
             <v-col cols="2">
-              {{torneos[0].players.length}}/10
+              {{torneos[0].players.length}}/25
             </v-col>
             <v-col cols="4">
-              <v-btn small @click="edicion('true')" v-if="torneos[0].edition==='false'" rounded color="warning" dark>Activar Edicion</v-btn>
-              <v-btn small @click="edicion('false')" v-if="torneos[0].edition==='true'" rounded color="error" dark>Desactivar Edicion</v-btn>
+              <v-btn small @click="edicion('true')" v-if="torneos[0].edition==='false'" rounded color="success" dark>Activar Edicion</v-btn>
+              <v-btn small @click="edicion('false')" v-if="torneos[0].edition==='true'" rounded color="warning" dark>Desactivar Edicion</v-btn>
             </v-col>
           </v-row>
         </v-list-item>
@@ -35,6 +36,7 @@
             outlined
             dense
             class="mr-10 ml-5"
+            @keyup.enter="crearTorneo() ; dialogo=false"
             >
             Escribe el nombre para el Torneo
         </v-text-field>
@@ -63,9 +65,10 @@ export default {
     ...mapState( 'torneo',['torneos', 'boton', 'botonDos']),
     },
     methods:{
-    ...mapMutations( 'loading',['loadingFunction']),
-    ...mapActions( 'relato',['obtenerCalendario']),
-    ...mapMutations( 'torneo',['obtenerTorneos', 'cambiarBoton','eliminarTorneo']),
+      ...mapMutations( 'loading',['loadingFunction']),
+      ...mapMutations( 'confirmar',['confirmar']),
+      ...mapMutations( 'torneo',['obtenerTorneos', 'cambiarBoton','eliminarTorneo']),
+      ...mapActions( 'relato',['obtenerCalendario']),
       async crearTorneo(){
         this.loadingFunction()
         var partidos = []
@@ -92,10 +95,8 @@ export default {
             nuevoTorneo.matches.push(elemento)
 
           }
-          console.log(nuevoTorneo)
           await this.axios.post(`/torneos`, nuevoTorneo)
           .then(res=>{
-            console.log(res.data)
             this.obtenerTorneos(res.data)
           })
           .catch(e=>{
@@ -122,20 +123,15 @@ export default {
         
       },
       terminarTorneo(){
-          this.loadingFunction()
-
-        this.axios.delete(`/torneos/${this.torneos[0]._id}`)
-        .then(res=>{
-          this.eliminarTorneo(res.data)
-          this.loadingFunction()
-
-        })
-        .catch(e=>{
-          console.log(e.response.data.mensaje);
-        this.loadingFunction()
-        })  
+        const info = {
+          titulo:`¿Quieres terminar el Torneo: ${this.torneos[0].name}?`,
+          cuerpo:'Al terminar el torneo, toda la información asociada será borrada de manera permanente',
+          boton: 'finishTorneo',
+          datos:[]
+        }
+        info.datos= this.torneos[0]._id
+        this.confirmar(info)
       }
-    },
-    
+    }  
 }
 </script>

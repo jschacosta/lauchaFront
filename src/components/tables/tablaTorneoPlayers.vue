@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-center">
-    <v-card class="elevation-15" max-width="600px">
+    <v-card class="elevation-15" max-width="800px">
         <v-card-title>
             <v-text-field
             v-model="search"
@@ -14,10 +14,14 @@
         </v-card-title>
         <v-data-table :headers="headers" :items="torneos[0].players" :search="search" class="elevation-2">
             <template v-slot:[`item.accion`]="{ item }">
-                <v-btn class="mr-2" small tile large color="error" icon @click="kickUser(item)">
+                <v-btn class="mr-2 mx-2" small tile  color="primary" @click="verJugador(item._id)">
+                    <i class="fas fa-search"></i>
+                    Puntajes
+                </v-btn>
+                <v-btn class="mr-2 mx-2" small tile large color="error" icon @click="kickUser(item)">
                     <i class="fas fa-skull"></i>
                     Kick
-                </v-btn>
+                </v-btn>      
             </template>
       </v-data-table>
     </v-card>
@@ -30,8 +34,10 @@ export default {
     data:()=>({
         search:"",
         headers: [
-            {text: 'JUGADOR', align: 'start', sortable: true, value: 'nickName'},
-            {text: 'ACCION', value: 'accion', sortable: false },
+            {text: 'JUGADOR', align: 'center', sortable: true, value: 'nickName'},
+            {text: 'CORREO', align: 'center', sortable: true, value: 'email'},
+            {text: 'ID', align: 'center', sortable: true, value: '_id'},
+            {text: 'ACCION', align: 'center', value: 'accion', sortable: false },
         ],
     }),
     computed:{
@@ -40,24 +46,21 @@ export default {
     methods:{
         ...mapMutations( 'loading',['loadingFunction']),
         ...mapMutations( 'textoSnack',['agregarSnack']),
+        ...mapMutations( 'confirmar',['confirmar']),
         ...mapActions( 'torneo',['agregarPorJugar','puntajes']),
         kickUser(player){
-            this.loadingFunction()
-            const id= player._id;
-            this.axios.put(`/delete-user-torneo/${id}`)
-            .then(res=>{
-                const array=[]
-                array.push(res.data)
-                this.puntajes(array)
-                let aviso="Jugador kickeado"
-                this.agregarSnack(aviso)
-                this.loadingFunction()
-            })
-            .catch(e=>{
-                this.loadingFunction()
-                console.log(e.response.data.mensaje);
-            })
-        }   
+            const info = {
+            titulo:`¿Está seguro de expulsar a ${player.email}?`,
+            cuerpo:'Al expulsar, toda la información del jugador en el torneo será borrada de manera permanente',
+            boton: 'kickPlayer',
+            datos:[]
+            }
+            info.datos= player._id
+            this.confirmar(info)
+        },
+        verJugador(id){
+            this.$router.push({path:`/admin/torneos/${id}`})
+        }
     }
 }
 </script>

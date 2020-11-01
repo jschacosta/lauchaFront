@@ -9,9 +9,9 @@
     <v-divider></v-divider>
         <v-list dense flat class="pa-0 ma-0" >
             <v-list-item-group class="  pa-0 fondoPartidos" v-for="(partido,j) of partidosCalendario " :key="j">
-                <v-row class="pa-0" v-if="partido.fechaPartido===item">
-                    <v-col class=" pa-0" cols="5" >
-                        <v-list-item class="d-flex justify-center text-center">{{partido.local}}</v-list-item>
+                <v-list-item class="pa-0" v-if="partido.fechaPartido===item">
+                    <v-col class=" pa-0 text-center" cols="5" >
+                        {{partido.local}}
                     </v-col>
                     <v-col class="pa-0 ma-0" cols="2">
                             <v-row class="d-flex justify-center" >                                    
@@ -25,11 +25,10 @@
                             {{partido.horaPartido}}
                             </v-row> 
                     </v-col>
-                    <v-col class="pa-0" cols="5">
-                        <v-list-item class="d-flex justify-center text-center">{{partido.visita}}</v-list-item>
-                    </v-col>
-                    
-                </v-row>
+                    <v-col class="pa-0 text-center" cols="5">
+                        {{partido.visita}}
+                    </v-col>    
+                </v-list-item>
                 <v-divider v-if="partido.fechaPartido===item"></v-divider>
             </v-list-item-group>
         </v-list>

@@ -13,20 +13,20 @@
       <v-tab-item v-for="(parti2,j) of partidos" :key="j">
         <v-card  color="#E0E0E0" >
               
-          <v-row class="d-flex justify-center align-center mb-3 " dense>
-            <v-col class="d-flex justify-end mt-5" cols="3">
+          <v-row class="d-flex justify-center align-center eltexto mb-3 " :class="imagen==='xs'?'text-body-2':'display'" dense>
+            <v-col class="d-flex justify-center mt-5 " cols="3">
               {{parti2.local}}
             </v-col>
-            <v-col class=" d-flex justify-center align-end  mt-5" cols="1">
+            <v-col class=" d-flex justify-center align-center  mt-5" cols="1" :class="imagen==='xs'?'mx-2':'holas'">
               {{parti2.score[0]}} 
             </v-col>
-            <v-col class="d-flex justify-center align-center mt-5" cols="1">
+            <v-col class="d-flex justify-center align-center  mt-5" cols="1">
               <h3>-</h3>
             </v-col>
-            <v-col class=" d-flex justify-center align-start mt-5" cols="1">
+            <v-col class=" d-flex justify-center align-center mt-5" cols="1" :class="imagen==='xs'?'mx-2':'holas'">
               {{parti2.score[1]}}
             </v-col>
-            <v-col class="d-flex justify-start align-start mt-5" cols="3"> 
+            <v-col class="d-flex justify-center align-center mt-5" :class="imagen==='xs'?'text-body-2':'display'"  cols="3"> 
               {{parti2.visita}}
             </v-col>
           </v-row>
@@ -34,38 +34,38 @@
           <v-row class="d-flex justify-center align-center mb-5" dense>
             <v-col  cols="3" class=" pa-0 ma-0 d-flex flex-column justify-center align-center ">
               <p class="ma-0 pa-0">Local</p>
-              <v-chip small dense class="ma-1 font-weight-bold" dark color="green darken-2" > {{parti2.apuesta[0]}} </v-chip>
+              <v-chip small dense class="ma-1 font-weight-bold" dark :color="parti2.apuesta[0]===0?'secondary':'green darken-2'" > {{parti2.apuesta[0]}} </v-chip>
             </v-col>
             <v-col  cols="3" class=" pa-0 ma-0 d-flex flex-column justify-center align-center ">
               <p class="ma-0 pa-0">Empate</p>
-              <v-chip small class="ma-1 font-weight-bold" dark color="green darken-2" > {{parti2.apuesta[1]}} </v-chip>
+              <v-chip small dense class="ma-1 font-weight-bold" dark :color="parti2.apuesta[1]===0?'secondary':'green darken-2'" > {{parti2.apuesta[1]}} </v-chip>
             </v-col>
             <v-col  cols="3" class=" pa-0 ma-0 d-flex flex-column justify-center align-center ">
               <p class="ma-0 pa-0">Visita</p>
-              <v-chip  small class="ma-1 font-weight-bold" dark color="green darken-2"> {{parti2.apuesta[2]}} </v-chip>
+              <v-chip small dense class="ma-1 font-weight-bold" dark :color="parti2.apuesta[2]===0?'secondary':'green darken-2'"> {{parti2.apuesta[2]}} </v-chip>
             </v-col>
           </v-row >
 
           <div  v-for="(item2,k) of parti2.rules" :key="k" >
             
-            <h4 class="mt-1 mb-2 mx-5 font-weight-regular">{{item2.text}}
+            <h4 class="mt-1 mb-2 mx-5 font-weight-regular " :class="imagen==='xs'?'text-center':'holas'">{{item2.text}}
               <v-icon right v-if="parti2.ruleElections[k]===parti2.ruleResult[k]-1 && parti2.ruleResult[k]-1!=-1" color="success">fas fa-check</v-icon>
               <v-icon right v-if="parti2.ruleElections[k]!=parti2.ruleResult[k]-1  && parti2.ruleResult[k]-1!=-1 && parti2.ruleResult[k]!=null   && parti2.ruleElections[k]!=null" color="error">fas fa-times</v-icon>
-              </h4>
-              <v-radio-group v-model="parti2.ruleElections[k]" disabled>
-                <v-row  dense v-for="(texto,m) of parti2.rules[k].options.text" :key="m">
+            </h4>
+            <v-radio-group v-model="parti2.ruleElections[k]" disabled>
+              <v-row  dense v-for="(texto,m) of parti2.rules[k].options.text" :key="m" :class="imagen==='xs'?'text-center':'holas'">
+                <v-col>
+                  <v-radio
+                    :class="imagen==='xs'?'holas':'mx-4'"
+                    :label="`${texto}`"
+                    :value="m"
+                  ></v-radio>
+                  </v-col>
                   <v-col>
-                    <v-radio
-                      class="mx-8"
-                      :label="`${texto}`"
-                      :value="m"
-                    ></v-radio>
-                   </v-col>
-                   <v-col>
-                      {{parti2.rules[k].options.values[m]}} pts 
-                   </v-col>
-                 </v-row>
-            </v-radio-group>
+                    {{parti2.rules[k].options.values[m]}} pts 
+                  </v-col>
+                </v-row>
+          </v-radio-group>
           </div>
         </v-card>
       </v-tab-item>
@@ -130,5 +130,9 @@ export default {
   display: flex;
   justify-content: center;
   max-width: 800px;
+}
+.eltexto{
+  text-align: center;
+  text-justify: inter-word;
 }
 </style>

@@ -20,11 +20,11 @@
               <div  v-for="(jugador,k) of torneos[0].players" :key="k" >
                 <v-list-item class="pa-0 ma-0 " :class="colores[k]" @click="verOtro(jugador._id)">
                 <v-row class="ancho" >
-                  <v-col cols="2" class="text-left">{{k+1}}</v-col>
+                  <v-col cols="2"  class="d-flex justify-start pa-0 ma-0">{{k+1}}</v-col>
                 <v-divider vertical></v-divider>
-                  <v-col cols="6" class="text-center">{{jugador.nickName}}</v-col>
+                  <v-col cols="6" class="d-flex justify-center pa-0 ma-0">{{jugador.nickName}}</v-col>
                 <v-divider vertical></v-divider>
-                  <v-col cols="2" class="text-right">{{jugador.points}}</v-col>
+                  <v-col cols="2"  class="d-flex justify-end pa-0 ma-0">{{jugador.points}}</v-col>
                 </v-row>
                 </v-list-item>
                 <v-divider></v-divider>
@@ -46,9 +46,9 @@
             </v-list-item-title>
           </v-list-item-content>
 
-          <v-list-item v-if="torneos[0].players.length===0 && torneos[0].name!='' && (imagen==='xs')" class="normal">>
+          <v-list-item v-if="torneos[0].players.length===0 && torneos[0].name!='' && (imagen==='xs')" class="normal">
               <v-icon large  color="#2C3A47">fab fa-old-republic</v-icon>
-              <p class="d-flex mt-2 mx-2">Aún no hay jugadores en este torneo <br> Sé el primero en unirte</p>
+              <p class="text-center mx-2">Aún no hay jugadores en este torneo <br> Sé el primero en unirte</p>
            </v-list-item>
 
         </v-list>
@@ -112,6 +112,9 @@ export default {
     verOtro(id){
       if(id!=this._id){
         this.$router.push({path:`/torneos/${id}`})
+      }
+      if(id===this._id){
+        this.$router.push({path:`/?tab=jugadas`})
       }
     }
   }

@@ -1,27 +1,27 @@
 <template>
     <v-container>
         <v-row class="d-flex  justify-center" v-if="torneos[0].name!=''">
-            <h2 class="mr-5">Torneo {{this.torneos[0].name}}</h2>
+            <h2 class="text-center mr-2">Torneo {{this.torneos[0].name}}</h2>
             <v-btn @click="unirse()" color="primary" v-if="estaJugador===false">Unirse</v-btn>
         </v-row>
         <tablaPosiciones></tablaPosiciones>
-        <steper></steper>
+        <Steper></Steper>
     </v-container>
 </template>
 
 <script>
 import tablaPosiciones from '@/components/tables/tablaPosiciones.vue'
-import steper from '@/components/dialog/steper.vue'
+import Steper from '@/components/dialog/steper.vue'
 import { mapMutations, mapState } from 'vuex'
 
 export default {
     name:'Posiciones',
     components:{
         tablaPosiciones,
-        steper,
+        Steper,
     },
     computed:{
-        ...mapState('torneo',['torneos']),
+        ...mapState('torneo',['torneos', 'porJugar']),
         ...mapState(['_id']),
         estaJugador(){
             const index=this.torneos[0].players.findIndex(item=>item._id === this._id);

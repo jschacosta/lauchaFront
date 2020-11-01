@@ -25,6 +25,10 @@
 
             <v-btn color="green darken-1" text 
             @click="archivarPartidos() ; info.estado = false" v-if="this.info.boton === 'archivarPartidos'">Archivar Partidos</v-btn>
+            <v-btn color="green darken-1" text 
+            @click="kickPlayer() ; info.estado = false" v-if="this.info.boton === 'kickPlayer'">Expulsar Jugador</v-btn>
+            <v-btn color="green darken-1" text 
+            @click="finishTorneo() ; info.estado = false" v-if="this.info.boton === 'finishTorneo'">Terminar Torneo</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -50,6 +54,8 @@ export default {
         ...mapMutations('rule',['deleteRule']),
         ...mapMutations('textoSnack',['agregarSnack']),
         ...mapActions('relato',['añadirCalendario','editarCalendario','eliminarCalendario','eliminarTerminados']),
+        ...mapActions( 'torneo',['puntajes']),
+        ...mapMutations( 'torneo',['eliminarTorneo']),
 
         enviarPartidos(){
             this.loadingFunction()
@@ -151,8 +157,44 @@ export default {
                     console.log(e.response);
                     this.loadingFunction();
                 })
-        }
+        },
+
+        kickPlayer(){
+            this.loadingFunction()
+            const id=this.info.datos;
+            this.axios.put(`/delete-user-torneo/${id}`)
+            .then(res=>{
+                const array=[]
+                array.push(res.data)
+                this.puntajes(array)
+                let aviso="Jugador Expulsado"
+                this.agregarSnack(aviso)
+                this.loadingFunction()
+            })
+            .catch(e=>{
+                this.loadingFunction()
+                console.log(e.response.data.mensaje);
+            })
+        },
+
+        finishTorneo(){
+            this.loadingFunction()
+            const id= this.info.datos
+            this.axios.delete(`/torneos/${id}`)
+            .then(res=>{
+                this.eliminarTorneo(res.data)
+                let aviso="Torneo Eliminado"
+                this.agregarSnack(aviso)
+                this.loadingFunction()
+            })
+            .catch(e=>{
+                console.log(e.response.data.mensaje);
+                this.loadingFunction()
+            })  
+        },
     },
+
+
 
 }
 </script>

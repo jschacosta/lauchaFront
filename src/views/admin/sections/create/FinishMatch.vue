@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="mx-5 d d-flex align-end"> 
-    <v-btn rounded small color="#2C3A47" @click="$router.push({path:`/admin/create/`})" dark>Volver</v-btn> 
+    <v-btn rounded small color="#2C3A47" @click="$router.push({path:`/admin/create?tab=two`})" dark>Volver</v-btn> 
     <v-spacer></v-spacer>
     <v-btn color="success" @click="activar()" dark>Guardar Cambios</v-btn>
     </v-row>

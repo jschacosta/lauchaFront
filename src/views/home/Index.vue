@@ -1,36 +1,39 @@
 <template>
   <div  class="mt-5">
-    <v-tabs  centered icons-and-text>
-      <v-tab>  
+    <v-tabs v-model="tab" centered icons-and-text>
+      <v-tab href="#torneo">  
         Torneo 
         <i class="far fa-futbol"></i>
       </v-tab>
-      <v-tab >
+      <v-tab href="#calendario">
         Calendario 
         <i class="fa fa-calendar-alt"></i>
-      </v-tab>
-      <v-tab v-if="estaJugador===true">
+      </v-tab >
+      <v-tab v-if="estaJugador===true" href="#jugadas">
         Mis Jugadas 
         <i class="fas fa-chess-knight"></i>
       </v-tab>
       <!-- Tab1 -->
-      <v-tab-item>
+      <v-tabs-items :value="tab">
+
+      <v-tab-item  value="torneo">
         <v-container >
           <Posiciones/>
         </v-container>
-      </v-tab-item>
+      </v-tab-item >
       <!-- Tab2 -->
-      <v-tab-item>
+      <v-tab-item value="calendario">
         <v-container>
           <Calendario/>
         </v-container>
       </v-tab-item>
       <!-- Tab3 -->
-      <v-tab-item v-if="estaJugador===true">
+      <v-tab-item v-if="estaJugador===true" value="jugadas">
         <v-container>
           <Juegos/>
         </v-container>
       </v-tab-item>
+      </v-tabs-items>
     </v-tabs>
   </div>
 </template>
@@ -50,6 +53,14 @@ export default {
   computed:{
     ...mapState('torneo',['torneos','contadorTorneo']),
     ...mapState(['_id']),
+    tab: {
+      set (tab) {
+        this.$router.replace({ query: { ...this.$route.query, tab } })
+      },
+      get () {
+        return this.$route.query.tab
+      }
+    },
     estaJugador(){
         const index=this.torneos[0].players.findIndex(item=>item._id === this._id);
         if(index===-1){
@@ -64,8 +75,8 @@ export default {
   },
   methods:{
     ...mapMutations( 'loading',['loadingFunction']),
-    ...mapMutations( 'torneo',['cambiarDialog','obtenerTorneos', 'pedirContador']),
-...mapActions( 'torneo',['agregarPorJugar','puntajes']),
+    ...mapMutations( 'torneo',['cambiarDialog', 'pedirContador']),
+    ...mapActions( 'torneo',['agregarPorJugar','puntajes']),
   },
   async created(){
     if(this.contadorTorneo===false){

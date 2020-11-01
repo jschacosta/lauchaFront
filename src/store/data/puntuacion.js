@@ -5,9 +5,11 @@ function score(p,j,apuesta) {
     //desglose = [resultado, dif gol, marc exacto]
     var suma = 0;
     var desglose = [null,null,null]
-    if (p[0] - p[1] === 0 && p[0]!=null && (j[0]!="" || j[1]!="")) {
+    console.log('jugador')
+    console.log(j)
+    if (p[0] - p[1] === 0 && p[0]!=null && (j[0]!=="" || j[1]!=="") && (j[0]!=null || j[1]!=null) && apuesta[1]!=0 ){
         if (j[0] - j[1] === 0) {
-            suma += apuesta[1] //resultado
+            suma += apuesta[1] //resultado Empate
             suma += 50 ; //diferencia goles
             desglose[0] = apuesta[1]
             desglose[1] = 50 
@@ -17,10 +19,10 @@ function score(p,j,apuesta) {
             }
         }
     }
-    if (p[0] - p[1] != 0 && (j[0]!="" || j[1]!="")) {
+    if (p[0] - p[1] != 0 && (j[0]!="" || j[1]!="") && (j[0]!=null || j[1]!=null) ) { 
         if ( (p[0] - p[1] > 0 && j[0] - j[1] > 0) || (p[0] - p[1] < 0 && j[0] - j[1] < 0) ) {
-            if(p[0] - p[1] > 0 && j[0] - j[1] > 0){
-                suma += apuesta[0]; //resultado
+            if(p[0] - p[1] > 0 && j[0] - j[1] > 0 && apuesta[0]!=0){
+                suma += apuesta[0]; //resultado Local
                 desglose[0] = apuesta[0]
                 if (p[0] - p[1] === j[0] - j[1] || p[1] - p[0] === j[1] - j[0]) {
                     suma += 50 + 50 * Math.abs(p[0] - p[1]); // diferencia goles
@@ -31,8 +33,8 @@ function score(p,j,apuesta) {
                     }
                 }
             }
-            if(p[0] - p[1] < 0 && j[0] - j[1] < 0){
-                suma += apuesta[2]; //resultado
+            if(p[0] - p[1] < 0 && j[0] - j[1] < 0 && apuesta[2]!=0){
+                suma += apuesta[2]; //resultado Visita
                 desglose[0] = apuesta[2]
                 if (p[0] - p[1] === j[0] - j[1] || p[1] - p[0] === j[1] - j[0]) {
                     suma += 50 * Math.abs(p[0] - p[1]); // diferencia goles

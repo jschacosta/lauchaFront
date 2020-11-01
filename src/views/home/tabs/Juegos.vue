@@ -7,29 +7,31 @@
       </v-btn>
     </v-row>
     <cartaJugadas ></cartaJugadas>
-    <steper></steper>  
+    <Steper></Steper>  
   </div>
 </template>
 
 <script>
 import cartaJugadas from '@/components/cards/cartaJugadas.vue'
-import steper from '@/components/dialog/steper.vue'
+import Steper from '@/components/dialog/steper.vue'
 
 import {  mapState , mapMutations } from 'vuex'
 export default {
   name:'Juegos',
   components:{
     cartaJugadas,
-    steper
+    Steper
   },
   computed:{
-    ...mapState('torneo',['torneos']),
+    ...mapState('torneo',['torneos', 'porJugar']),
+    ...mapState(['_id','nombre','apellido',]),
   },
   methods:{
     ...mapMutations('torneo',['cambiarDialog']),
     unirse(){
       this.cambiarDialog(true)
     }
-  }
+  },
+
 }
 </script>

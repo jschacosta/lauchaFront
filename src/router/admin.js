@@ -34,13 +34,13 @@ export default [
             meta:{requireAuth:['ADMIN','EDITOR','RELATOR']}
           },
           {
-            path: '/admin/play/:id',
+            path: 'play/:id',
             name: 'MatchLive',
             component: () => import(/* webpackChunkName: "Admin-Relatos" */ '../views/admin/sections/relato/LiveMatch'),
             meta:{requireAuth:['ADMIN','EDITOR','RELATOR']}
           },
           {
-            path: '/admin/finish/:id',
+            path: 'finish/:id',
             name: 'FinishMatch',
             component: () => import(/* webpackChunkName: "Admin-Relatos" */ '../views/admin/sections/create/FinishMatch'),
             meta:{requireAuth:['ADMIN','EDITOR','RELATOR']}
@@ -56,6 +56,12 @@ export default [
             name:'Users',
             component: () => import(/* webpackChunkName: "Admin-Users" */ '../views/admin/sections/users/Index'),
             meta:{requireAuth:['ADMIN']},
+          },
+          {
+            path: 'torneos/:id',
+            name: 'PuntosTorneos',
+            component: () => import(/* webpackChunkName: "Login" */ '../views/admin/sections/users/tabs/JugadasPlayers.vue'),
+            meta:{requireAuth:['ADMIN']},  
           },
           {
             path: 'profile',
