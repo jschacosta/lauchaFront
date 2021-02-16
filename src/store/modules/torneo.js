@@ -9,14 +9,21 @@ export default{
         porJugar:[],                     // contiene datos detallados de Partidos del torneo en estado Por Jugar
         matchTorneo:[],                 // contiene datos detallados de Partidos del torneo (estado:Por Jugar-Jugando-Terminado)
         matchTodos:[],                 // contiene todos los datos los partidos de la app, incluso si no estan en el torneo 
-        dialogo:false,
+    dialogo:{estado:false,paso:1, cambiarName:false },
         puntosSeparados:[],                // es un array de puntajes de puntos por partido [RES, DIFGOL, MARC EXAC, REGLAS ADIC] para el jugador logueado
         puntosSeparadosTodos:[],          // es un array de puntajes de puntos por partido [RES, DIFGOL, MARC EXAC, REGLAS ADIC] para todos los jugadores
-        contadorTorneo:false
+        contadorTorneo:false,
     }, 
     mutations:{
         cambiarDialog(state,payload){
-            state.dialogo=payload
+            state.dialogo.estado=payload.estado
+            state.dialogo.paso=payload.paso
+        },
+        changeNombre(state,payload){
+            console.log(payload)
+            state.dialogo.estado=payload.estado
+            state.dialogo.paso=payload.paso
+            state.dialogo.cambiarName=payload.cambiarName
         },
         obtenerTorneos(state,payload){
             if(payload.length!=0){
