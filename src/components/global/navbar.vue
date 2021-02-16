@@ -7,7 +7,7 @@
       <v-toolbar-title>
         <span class="text-uppercase" v-if="!rutaAdmin">
           <router-link  :to="{ name: 'Home'}"  style="text-decoration: none; color: inherit"> 
-            PollaGol
+            
           </router-link>
         </span>
       </v-toolbar-title >
