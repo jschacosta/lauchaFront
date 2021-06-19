@@ -1,6 +1,6 @@
 <template>
   <div  class="mt-5">
-    <v-tabs v-model="tab" centered icons-and-text>
+    <v-tabs v-model="tab" centered icons-and-text style>
       <v-tab href="#torneo">  
         Torneo 
         <i class="far fa-futbol"></i>

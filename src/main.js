@@ -9,7 +9,7 @@ import axios from 'axios'
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 // Agregamos la URL base de nuestra API
-axios.defaults.baseURL = 'http://pollagol.herokuapp.com/api'; // para el caso local
+axios.defaults.baseURL = 'https://apuestalaucha.herokuapp.com/api'; // para el caso local
 
 new Vue({
   store,

@@ -125,7 +125,7 @@
                   estado = false;
                 "
               >
-                Iniciar {{dialogo.cambiarName}} </v-btn
+                Iniciar  </v-btn
               >
               <v-btn v-if="dialogo.cambiarName && estado " small  class="mx-3" color="success"  @click="cambiarNombre()">
              Cambiar <v-icon right>fas fa-share</v-icon></v-btn>

@@ -253,7 +253,7 @@ export default {
           this.guardarUsuario(token);
           this.loadingFunction();
           // router.push({ name: "Home" });
-          window.location.href = "http://pollagol.herokuapp.com/";
+          window.location.href = "https://apuestalaucha.herokuapp.com/";
 
         })
         .catch((e) => {
@@ -290,7 +290,7 @@ export default {
               this.guardarUsuario(token);
               this.loadingFunction();
               // router.push({ name: "Home" });
-              window.location.href = "http://pollagol.herokuapp.com/";
+              window.location.href = "https://apuestalaucha.herokuapp.com/";
             })
             .catch((e) => {
               this.loadingFunction();
