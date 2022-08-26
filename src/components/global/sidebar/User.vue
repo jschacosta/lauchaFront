@@ -5,7 +5,7 @@
       <v-img src="@/assets/avatar.png" alt="admin" class="mx-auto" />
     </v-list-item-avatar>
     <v-list-item-title class="ml-4 text-capitalize"
-      >ApuestaLaucha</v-list-item-title
+      >POLLAGOL</v-list-item-title
     >
     </v-list-item>
 

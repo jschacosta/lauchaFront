@@ -249,11 +249,12 @@ export default {
       this.loadingFunction();
       this.axios.post("/sign-in", { email: this.Email, password: this.Password1 })
         .then((res) => {
+          console.log(res)
           const token = res.data.token;
           this.guardarUsuario(token);
           this.loadingFunction();
           // router.push({ name: "Home" });
-          window.location.href = "https://apuestalaucha.herokuapp.com/";
+          window.location.href = "http://localhost:8080/";
 
         })
         .catch((e) => {
@@ -290,7 +291,7 @@ export default {
               this.guardarUsuario(token);
               this.loadingFunction();
               // router.push({ name: "Home" });
-              window.location.href = "https://apuestalaucha.herokuapp.com/";
+              window.location.href = "http://pollagol.herokuapp.com/";
             })
             .catch((e) => {
               this.loadingFunction();

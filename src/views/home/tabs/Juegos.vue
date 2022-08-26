@@ -1,15 +1,10 @@
 <template>
   <div>
     <v-row class="d-flex justify-center mb-3 ">
-       <v-btn @click="changeName()" small class="ma-2" tile outlined color="#2C3A47" 
-      :disabled="torneos[0].edition==='true' ? false : true">
-        <v-icon  left>person</v-icon> Editar Apodo
-      </v-btn>
       <v-btn @click="unirse()" small class="ma-2" tile outlined color="#2C3A47" 
       :disabled="torneos[0].edition==='true' ? false : true">
         <v-icon  left>mdi-pencil</v-icon> Editar Presagios
       </v-btn>
-
     </v-row>
     <cartaJugadas ></cartaJugadas>
     <Steper></Steper>  
@@ -28,16 +23,13 @@ export default {
     Steper
   },
   computed:{
-    ...mapState('torneo',['torneos', 'porJugar',]),
+    ...mapState('torneo',['torneos', 'porJugar']),
     ...mapState(['_id','nombre','apellido',]),
   },
   methods:{
-    ...mapMutations('torneo',['cambiarDialog', 'changeNombre']),
+    ...mapMutations('torneo',['cambiarDialog']),
     unirse(){
-      this.cambiarDialog({estado:true,paso:2})
-    },
-    changeName(){
-      this.changeNombre({estado:true,paso:1,cambiarName:true})
+      this.cambiarDialog(true)
     }
   },
 
