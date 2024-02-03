@@ -9,11 +9,11 @@
               <v-row>
                 <v-col cols="12" md="8">
                   <v-card-text class="mt-5">
-                    <h1 class=" text-center black--text titulo mb-4">
+                    <h1 class="text-center black--text titulo mb-4">
                       Iniciar Sesión
                     </h1>
                     <h3 class="text-center subtitulo mlt-4">
-                      Ingresa con tu correo 
+                      Ingresa con tu correo
                     </h3>
                     <v-form ref="form" v-model="valid" lazy-validation>
                       <v-text-field
@@ -44,7 +44,10 @@
                       </v-text-field>
                     </v-form>
                     <h2 class="text-center mt-3 olvido">
-                      <router-link  :to="{ name: 'Forgot'}"  style="text-decoration: none; color: inherit"> 
+                      <router-link
+                        :to="{ name: 'Forgot' }"
+                        style="text-decoration: none; color: inherit"
+                      >
                         ¿Olvidaste tu contraseña?
                       </router-link>
                     </h2>
@@ -52,7 +55,7 @@
                   <div class="text-center mt-3">
                     <v-btn
                       rounded
-                      color="indigo"  
+                      color="indigo"
                       dark
                       :disabled="!valid"
                       @click="signIn()"
@@ -65,7 +68,7 @@
                     <h3 class="text-center tituloLat">
                       ¿No tienes una cuenta?
                     </h3>
-                    <h4 class="text-center  subtituloLat">
+                    <h4 class="text-center subtituloLat">
                       Crea tu cuenta y comienza a jugar
                     </h4>
                   </v-card-text>
@@ -86,7 +89,7 @@
                     </h3>
                     <h4 class="text-center subtituloLat">
                       Ingresa presionando Sign in
-                      </h4>
+                    </h4>
                   </v-card-text>
                   <div class="text-center">
                     <v-btn rounded outlined dark @click="step--">Sign In</v-btn>
@@ -94,15 +97,18 @@
                 </v-col>
                 <v-col cols="12" md="8">
                   <v-card-text class="mt-5-">
-                    <h1 class="text-center titulo">
-                      Registrate
-                    </h1>
+                    <h1 class="text-center titulo">Registrate</h1>
                     <h2 class="text-center subtitulo mt-4">
                       Completa los campos para registrarte
                     </h2>
-                    <v-form ref="form" v-model="valid" lazy-validation class="mr-2">
+                    <v-form
+                      ref="form"
+                      v-model="valid"
+                      lazy-validation
+                      class="mr-2"
+                    >
                       <v-row>
-                        <v-col cols="12" lg='6'>
+                        <v-col cols="12" lg="6">
                           <v-text-field
                             label="Nombre"
                             name="Name"
@@ -115,7 +121,7 @@
                           >
                           </v-text-field>
                         </v-col>
-                        <v-col cols="12" lg='6'>
+                        <v-col cols="12" lg="6">
                           <v-text-field
                             label="Apellido"
                             name="Apellido"
@@ -141,9 +147,11 @@
                       >
                       </v-text-field>
                       <v-row>
-                        <v-col cols="12" lg='6'>
+                        <v-col cols="12" lg="6">
                           <v-text-field
-                            :append-icon="mostrarPass2 ? 'mdi-eye' : 'mdi-eye-off'"
+                            :append-icon="
+                              mostrarPass2 ? 'mdi-eye' : 'mdi-eye-off'
+                            "
                             label="Pass"
                             name="Password"
                             prepend-icon="mdi-lock"
@@ -155,11 +163,12 @@
                             required
                           >
                           </v-text-field>
-
                         </v-col>
-                        <v-col cols="12" lg='6'>
+                        <v-col cols="12" lg="6">
                           <v-text-field
-                            :append-icon="mostrarPass3 ? 'mdi-eye' : 'mdi-eye-off'"
+                            :append-icon="
+                              mostrarPass3 ? 'mdi-eye' : 'mdi-eye-off'
+                            "
                             label="Confirmar Pass"
                             name="Password"
                             prepend-icon="mdi-lock"
@@ -198,7 +207,7 @@
 <script>
 import { mapMutations, mapState, mapActions } from "vuex";
 import router from "@/router/index";
-import formEquiposVue from '../selectForm/formEquipos.vue';
+import formEquiposVue from "../selectForm/formEquipos.vue";
 export default {
   name: "modalLogin",
   data: () => ({
@@ -209,20 +218,18 @@ export default {
     Email: "",
     Password1: "",
     Password2: "",
-    mostrarPass1:false,
-    mostrarPass2:false,
-    mostrarPass3:false,
+    mostrarPass1: false,
+    mostrarPass2: false,
+    mostrarPass3: false,
     nameRules: [
       (v) => !!v || "El nombre es requerido",
       (v) =>
-        (v && v.length < 25) ||
-        "El nombre debe tener máximo 20 carácteres"
+        (v && v.length < 25) || "El nombre debe tener máximo 20 carácteres",
     ],
     lastNameRules: [
       (v) => !!v || "El apellido es requerido",
       (v) =>
-        (v && v.length < 25) ||
-        "El apellido debe tener máximo 20 carácteres"
+        (v && v.length < 25) || "El apellido debe tener máximo 20 carácteres",
     ],
     passwordRules: [
       (v) => !!v || "La contraseña es requerida",
@@ -247,15 +254,14 @@ export default {
     },
     signIn() {
       this.loadingFunction();
-      this.axios.post("/sign-in", { email: this.Email, password: this.Password1 })
+      this.axios
+        .post("/users/sign-in", { email: this.Email, password: this.Password1 })
         .then((res) => {
-          console.log(res)
           const token = res.data.token;
           this.guardarUsuario(token);
           this.loadingFunction();
           // router.push({ name: "Home" });
-          window.location.href = "http://localhost:8080/";
-
+          this.$router.push({ name: "Home" });
         })
         .catch((e) => {
           this.loadingFunction();
@@ -265,21 +271,21 @@ export default {
       this.$refs.form.reset(); // elimina info de los campos
       this.$refs.form.resetValidation(); //elimina campos en rojo
     },
-    signUp(){
-      const nameIsValid = !!this.Name
-      const passwordIsValid = !!this.Password1 && !!this.Password2
-      const lastNameIsValid = !!this.lastName
-      const emailIsValid = !!this.Email
-      const formIsValid = nameIsValid && lastNameIsValid && emailIsValid && passwordIsValid 
-      if(formIsValid){
-        if(this.Password1 != this.Password2){
-          this.agregarSnack('Las contraseñas no coinciden');
+    signUp() {
+      const nameIsValid = !!this.Name;
+      const passwordIsValid = !!this.Password1 && !!this.Password2;
+      const lastNameIsValid = !!this.lastName;
+      const emailIsValid = !!this.Email;
+      const formIsValid =
+        nameIsValid && lastNameIsValid && emailIsValid && passwordIsValid;
+      if (formIsValid) {
+        if (this.Password1 != this.Password2) {
+          this.agregarSnack("Las contraseñas no coinciden");
           this.$refs.form.resetValidation(); //elimina campos en rojo
-        }
-        else{
+        } else {
           this.loadingFunction();
           this.axios
-            .post("/sign-up", {
+            .post("/users/sign-up", {
               name: this.Name,
               lastname: this.lastName,
               email: this.Email,
@@ -291,23 +297,23 @@ export default {
               this.guardarUsuario(token);
               this.loadingFunction();
               // router.push({ name: "Home" });
-              window.location.href = "http://pollagol.herokuapp.com/";
+              window.location.href = "https://apuestalaucha.herokuapp.com/";
             })
             .catch((e) => {
               this.loadingFunction();
-              if(!!e.response.data.error.errors.email.properties.message){
-                this.agregarSnack(e.response.data.error.errors.email.properties.message);
-              }
-              else{
+              if (!!e.response.data.error.errors.email.properties.message) {
+                this.agregarSnack(
+                  e.response.data.error.errors.email.properties.message
+                );
+              } else {
                 this.agregarSnack(e.response.data.mensaje);
               }
             });
           this.$refs.form.reset(); // elimina info de los campos
-          this.$refs.form.resetValidation(); //elimina campos en rojo   
+          this.$refs.form.resetValidation(); //elimina campos en rojo
         }
-      }
-      else{
-        this.agregarSnack('Hay campos sin rellenar');
+      } else {
+        this.agregarSnack("Hay campos sin rellenar");
         this.$refs.form.reset(); // elimina info de los campos
         this.$refs.form.resetValidation(); //elimina campos en rojo
       }
@@ -317,24 +323,24 @@ export default {
 </script>
 
 <style scoped>
-.titulo{
+.titulo {
   font-size: 40px;
-  font-weight: 400 ; /* 400px es normal */
+  font-weight: 400; /* 400px es normal */
 }
-.subtitulo{
+.subtitulo {
   font-size: 15px;
   font-weight: 400;
 }
-.tituloLat{
+.tituloLat {
   font-size: 30px;
   font-weight: 350;
   margin-bottom: 15px;
 }
-.subtituloLat{
+.subtituloLat {
   font-size: 15px;
   font-weight: 400;
 }
-.olvido{
+.olvido {
   font-size: 15px;
   font-weight: 600;
 }

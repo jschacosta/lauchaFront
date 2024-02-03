@@ -4,12 +4,13 @@
     <v-app-bar app color="#2C3A47" dark>
       <v-app-bar-nav-icon @click.stop="drawer=!drawer" class="clickable" v-if="(imagen==='sm' || imagen==='md') && !rutaAdmin"></v-app-bar-nav-icon>
       <v-app-bar-nav-icon @click.stop="mini=!mini" class="clickable" v-if=" rutaAdmin"></v-app-bar-nav-icon>
-      <v-toolbar-title>
+      <v-toolbar-title class="d-flex align-center">
         <span class="text-uppercase" v-if="!rutaAdmin">
           <router-link  :to="{ name: 'Home'}"  style="text-decoration: none; color: inherit"> 
-            PollaGol
+            Apuesta Laucha
           </router-link>
         </span>
+        <a class="ml-5 mt-1" target="_blank" href="https://www.instagram.com/lauchadearea/?hl=es-la"><img class="text-center"   src="../../../public/instaa.png" alt="Paris" width="18" height="18"> </a>
       </v-toolbar-title >
       <v-toolbar-title>
         <span class="text-uppercase " :class="(imagen==='xs' )?'body-3':'h2'"  v-if="rutaAdmin">Panel de Control</span>

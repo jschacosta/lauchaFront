@@ -35,7 +35,7 @@ export default {
     methods:{
         ...mapMutations('torneo',['cambiarDialog','obtenerTorneos']),
         unirse(){
-            this.cambiarDialog(true)
+            this.cambiarDialog({estado:true,paso:1})
         }
     }
 }

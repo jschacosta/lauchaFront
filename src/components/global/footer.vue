@@ -9,7 +9,9 @@
       
     >
       <v-col class="text-center subtitle-2 ma-0 pa-0" cols="12">
-          {{ new Date().getFullYear() }} — <strong >Johann Schwarze</strong>
+          {{ new Date().getFullYear() }} — <a href="https://www.instagram.com/lauchadearea/?hl=es-la" target="_blank"><strong   href="https://www.instagram.com/lauchadearea/?hl=es-la" style="text-decoration:none; color:white; margin-top:-20px">
+  @lauchadearea
+</strong></a>
         </v-col>
     </v-footer> 
     <!-- Footer para Telefonos con botones -->
@@ -18,7 +20,7 @@
           <v-item  v-for="item in items" :key="item.text" >
               <v-btn   :disabled="(item.text==='Mis Torneos' || item.text==='Mis Stats') ? true : false"
               height="100%"  route :to="item.route" active-class="orange--text" 
-              :class="anchoPantalla===true?'px-1':'px-4'">
+              :class="anchoPantalla===true?'px-0':'px-4'">
                   <caption>{{item.text}}</caption>
                   <v-icon  >{{item.icon}}</v-icon>
               </v-btn>

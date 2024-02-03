@@ -6,7 +6,7 @@
           rounded
           small
           color="#2C3A47"
-          @click="$router.push({ path: `/admin/users?tab=two`})"
+          @click="$router.push({ path: `/users/admin/users?tab=two` })"
           dark
           >Volver</v-btn
         >
@@ -15,27 +15,31 @@
         <h2 class="titulo" v-if="imagen != 'xs'">Presagio de {{ nickName }}</h2>
         <h3 class="titulo" v-if="imagen === 'xs'">
           Presagio de: {{ nickName }}
-          
         </h3>
       </v-col>
     </v-row>
     <v-row class="container" v-if="partidosOtro.length != 0">
-      
       <v-tabs vertical class="elevation-10">
-      <v-tab  >TABLA</v-tab>
+        <v-tab>TABLA</v-tab>
         <v-tab v-for="(partido, i) of partidosOtro" :key="i">
           P {{ i + 1 }}
         </v-tab>
-        <v-tab-item >
+        <v-tab-item>
           <MiniTablaAdmin :idPlayer="this.$route.params.id"></MiniTablaAdmin>
-      </v-tab-item>
-        
+        </v-tab-item>
+
         <v-tab-item v-for="(parti2, j) of partidosOtro" :key="j" class="mb-3">
           <v-card color="#E0E0E0">
-    <p  class="text-center text-caption"  v-if="imagen==='xs'">Voltea el telefono para ver puntajes</p>
+            <p class="text-center text-caption" v-if="imagen === 'xs'">
+              Voltea el telefono para ver puntajes
+            </p>
 
             <v-row class="d-flex justify-center align-center mb-3" dense>
-              <v-col class="d-flex justify-end mt-5" cols="3" :class="imagen==='xs'?'text-body-2':'display'">
+              <v-col
+                class="d-flex justify-end mt-5"
+                cols="3"
+                :class="imagen === 'xs' ? 'text-body-2' : 'display'"
+              >
                 {{ parti2.local }}
               </v-col>
               <v-col class="d-flex justify-center align-end mt-5" cols="1">
@@ -47,7 +51,11 @@
               <v-col class="d-flex justify-center align-start mt-5" cols="1">
                 {{ parti2.scoreOtro[1] }}
               </v-col>
-              <v-col class="d-flex justify-start align-start mt-5" cols="3" :class="imagen==='xs'?'text-body-2':'display'">
+              <v-col
+                class="d-flex justify-start align-start mt-5"
+                cols="3"
+                :class="imagen === 'xs' ? 'text-body-2' : 'display'"
+              >
                 {{ parti2.visita }}
               </v-col>
             </v-row>
@@ -55,8 +63,8 @@
             <div
               v-for="(item2, k) of parti2.rules"
               :key="k"
-              class="d-flex align-center "
-              :class="imagen==='xs'?'text-body-2':'display'"
+              class="d-flex align-center"
+              :class="imagen === 'xs' ? 'text-body-2' : 'display'"
             >
               <v-row>
                 <v-col class="d-flex align-center">
@@ -94,15 +102,19 @@
                       v-for="(texto, m) of parti2.rules[k].options.text"
                       :key="m"
                     >
-                      <v-col v-if="parti2.ruleElectionsOtro[k] === m" >
+                      <v-col v-if="parti2.ruleElectionsOtro[k] === m">
                         <v-radio
                           class="mx-8"
                           :label="`${texto}`"
                           :value="m"
                         ></v-radio>
                       </v-col>
-                      <v-col v-if="parti2.ruleElectionsOtro[k] === m && imagen!='xs'">
-                         {{parti2.rules[k].options.values[m]}} pts 
+                      <v-col
+                        v-if="
+                          parti2.ruleElectionsOtro[k] === m && imagen != 'xs'
+                        "
+                      >
+                        {{ parti2.rules[k].options.values[m] }} pts
                       </v-col>
                     </v-row>
                   </v-radio-group>
@@ -119,14 +131,12 @@
         </v-tab-item>
       </v-tabs>
     </v-row>
-
-
   </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from "vuex";
-import MiniTablaAdmin from '@/components/tables/miniTablaAdmin.vue'
+import MiniTablaAdmin from "@/components/tables/miniTablaAdmin.vue";
 
 export default {
   name: "JugadasPlayers",
@@ -134,8 +144,8 @@ export default {
     partidosOtro: [],
     nickName: "",
   }),
-    components:{
-    MiniTablaAdmin
+  components: {
+    MiniTablaAdmin,
   },
   computed: {
     ...mapState("torneo", ["torneos", "matchTorneo", "puntosSeparadosTodos"]),
@@ -177,7 +187,7 @@ export default {
     const matchUsuario = this.torneos[0].players[index].matches;
     for (let item of matchUsuario) {
       for (let item2 of this.matchTorneo) {
-        if (item._id === item2._id ) {
+        if (item._id === item2._id) {
           item2.scoreOtro = item.score;
           item2.ruleElectionsOtro = item.ruleElections;
           arrayJugador.push(item2);
@@ -196,12 +206,12 @@ export default {
   background-color: #e0e0e0;
   color: #2c3a47;
 }
-.general{
+.general {
   margin-left: auto;
   margin-right: auto;
 }
-.eltexto{
-  text-align:center ;
+.eltexto {
+  text-align: center;
   text-justify: inter-word;
 }
 </style>
