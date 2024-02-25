@@ -2,7 +2,7 @@
   <div class="mt-5">
     <v-col cols="12" class="text-center subtitulo olvido">
       <div>
-        To test the administrator options go to-> /admin
+        To test the administrator options after login go to-> /admin
       </div>
     </v-col>
     <v-tabs v-model="tab" centered icons-and-text style>
