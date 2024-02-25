@@ -240,7 +240,7 @@ export default {
       this.loadingFunction();
       const id = this.info.datos;
       this.axios
-        .put(`/delete-user-torneo/${id}`)
+        .put(`/users/delete-user-torneo/${id}`)
         .then((res) => {
           const array = [];
           array.push(res.data);

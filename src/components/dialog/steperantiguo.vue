@@ -1,4 +1,4 @@
-<template >
+<template>
   <v-dialog v-model="dialogo" persistent max-width="800px">
     <v-stepper v-model="paso" dark dense>
       <!-- ENCABEZADO - PASO 1 -->
@@ -50,9 +50,9 @@
             <v-stepper-header
               v-if="
                 imagen === 'xs' ||
-                imagen === 'sm' ||
-                imagen === 'md' ||
-                porJugar.length >= 7
+                  imagen === 'sm' ||
+                  imagen === 'md' ||
+                  porJugar.length >= 7
               "
             >
               <v-row class="ma-0 pa-0">
@@ -216,9 +216,11 @@
                     class="mx-8"
                     v-for="(texto, m) of partido.rules[k].options.text"
                     :key="m"
-                    :label="`${texto}${espacio.repeat(10)}(${
-                      partido.rules[k].options.values[m]
-                    } pts ) `"
+                    :label="
+                      `${texto}${espacio.repeat(10)}(${
+                        partido.rules[k].options.values[m]
+                      } pts ) `
+                    "
                     :value="m"
                   >
                   </v-radio>

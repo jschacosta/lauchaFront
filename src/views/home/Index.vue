@@ -1,5 +1,10 @@
 <template>
   <div class="mt-5">
+    <v-col cols="12" class="text-center subtitulo olvido">
+      <div>
+        To test the administrator options go to-> /admin
+      </div>
+    </v-col>
     <v-tabs v-model="tab" centered icons-and-text style>
       <v-tab href="#torneo">
         Torneo
@@ -109,3 +114,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.olvido {
+  font-size: 15px;
+  font-weight: 600;
+}
+</style>

@@ -1,4 +1,4 @@
-<template >
+<template>
   <div>
     <v-dialog
       v-model="dialogo.estado"
@@ -83,6 +83,7 @@
                 Esta será tu carta de vaticinios para los próximos encuentros
                 deportivos. Muestra tu jerarquía y sapiencia frente a tus
                 débiles adversarios
+                {{ losPartidos.length }}
               </h4>
               <h4
                 class="mt-5 ml-5 mb-10 font-weight-regular"
@@ -145,7 +146,7 @@
                     imagen === 'sm' ||
                     imagen === 'md' ||
                     losPartidos.length >= 7) &&
-                  dialogo.paso != 1 + losPartidos.length
+                    dialogo.paso != 1 + losPartidos.length
                 "
               >
                 <v-btn
@@ -407,6 +408,7 @@ export default {
       return this.torneos[0].players.findIndex((item) => item._id === this._id);
     },
     losPartidos() {
+      console.log("wena", this.porJugar);
       if (this.torneos[0].players.length === 0) {
         //no hay jugadores
         for (let item of this.porJugar) {
@@ -569,7 +571,7 @@ export default {
           }
         }
         this.axios
-          .put(`/torneos-confirmar`, elTorneo)
+          .put(`/torneos/torneos-confirmar`, elTorneo)
           .then((res) => {
             if (res.data === "false") {
               let aviso = "No es momento de editar ahora";
@@ -629,7 +631,7 @@ export default {
       const indexPlayer = elTorneo.players.indexOf(player.idPlayer);
       elTorneo.players[index].nickName = this.nickName.name;
       this.axios
-        .put(`/torneos-confirmar`, elTorneo)
+        .put(`/torneos/torneos-confirmar`, elTorneo)
         .then((res) => {
           if (res.data === "false") {
             let aviso = "No es momento de editar ahora";

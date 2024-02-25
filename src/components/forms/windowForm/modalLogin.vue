@@ -3,6 +3,31 @@
     <!-- window de ingreso -->
     <v-row align="center" justify="center">
       <v-col cols="10" sm="10" md="10">
+        <v-row>
+          <v-col cols="12" sm="6" class="text-center subtitulo olvido">
+            <div>
+              To test the administrator options try:
+            </div>
+            <div>
+              email:adminuser@laucha.com
+            </div>
+            <div>
+              pass:123123
+            </div>
+          </v-col>
+          <v-col cols="12" sm="6" class="text-center subtitulo olvido">
+            <div>
+              Or the user playing:
+            </div>
+            <div>
+              email:jschacosta@gmail.com
+            </div>
+            <div>
+              pass:123123
+            </div>
+          </v-col>
+        </v-row>
+
         <v-card class="elevation-12 mt-3">
           <v-window v-model="step">
             <v-window-item :value="1">
@@ -297,7 +322,8 @@ export default {
               this.guardarUsuario(token);
               this.loadingFunction();
               // router.push({ name: "Home" });
-              window.location.href = "https://apuestalaucha.herokuapp.com/";
+              this.$router.push({ name: "Home" });
+              // window.location.href = "https://apuestalaucha.herokuapp.com/";
             })
             .catch((e) => {
               this.loadingFunction();
